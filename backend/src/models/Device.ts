@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: { type: mongoose.Types.ObjectId, ref: "user" },
+
 });
 
 const deviceModel = mongoose.model<Devive>("device", userSchema);

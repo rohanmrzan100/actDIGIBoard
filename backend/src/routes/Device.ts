@@ -1,14 +1,12 @@
 import express from "express";
 import authMiddleware from "../middleware/isAuth";
-import { addDevice } from "../controllers/Device";
+import { addDevice, syncDevice } from "../controllers/Device";
 const router = express.Router();
 
 
 
 
 router.post("/add",authMiddleware,addDevice)
-router.get("/add",authMiddleware,(req,res)=>{
-    res.send("Working")
-})
+router.get("/sync/:uid",syncDevice)
 
 export default router;

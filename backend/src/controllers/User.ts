@@ -50,7 +50,7 @@ export const register: RequestHandler<
     if (checkUser)
       return res
         .status(400)
-        .json({ msg: "Email is already taken.", status: 0, doc });
+        .json({ msg: "Email is already taken.", status: "0", doc });
 
     const salt = bcrypt.genSaltSync(10);
     const Hashpassword = bcrypt.hashSync(password, salt);
@@ -63,7 +63,7 @@ export const register: RequestHandler<
 
     doc = await user.save();
 
-    res.status(201).json({ doc, status: 1, msg: "Register success" });
+    res.status(201).json({ doc, status: "1", msg: "Register success" });
   } catch (error) {
     next(error);
   }
@@ -83,7 +83,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
     if (!email || !password) {
       return res
         .status(400)
-        .json({ msg: "Please provide all required data", status: 0 });
+        .json({ msg: "Please provide all required data", status: "0" });
     }
     const user = await userModel.findOne({ email: email });
     if (user) {
@@ -91,7 +91,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
       if (!isMatch) {
         return res
           .status(400)
-          .json({ msg: "Password is incorrect", status: 0 });
+          .json({ msg: "Password is incorrect", status: "0" });
       }
       const token = jwt.sign({ _id: user._id, name: user.name }, env.SECRET, {
         expiresIn: "30d",
@@ -100,7 +100,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
         .status(200)
         .json({ msg: "Login Successful", token: token, status: 1 ,doc:user});
     }
-    res.status(400).json({ msg: "Email not found.", status: 0 ,doc});
+    res.status(400).json({ msg: "Email not found.", status: "0" ,doc});
   } catch (error) {
     next(error);
   }
