@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.nav-btn{
+    @apply hover:border-b rounded-sm  flex items-center p-2  text-white h-8 
+  }
