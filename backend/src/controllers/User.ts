@@ -50,7 +50,7 @@ export const register: RequestHandler<
     if (!name || !email || !password) {
       return res.status(400).json({
         msg: "Please provide all required data",
-        status: 0,
+        status: "0",
         doc,
       });
     }
@@ -108,7 +108,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
       });
       return res
         .status(200)
-        .json({ msg: "Login Successful", token: token, status: 1 ,doc:user});
+        .json({ msg: "Login Successful", token: token, status: "1" ,doc:user});
     }
     res.status(400).json({ msg: "Email not found.", status: "0" ,doc});
   } catch (error) {
@@ -119,7 +119,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
 export const getAllUser: RequestHandler = async (req, res, next) => {
   try {
     const user = await userModel.find();
-    res.status(400).json({ user, status: 1 });
+    res.status(400).json({ user, status: "1" });
   } catch (error) {
     next(error);
   }

@@ -5,7 +5,7 @@ import deviceModel from "../models/Device";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import userModel from "../models/User";
+import userModel, { User } from "../models/User";
 
 interface addDevice {
   name: string;
@@ -19,45 +19,58 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
   next
 ) => {
   try {
-    const user = await userModel.findById(res.locals.user._id);
-    if (!user) return res.status(400).json({ msg: "User is not found" });
+    let user: User = {
+      _id: "",
+      email: "",
+      name: "",
+      password: "",
+      device_id: [""],
+    };
+    const owner = await userModel.findById(res.locals.user._id);
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: "User is not found", status: "0", user });
     const { name, uid } = req.body;
 
     if (!name || !uid) {
-      return res.status(400).json({ msg: "Please input all data" });
+      return res
+        .status(400)
+        .json({ msg: "Please input all data", status: "0", user });
     }
     const device = new deviceModel({
       name: name,
       uid: uid,
-      owner_id: user._id,
+      owner_id: owner?._id,
     });
 
     user.device_id.push(device._id);
-    await user.save();
+    await owner?.save();
 
     const doc = await device.save();
-    res.status(200).json({ device: doc, user });
+    res.status(200).json({ device: doc, user, status: "0" });
   } catch (error) {
     next(error);
   }
 };
 
-
-export const syncDevice: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const syncDevice: RequestHandler = async (req, res, next) => {
   try {
     const uid = req.params.uid;
     const device = await deviceModel.findOne({ uid: uid });
     if (!device) {
       return res.status(400).json({ status: "0", token: " ", msg: " " });
     }
-    const token = jwt.sign({ uid:uid,owner_id:device.owner_id }, env.SECRET, {
+    const token = jwt.sign(
+      { uid: uid, owner_id: device.owner_id },
+      env.SECRET,
+      {
         expiresIn: "30d",
-      });
-    res.status(200).json({status:"1",token:token ,msg:"Device verified."})
+      }
+    );
+    res
+      .status(200)
+      .json({ status: "1", token: token, msg: "Device verified." });
   } catch (error) {
     next(error);
   }

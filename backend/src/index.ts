@@ -25,7 +25,7 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   let errorMessage = "An error in server has occured";
   if (error instanceof Error) errorMessage = error.message;
   console.log(error);
-  res.status(500).json({ error: errorMessage });
+  res.status(500).json({ error: errorMessage,status:"0" });
 });
 // env.MONGO_URI;
 mongoose
