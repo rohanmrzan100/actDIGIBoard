@@ -45,13 +45,21 @@ const Navbar = () => {
               >
                 <ul className="font-medium flex justify-center items-center space-x-2">
                   <li>
-                    <button type="button" className="w-full  nav-btn">
+                    <button
+                      onClick={() => navigate("/content")}
+                      type="button"
+                      className="w-full  nav-btn"
+                    >
                       <FontAwesomeIcon icon={faPhotoFilm} />
                       <span className="ml-3">Content</span>
                     </button>
                   </li>
                   <li>
-                    <button type="button" className="w-full  nav-btn">
+                    <button
+                      onClick={() => navigate("/devices")}
+                      type="button"
+                      className="w-full  nav-btn"
+                    >
                       <FontAwesomeIcon icon={faTablet} />
                       <span className="ml-3">Devices</span>
                     </button>

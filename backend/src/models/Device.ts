@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
   },
 
 owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
+},{
+  timestamps:true
 });
 
 const deviceModel = mongoose.model<Device>("device", userSchema);
