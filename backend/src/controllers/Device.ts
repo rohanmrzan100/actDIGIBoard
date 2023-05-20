@@ -49,7 +49,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     const doc = await addedDevice.save();
 
     device = <Device> await deviceModel.findById(doc._id)
-    .populate("owner_id");
+    // .populate("owner_id");
     res.status(200).json({ device, status: "1",msg:"Device added sucessfully." });
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
     );
     res
       .status(200)
-      .json({ status: "1", token: token, msg: "Device verified." });
+      .json({ status: "1",device, token: token, msg: "Device verified." });
   } catch (error) {
     next(error);
   }
