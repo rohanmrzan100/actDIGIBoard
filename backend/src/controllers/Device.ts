@@ -61,20 +61,31 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
 export const syncDevice: RequestHandler = async (req, res, next) => {
   try {
     const uid = req.params.uid;
-    const device = await deviceModel.findOne({ uid: uid });
-    if (!device) {
-      return res.status(400).json({ status: "0", token: " ", msg: " " });
+    let foundDevice = await deviceModel.findOne({ uid: uid });
+    if (!foundDevice) {
+      const device: Device = {
+        _id: "",
+        name: "",
+        uid: "",
+        owner_id: "",
+      };
+      return res
+        .status(400)
+        .json({ status: "0", device, token: " ", msg: " " });
     }
     const token = jwt.sign(
-      { uid: uid, owner_id: device.owner_id },
+      { uid: uid, owner_id: foundDevice.owner_id },
       env.SECRET,
       {
         expiresIn: "30d",
       }
     );
-    res
-      .status(200)
-      .json({ status: "1", device, token: token, msg: "Device verified." });
+    res.status(200).json({
+      status: "1",
+      device: foundDevice,
+      token: token,
+      msg: "Device verified.",
+    });
   } catch (error) {
     next(error);
   }
