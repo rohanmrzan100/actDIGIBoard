@@ -16,11 +16,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  owner_id: {
-    type: String,
-    required: true,
-  },
 
+owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
 });
 
 const deviceModel = mongoose.model<Device>("device", userSchema);

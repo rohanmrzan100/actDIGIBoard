@@ -19,44 +19,38 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
   next
 ) => {
   try {
-    let user: User = {
-      _id: "",
-      email: "",
-      name: "",
-      password: "",
-      device_id: [""],
-    };
-     let device: Device = {
-       _id: "",
-       name: "",
-       uid:"",
-       owner_id:"",
-     };
+      let device: Device = {
+        _id: "",
+        name: "",
+        uid: "",
+        owner_id: "",
+      };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
       return res
         .status(400)
-        .json({ msg: "User is not found", status: "0", user, device });
+        .json({ msg: "User is not found", status: "0", device });
     const { name, uid } = req.body;
 
     if (!name || !uid) {
       return res
         .status(400)
-        .json({ msg: "Please input all data", status: "0", user, device });
+        .json({ msg: "Please input all data", status: "0", device });
     }
-  const addedDevice = new deviceModel({
+    const addedDevice = new deviceModel({
       name: name,
       uid: uid,
       owner_id: owner?._id,
     });
 
-    owner.device_id.push(device._id);
-    await owner.save();
+    owner.device_id.push(addedDevice._id);
+    await owner?.save();
 
     const doc = await addedDevice.save();
-    res
-      .status(200)
-      .json({ device: doc, owner, status: "1", msg: "device added" });
+
+    device = <Device> await deviceModel.findById(doc._id)
+    .populate("owner_id");
+    res.status(200).json({ device, status: "1",msg:"Device added sucessfully." });
   } catch (error) {
     next(error);
   }
