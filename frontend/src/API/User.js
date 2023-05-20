@@ -11,6 +11,7 @@ export const register = async (data) => {
   try {
     const response = await axios.post("/api/user/register", data);
     successToast(response.data.msg);
+    window.location.href = "/signin";
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
@@ -26,6 +27,8 @@ export const login = async (data) => {
     const response = await axios.post("/api/user/login", data);
     successToast("Login Successful");
     store.dispatch(loginSuccess(response.data.token));
+    window.location.href = "/home";
+    return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
     store.dispatch(loginError());

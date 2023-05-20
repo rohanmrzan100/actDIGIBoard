@@ -71,7 +71,7 @@ const SideNav = () => {
               <button
                 onClick={() => {
                   dispatch(logout());
-                  navigate("/signin");
+                  window.location.href = "/signin";
                 }}
                 type="button"
                 className="w-full  nav-btn"

@@ -36,6 +36,14 @@ export const register: RequestHandler<
   registerBody,
   unknown
 > = async (req, res, next) => {
+  let doc: User = {
+    _id: "",
+    email: "",
+    name: "",
+    password: "",
+    device_id: [""],
+  };
+
   try {
     const { name, email, password } = req.body;
 
@@ -78,6 +86,8 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
   res,
   next
 ) => {
+
+
   try {
     const { email, password } = req.body;
     if (!email || !password) {

@@ -24,8 +24,6 @@ const Signup = () => {
     dispatch(isloading({ type: "true" }));
 
     register(data).then((res) => {
-    
-      if (!error) <redirect to="/" />;
       dispatch(isloading({ type: "false" }));
     });
   };

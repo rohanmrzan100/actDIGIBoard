@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/slice/authSlice";
 
 const Navbar = () => {
-   const isAuth = useSelector((state) => state.auth.isAuth);
+  const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
@@ -26,7 +26,7 @@ const Navbar = () => {
               ACT DIGI BOARD
             </span>
           </a>
-          {isAuth &&
+          {isAuth && (
             <>
               {" "}
               <button
@@ -72,7 +72,7 @@ const Navbar = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        navigate("/signin");
+                        window.location.href = "/signup";
                         dispatch(logout());
                       }}
                       className="w-full  nav-btn"
@@ -84,7 +84,7 @@ const Navbar = () => {
                 </ul>
               </div>{" "}
             </>
-          }
+          )}
         </div>
       </nav>
     </div>

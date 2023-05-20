@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./components/utils/Spinner";
 import { ToastContainer } from "react-toastify";
 import { loadUser } from "./store/slice/authSlice";
-import { redirect } from "react-router-dom";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -23,9 +22,6 @@ const App = () => {
         <Navbar />
         {navToggle && <SideNav />}
         <Routes>
-          {/* <Route exact path="/">
-            <redirect to="/signin" />
-          </Route> */}
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/signin" element={<Signin />}></Route>
           <Route path="/home" element={<Landing />}></Route>

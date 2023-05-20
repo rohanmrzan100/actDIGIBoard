@@ -21,8 +21,6 @@ const Signin = () => {
     dispatch(isloading({ type: "true" }));
     login(data).then((res) => {
       dispatch(isloading({ type: "false" }));
-
-      if (!error) <redirect to="/" />;
     });
   };
 
