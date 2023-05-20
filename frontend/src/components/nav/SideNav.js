@@ -10,8 +10,11 @@ import {
   faUser,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { logout } from "../../store/slice/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const SideNav = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   return (
     <div className="lg:hidden ">
@@ -65,7 +68,14 @@ const SideNav = () => {
               </button>
             </li>
             <li>
-              <button type="button" className="w-full  nav-btn">
+              <button
+                onClick={() => {
+                  dispatch(logout());
+                  navigate("/signin");
+                }}
+                type="button"
+                className="w-full  nav-btn"
+              >
                 <FontAwesomeIcon icon={faUser} />
                 <span className="ml-3">Sign Out</span>
               </button>

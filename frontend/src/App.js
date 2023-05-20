@@ -5,19 +5,30 @@ import Signin from "./components/auth/Signin";
 import Landing from "./components/landing/Landing";
 import Navbar from "./components/nav/Navbar";
 import SideNav from "./components/nav/SideNav";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./components/utils/Spinner";
+import { ToastContainer } from "react-toastify";
+import { loadUser } from "./store/slice/authSlice";
 const App = () => {
-  const navToggle = useSelector(state=>state.toggle.navToggle)
+  const dispatch = useDispatch();
+  const navToggle = useSelector((state) => state.toggle.navToggle);
+  const isloading = useSelector((state) => state.utils.isloading);
+  if (localStorage.getItem("token")) {
+    dispatch(loadUser(localStorage.getItem("token")));
+  }
   return (
     <div>
       <BrowserRouter>
         <Navbar />
-   {navToggle &&    <SideNav/> }       <Routes>
+        {navToggle && <SideNav />}
+        <Routes>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/signin" element={<Signin />}></Route>
           <Route path="/" element={<Landing />}></Route>
         </Routes>
       </BrowserRouter>
+      {isloading && <Spinner />}
+      <ToastContainer />
     </div>
   );
 };
