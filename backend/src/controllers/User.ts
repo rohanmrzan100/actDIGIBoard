@@ -14,7 +14,9 @@ let doc: User = {
   password: "",
   device_id: [""],
 };
-
+// @route      /api/user/protected
+// @desc       test protected route
+// @auth       private
 export const temp: RequestHandler = async (req, res, next) => {
   const userID = res.locals.user._id;
   if (!mongoose.isValidObjectId(userID)) {
@@ -24,6 +26,11 @@ export const temp: RequestHandler = async (req, res, next) => {
   res.status(200).json(user);
 };
 
+
+
+// @route      /api/user/register
+// @desc       register users
+// @auth       public
 interface registerBody {
   name?: string;
   email?: string;
@@ -77,6 +84,11 @@ export const register: RequestHandler<
   }
 };
 
+
+
+// @route      /api/user/login
+// @desc       login users
+// @auth       public
 interface loginBody {
   email: string;
   password: string;
@@ -86,8 +98,6 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
   res,
   next
 ) => {
-
-
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -106,15 +116,41 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
       const token = jwt.sign({ _id: user._id, name: user.name }, env.SECRET, {
         expiresIn: "30d",
       });
-      return res
-        .status(200)
-        .json({ msg: "Login Successful", token: token, status: "1" ,doc:user});
+      return res.status(200).json({
+        msg: "Login Successful",
+        token: token,
+        status: "1",
+        doc: user,
+      });
     }
-    res.status(400).json({ msg: "Email not found.", status: "0" ,doc});
+    res.status(400).json({ msg: "Email not found.", status: "0", doc });
   } catch (error) {
     next(error);
   }
 };
+
+// @route      /api/user/
+// @desc       get all users
+// @auth       private
+export const viewAllDevices: RequestHandler = async (req, res, next) => {
+  try {
+    const userID = res.locals.user._id;
+    if (!mongoose.isValidObjectId(userID)) {
+      return res.status(400).json({ msg: "Invalid user ID",status:"0" });
+    }
+    const user = await userModel.findById(userID).populate("device_id");
+    if(!user){
+       return res.status(400).json({ msg: "User Not found", status: "0" });
+    }
+    res.status(200).json({devices:user.device_id,status:"1"})
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/user/
+// @desc       get all users
+// @auth       public
 
 export const getAllUser: RequestHandler = async (req, res, next) => {
   try {

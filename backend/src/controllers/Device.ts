@@ -1,7 +1,7 @@
 import "dotenv/config";
 import env from "../env";
 import { RequestHandler } from "express";
-import deviceModel from "../models/Device";
+import deviceModel, { Device } from "../models/Device";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -26,29 +26,37 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       password: "",
       device_id: [""],
     };
+     let device: Device = {
+       _id: "",
+       name: "",
+       uid:"",
+       owner_id:"",
+     };
     const owner = await userModel.findById(res.locals.user._id);
-    if (!user)
+    if (!owner)
       return res
         .status(400)
-        .json({ msg: "User is not found", status: "0", user });
+        .json({ msg: "User is not found", status: "0", user, device });
     const { name, uid } = req.body;
 
     if (!name || !uid) {
       return res
         .status(400)
-        .json({ msg: "Please input all data", status: "0", user });
+        .json({ msg: "Please input all data", status: "0", user, device });
     }
-    const device = new deviceModel({
+  device = new deviceModel({
       name: name,
       uid: uid,
       owner_id: owner?._id,
     });
 
-    user.device_id.push(device._id);
-    await owner?.save();
+    owner.device_id.push(device._id);
+    await owner.save();
 
     const doc = await device.save();
-    res.status(200).json({ device: doc, user, status: "0" });
+    res
+      .status(200)
+      .json({ device: doc, owner, status: "1", msg: "device added" });
   } catch (error) {
     next(error);
   }

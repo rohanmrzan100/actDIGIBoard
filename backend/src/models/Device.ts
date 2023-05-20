@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface Devive {
+interface Device {
   _id: string;
   name: string;
   uid: string;
@@ -23,6 +23,6 @@ const userSchema = new mongoose.Schema({
 
 });
 
-const deviceModel = mongoose.model<Devive>("device", userSchema);
+const deviceModel = mongoose.model<Device>("device", userSchema);
 export default deviceModel;
-export { deviceModel };
+export { Device };
