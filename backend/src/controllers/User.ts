@@ -139,7 +139,7 @@ export const viewAllDevices: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Invalid user ID",status:"0" });
     }
     const user = await userModel.findById(userID)
-    // .populate("device_id");
+    .populate("device_id");
     if(!user){
        return res.status(400).json({ msg: "User Not found", status: "0" });
     }

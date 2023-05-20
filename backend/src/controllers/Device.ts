@@ -19,12 +19,12 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
   next
 ) => {
   try {
-      let device: Device = {
-        _id: "",
-        name: "",
-        uid: "",
-        owner_id: "",
-      };
+    let device: Device = {
+      _id: "",
+      name: "",
+      uid: "",
+      owner_id: "",
+    };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
       return res
@@ -48,9 +48,11 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
 
     const doc = await addedDevice.save();
 
-    device = <Device> await deviceModel.findById(doc._id)
+    device = <Device>await deviceModel.findById(doc._id);
     // .populate("owner_id");
-    res.status(200).json({ device, status: "1",msg:"Device added sucessfully." });
+    res
+      .status(200)
+      .json({ device, status: "1", msg: "Device added sucessfully." });
   } catch (error) {
     next(error);
   }
@@ -72,7 +74,33 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
     );
     res
       .status(200)
-      .json({ status: "1",device, token: token, msg: "Device verified." });
+      .json({ status: "1", device, token: token, msg: "Device verified." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/device/delete/:id
+// @desc       delete added devicess
+// @auth       protected
+
+export const deleteDevices: RequestHandler = async (req, res, next) => {
+  try {
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+    const owner = await userModel.findByIdAndUpdate(
+      { _id: device.owner_id },
+      { $pull: { device_id: device_id } }
+    );
+
+    await deviceModel.findByIdAndDelete(device_id);
+    res.status(200).json({ msg: "Device is removed", status: "1" });
   } catch (error) {
     next(error);
   }
