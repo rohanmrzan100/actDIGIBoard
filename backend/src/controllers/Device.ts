@@ -44,7 +44,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
         .status(400)
         .json({ msg: "Please input all data", status: "0", user, device });
     }
-  device = new deviceModel({
+  const addedDevice = new deviceModel({
       name: name,
       uid: uid,
       owner_id: owner?._id,
@@ -53,7 +53,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     owner.device_id.push(device._id);
     await owner.save();
 
-    const doc = await device.save();
+    const doc = await addedDevice.save();
     res
       .status(200)
       .json({ device: doc, owner, status: "1", msg: "device added" });
