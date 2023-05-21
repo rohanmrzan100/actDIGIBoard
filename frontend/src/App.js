@@ -25,14 +25,15 @@ const App = () => {
         {navToggle && <SideNav />}
         <div className="md:w-[80%] w-full m-auto  h-full p-6">
           <Routes>
-            {["/", "/signup"].map((path) => (
-              <Route key={path} path={path} element={<Signup />} />
+            {["/", "/signin"].map((path) => (
+              <Route key={path} path={path} element={<Signin />} />
             ))}
-            <Route path="/signin" element={<Signin />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
 
             <Route path="/content" element={<Content />}></Route>
             <Route path="/devices" element={<Devices />}></Route>
             <Route path="/add_device" element={<Add />}></Route>
+            <Route path={`/devices/${uid}/info`}  element={<DeviceInfo />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

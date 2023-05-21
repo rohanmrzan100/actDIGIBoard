@@ -80,7 +80,7 @@ const Navbar = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        window.location.href = "/signup";
+                        window.location.href = "/signin";
                         dispatch(logout());
                       }}
                       className="w-full  nav-btn"
