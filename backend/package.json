@@ -22,6 +22,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.4",
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.37.0",
     "concurrently": "^8.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

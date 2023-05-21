@@ -6,18 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DevicesCard from "./DevicesCard";
 import { getDevices } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
+import { useDispatch } from "react-redux";
 const Devices = () => {
   const [devices, setDevices] = useState([]);
+  const dispatch = useDispatch();
   isloading({ type: "true" });
   useEffect(() => {
+    dispatch(isloading({ type: "false" }));
     getDevices().then((res) => {
-
       setDevices(res.devices);
-      isloading({ type: "false" });
       //  console.log(res);
     });
   }, []);
- 
+
   return (
     <div className=" w-full px-4 py-2  ">
       <div className="flex justify-center item-center">
@@ -39,7 +40,10 @@ const Devices = () => {
         <h1 className="text-2xl font-semibold">Devices</h1>
 
         <div>
-          {devices && devices.map((device) => <DevicesCard device={device} key={device._id} />)}
+          {devices &&
+            devices.map((device) => (
+              <DevicesCard device={device} key={device._id} />
+            ))}
         </div>
       </div>
     </div>

@@ -30,7 +30,6 @@ const Signup = () => {
   };
   return (
     <>
-      <div className=" h-screen md:p-16 bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900">
         <div className="w-10/12 p-6 m-auto bg-white border border-gray-600 rounded-md shadow-md md:max-w-md lg:max-w-lg absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2">
           <h1 className="text-3xl font-semibold text-center text-indigo-700 ">
             Sign Up
@@ -111,7 +110,6 @@ const Signup = () => {
             </span>
           </p>
         </div>
-      </div>
     </>
   );
 };

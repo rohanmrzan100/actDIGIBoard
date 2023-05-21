@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./components/utils/Spinner";
 import { ToastContainer } from "react-toastify";
 import { loadUser } from "./store/slice/authSlice";
-import Content from "./components/nav/Content";
+import Content from "./components/content/Content";
 import Devices from "./components/devices/Devices";
 import Add from "./components/devices/Add";
 const App = () => {
@@ -25,8 +25,11 @@ const App = () => {
         {navToggle && <SideNav />}
         <div className="md:w-[80%] w-full m-auto  h-full p-6">
           <Routes>
-            <Route path="/signup" element={<Signup />}></Route>
+            {["/", "/signup"].map((path) => (
+              <Route key={path} path={path} element={<Signup />} />
+            ))}
             <Route path="/signin" element={<Signin />}></Route>
+
             <Route path="/content" element={<Content />}></Route>
             <Route path="/devices" element={<Devices />}></Route>
             <Route path="/add_device" element={<Add />}></Route>

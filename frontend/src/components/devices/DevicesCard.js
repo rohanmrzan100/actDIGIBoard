@@ -1,21 +1,27 @@
-import { faRotate, faSignal, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRotate,
+  faSignal,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import moment from "moment";
 import { removeDevice } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const DevicesCard = (props) => {
-  const navigate = useNavigate()
-  isloading({ type: "true" });
- const handleDelete = ()=>{
-  removeDevice(props.device._id).then(res=>{
-       isloading({ type: "false" });
-       setInterval(()=>{
-        window.location.href = "/devices"
-       },2000);
-  })
- }
+  const dispatch = useDispatch();
+  // const navigate = useNavigate()
+
+  const handleDelete = () => {
+    dispatch(isloading({ type: "true" }));
+    removeDevice(props.device._id).then((res) => {
+      setInterval(() => {
+        window.location.href = "/devices";
+      }, 2000);
+    });
+  };
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
     <div className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center">
@@ -39,7 +45,10 @@ const DevicesCard = (props) => {
           />
           <p className="text-lg">inSync</p>
         </div>
-        <button onClick={handleDelete} className="flex flex-col items-center space-y-4">
+        <button
+          onClick={handleDelete}
+          className="flex flex-col items-center space-y-4"
+        >
           <FontAwesomeIcon
             icon={faTrashCan}
             className="scale-150 text-red-500"

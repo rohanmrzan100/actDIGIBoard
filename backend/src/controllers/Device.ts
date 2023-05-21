@@ -39,7 +39,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     }
     const addedDevice = new deviceModel({
       name: name,
-      uid: uid,
+      uid: uid.toLocaleLowerCase(),
       owner_id: owner?._id,
     });
 

@@ -41,28 +41,44 @@ const SideNav = () => {
               <FontAwesomeIcon icon={faXmark} className="scale-125" />
             </button>
           </div>
-          <hr className="h-px my-4 bborder-0 bg-gray-700"></hr>
+          <hr className="h-px my-4 border-0 bg-gray-700"></hr>
           <ul className="space-y-4 font-medium ">
             <li>
-              <button type="button" className="w-full  nav-btn">
+              <button
+                type="button"
+                onClick={() => (window.location.href = "/content")}
+                className="w-full  nav-btn"
+              >
                 <FontAwesomeIcon icon={faPhotoFilm} />
                 <span className="ml-3">Content</span>
               </button>
             </li>
             <li>
-              <button type="button" className="w-full  nav-btn">
+              <button
+                type="button"
+                className="w-full  nav-btn"
+                onClick={() => (window.location.href = "/devices")}
+              >
                 <FontAwesomeIcon icon={faTablet} />
                 <span className="ml-3">Devices</span>
               </button>
             </li>
             <li>
-              <button type="button" className="w-full  nav-btn">
+              <button
+                type="button"
+                className="w-full  nav-btn"
+                onClick={() => (window.location.href = "/dashboard")}
+              >
                 <FontAwesomeIcon icon={faTableColumns} />
                 <span className="ml-3">Dashboard</span>
               </button>
             </li>
             <li>
-              <button type="button" className="w-full  nav-btn">
+              <button
+                type="button"
+                className="w-full  nav-btn"
+                onClick={() => (window.location.href = "/report")}
+              >
                 <FontAwesomeIcon icon={faSquarePollVertical} />
                 <span className="ml-3">Report</span>
               </button>

@@ -7,23 +7,31 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { User } from "../models/User";
 
+
+
+// @route      /api/user/
+// @desc       test protected route
+// @auth       private
+export const getUserData: RequestHandler = async (req, res, next) => {
+  
 let doc: User = {
   _id: "",
   email: "",
   name: "",
   password: "",
   device_id: [""],
+  media_id: [""],
 };
-// @route      /api/user/protected
-// @desc       test protected route
-// @auth       private
-export const temp: RequestHandler = async (req, res, next) => {
+
   const userID = res.locals.user._id;
   if (!mongoose.isValidObjectId(userID)) {
-    return res.status(400).json({ msg: "Invalid user ID" });
+    return res.status(400).json({ msg: "Invalid user ID", status: "0", doc:doc });
   }
-  const user = await userModel.findById(userID);
-  res.status(200).json(user);
+  const user = await userModel.findById(userID).populate("media_id");
+  if(!user){
+    return res.status(400).json({msg:"Cannot find user",status:"0",doc :user});
+  }
+  res.status(200).json({doc:user,msg:"User Found",status:"1"});
 };
 
 
@@ -49,6 +57,7 @@ export const register: RequestHandler<
     name: "",
     password: "",
     device_id: [""],
+     media_id: [""]
   };
 
   try {
@@ -98,6 +107,16 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
   res,
   next
 ) => {
+  
+let doc: User = {
+  _id: "",
+  email: "",
+  name: "",
+  password: "",
+  device_id: [""],
+  media_id: [""],
+};
+
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -129,8 +148,8 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
   }
 };
 
-// @route      /api/user/
-// @desc       get all users
+// @route      /api/user/view_devices
+// @desc      view user added devices
 // @auth       private
 export const viewAllDevices: RequestHandler = async (req, res, next) => {
   try {
@@ -149,7 +168,11 @@ export const viewAllDevices: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route      /api/user/
+
+
+
+
+// @route      /api/user/all
 // @desc       get all users
 // @auth       public
 

@@ -7,7 +7,7 @@ interface Device {
   owner_id: string;
 }
 
-const userSchema = new mongoose.Schema({
+const deviceSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -22,6 +22,6 @@ owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
   timestamps:true
 });
 
-const deviceModel = mongoose.model<Device>("device", userSchema);
+const deviceModel = mongoose.model<Device>("device", deviceSchema);
 export default deviceModel;
 export { Device };

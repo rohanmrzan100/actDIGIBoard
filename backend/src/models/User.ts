@@ -6,10 +6,8 @@ export interface User {
   name: string;
   password: string;
   device_id: [string];
+  media_id: [string];
 }
-
-
-
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,8 +24,8 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   device_id: [{ type: mongoose.Types.ObjectId, ref: "device" }],
+  media_id: [{ type: mongoose.Types.ObjectId, ref: "media" }],
 });
 
 const userModel = mongoose.model<User>("user", userSchema);
 export default userModel;
-
