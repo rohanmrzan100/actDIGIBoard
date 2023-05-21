@@ -18,7 +18,7 @@ router.post("/add_video", authMiddleware, uploadVideo);
 
 
 
-router.get("/", authMiddleware, getUserData);
+router.get("/content", authMiddleware, getUserData);
 router.get("/view_devices", authMiddleware, viewAllDevices);
 router.get("/all", getAllUser);
 

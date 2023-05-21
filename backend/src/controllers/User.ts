@@ -27,7 +27,7 @@ let doc: User = {
   if (!mongoose.isValidObjectId(userID)) {
     return res.status(400).json({ msg: "Invalid user ID", status: "0", doc:doc });
   }
-  const user = await userModel.findById(userID).populate("media_id");
+  const user = await userModel.findById(userID).select("-doc").populate("media_id");
   if(!user){
     return res.status(400).json({msg:"Cannot find user",status:"0",doc :user});
   }

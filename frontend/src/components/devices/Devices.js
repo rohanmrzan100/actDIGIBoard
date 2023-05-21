@@ -17,7 +17,7 @@ const Devices = () => {
       setDevices(res.devices);
       //  console.log(res);
     });
-  }, []);
+  }, [devices]);
 
   return (
     <div className=" w-full px-4 py-2  ">

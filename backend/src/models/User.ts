@@ -25,6 +25,8 @@ const userSchema = new mongoose.Schema({
   },
   device_id: [{ type: mongoose.Types.ObjectId, ref: "device" }],
   media_id: [{ type: mongoose.Types.ObjectId, ref: "media" }],
+},{
+  timestamps:true
 });
 
 const userModel = mongoose.model<User>("user", userSchema);

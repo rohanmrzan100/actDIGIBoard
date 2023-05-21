@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middleware/isAuth";
 import { addDevice, deleteDevices, syncDevice } from "../controllers/Device";
+import { getUserData } from "../controllers/User";
 const router = express.Router();
 
 

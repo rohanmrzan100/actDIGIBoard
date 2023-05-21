@@ -84,7 +84,7 @@ export const upload_Video = async (video) => {
 
 export const getUserData = async () => {
   try {
-    const response = await axios.get("/api/user/", { headers: headers });
+    const response = await axios.get("/api/user/content", { headers: headers });
     return response.data;
   } catch (error) {
     return error;

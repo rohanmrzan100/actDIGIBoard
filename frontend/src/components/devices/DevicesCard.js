@@ -22,9 +22,16 @@ const DevicesCard = (props) => {
       }, 2000);
     });
   };
+
+  const handleClick = () => {
+    console.log("handle");
+  };
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
-    <div className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center">
+    <button
+      onClick={handleClick}
+      className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center"
+    >
       <div className="">
         <h1 className=" text-xl">{props.device.name}</h1>
         <p className="text-xs text-gray-500">Added On : {date}</p>
@@ -56,7 +63,7 @@ const DevicesCard = (props) => {
           <p className="text-lg">Remove</p>
         </button>
       </div>
-    </div>
+    </button>
   );
 };
 
