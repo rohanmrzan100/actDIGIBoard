@@ -24,7 +24,7 @@ const DevicesCard = (props) => {
   };
 
   const handleClick = ()=>{
-   window.location.href = `devices/${props.device._id}/info`
+  //  window.location.href = `devices/${props.device._id}/info`
   }
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (

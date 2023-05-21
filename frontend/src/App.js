@@ -33,7 +33,7 @@ const App = () => {
             <Route path="/content" element={<Content />}></Route>
             <Route path="/devices" element={<Devices />}></Route>
             <Route path="/add_device" element={<Add />}></Route>
-            <Route path={`/devices/${uid}/info`}  element={<DeviceInfo />}></Route>
+            {/* <Route path={`/devices/${uid}/info`}  element={<DeviceInfo />}></Route> */}
           </Routes>
         </div>
       </BrowserRouter>

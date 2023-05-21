@@ -74,7 +74,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         .json({ status: "0", device, token: " ", msg: " " });
     }
     const token = jwt.sign(
-      { uid: uid, owner_id: foundDevice.owner_id },
+      {_id: foundDevice.owner_id },
       env.SECRET,
       {
         expiresIn: "30d",
