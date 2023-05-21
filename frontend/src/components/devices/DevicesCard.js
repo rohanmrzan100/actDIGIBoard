@@ -28,14 +28,14 @@ const DevicesCard = (props) => {
   };
 
   const handleClick = () => {
-    localStorage.setItem("device",props.device._id)
-    dispatch(setDevice(props.device._id))
+    localStorage.setItem("device", props.device._id);
+    dispatch(setDevice(props.device._id));
     // console.log(props.device._id);
     navigate(`/device/${props.device._id}/info`);
   };
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
-    <div className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center  ">
+    <div className="my-4 px-6 py-8 md:py-12  rounded-xl md:flex-row flex flex-col  bg-gray-300 justify-between items-center  ">
       <div className="">
         <h1 className=" text-xl">{props.device.name}</h1>
         <p className="text-md font-semibold text-gray-500">
@@ -61,14 +61,14 @@ const DevicesCard = (props) => {
           <p className="text-lg">inSync</p>
         </div>
         <button
-          onClick= { handleClick }
+          onClick={handleClick}
           className="flex flex-col items-center space-y-4 hover:text-red-700"
         >
           <FontAwesomeIcon
             icon={faImage}
             className="scale-150 text-ornage-500"
           />
-          <p className="text-lg">Add Media</p>
+          <p className="text-lg">Media Details</p>
         </button>
         <button
           onClick={handleDelete}

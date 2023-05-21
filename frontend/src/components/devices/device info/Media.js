@@ -13,12 +13,11 @@ const MediaCard = (props) => {
   let array = useSelector((state) => state.array);
   const handleAdd = () => {
     if (array.length <= 0) {
-        errorToast("Plase select media before adding.")
+      errorToast("Plase select media before adding.");
       return;
     }
-add_media(id,array).then(res=>{
-    console.log(res);
-})
+    // console.log(array);
+    add_media(id,array)
   };
   return (
     <div>
@@ -41,7 +40,7 @@ add_media(id,array).then(res=>{
           <button
             onClick={() => {
               setAdd(false);
-              dispatch(addArray(media.media));
+              dispatch(addArray(media._id));
             }}
             className="absolute  left-0 top-0 bg-orange-500 text-white p-2 rounded hover:bg-orange-800 active:bg-orange-800 m-2"
             type="submit"
@@ -68,7 +67,7 @@ add_media(id,array).then(res=>{
 
       <button
         onClick={handleAdd}
-        className="absolute h-16 w-16 rounded-full left-0 z-10 m-16 bottom-0 bg-green-500 text-white p-2 rounded hover:bg-green-800 active:bg-green-800 m-2"
+        className="absolute h-16 w-16 rounded-full right-0 border border-green-400 z-10 m-16 bottom-0 bg-green-500 text-white p-2 rounded hover:bg-green-800 active:bg-green-800 m-2"
       >
         <FontAwesomeIcon icon={faPlus} />
         Add

@@ -115,27 +115,72 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route      /api/device/addmedia
+// @route      /api/device/addmedia/:id
 // @desc      add media URL in devices
 // @auth       protected
 
 export const addMedia: RequestHandler = async (req, res, next) => {
   try {
-    console.log(req.body.array);
-    
-    // const device_id = req.params.id;
-    // if (!mongoose.isValidObjectId(device_id)) {
-    //   return res.status(400).json({ msg: "Invalid device ID", status: "0" });
-    // }
-    // const device = await deviceModel.findById(device_id);
-    // if (!device) {
-    //   return res.status(400).json({ msg: "Device not found", status: "0" });
-    // }
-
-
-    
-  
+    let media = [""];
+    const array = req.body.array;
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res
+        .status(400)
+        .json({ msg: "Invalid device ID", doc: media, status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", doc: media, status: "0" });
+    }
+    array.map((item: string) => device.media.push(item));
+    const doc = await device.save();
+    res
+      .status(200)
+      .json({ msg: "Media added to device", doc: doc.media, status: "1" });
   } catch (error) {
     next(error);
   }
 };
+
+
+
+
+// @route      /api/device/:id
+// @desc      get devices
+// @auth       protected
+
+
+
+export const getDevice:RequestHandler =async  (req,res,next)=>{
+     let device: Device = {
+        _id: "",
+        name: "",
+        uid: "",
+        owner_id: "",
+        media: [""],
+      };
+  try {
+    
+       const device_id = req.params.id;
+       if (!mongoose.isValidObjectId(device_id)) {
+         return res
+           .status(400)
+           .json({ msg: "Invalid device ID",device:device , status: "0" });
+       }
+        const foundDevice = await deviceModel.findById(device_id);
+        if (!foundDevice) {
+          return res
+            .status(400)
+            .json({ msg: "Device not found", device: device, status: "0" });
+        }
+
+        res
+          .status(200)
+          .json({ msg: "Device  found", device: foundDevice, status: "1" });
+  } catch (error) {
+    next()
+  }
+}

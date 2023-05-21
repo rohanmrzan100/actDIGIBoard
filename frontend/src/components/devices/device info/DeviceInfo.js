@@ -4,6 +4,7 @@ const DeviceInfo = () => {
   const handleClick = ()=>{
     window.location.href = `/device/${localStorage.getItem("device")}/add`;
   }
+  use
   return (
     <div>
       <button

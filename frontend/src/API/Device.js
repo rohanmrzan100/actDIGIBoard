@@ -66,11 +66,13 @@ export const removeDevice = async (id) => {
 
 export const add_media = async (id, array) => {
   try {
-    // console.log(id);
-    // console.log(array);
+    let media = [];
+
+    array.map((item) => media.push(item.array));
+
     const response = await axios.post(
-      `"http://localhost:3001/api/device/add_media/${id}`,
-      array,
+      `http://localhost:3001/api/device/add_media/${id}`,
+      { array: media },
       { headers: headers }
     );
     console.log(response.data);
