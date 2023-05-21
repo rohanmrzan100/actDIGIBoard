@@ -6,35 +6,38 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { User } from "../models/User";
-
-
+import mediaModel from "../models/Media";
 
 // @route      /api/user/
 // @desc       test protected route
 // @auth       private
 export const getUserData: RequestHandler = async (req, res, next) => {
-  
-let doc: User = {
-  _id: "",
-  email: "",
-  name: "",
-  password: "",
-  device_id: [""],
-  media_id: [""],
-};
+  let doc: User = {
+    _id: "",
+    email: "",
+    name: "",
+    password: "",
+    device_id: [""],
+    media_id: [""],
+  };
 
   const userID = res.locals.user._id;
   if (!mongoose.isValidObjectId(userID)) {
-    return res.status(400).json({ msg: "Invalid user ID", status: "0", doc:doc });
+    return res
+      .status(400)
+      .json({ msg: "Invalid user ID", status: "0", doc: doc });
   }
-  const user = await userModel.findById(userID).select("-doc").populate("media_id");
-  if(!user){
-    return res.status(400).json({msg:"Cannot find user",status:"0",doc :user});
+  const user = await userModel
+    .findById(userID)
+    .select("-doc")
+    .populate("media_id");
+  if (!user) {
+    return res
+      .status(400)
+      .json({ msg: "Cannot find user", status: "0", doc: user });
   }
-  res.status(200).json({doc:user,msg:"User Found",status:"1"});
+  res.status(200).json({ doc: user, msg: "User Found", status: "1" });
 };
-
-
 
 // @route      /api/user/register
 // @desc       register users
@@ -57,7 +60,7 @@ export const register: RequestHandler<
     name: "",
     password: "",
     device_id: [""],
-     media_id: [""]
+    media_id: [""],
   };
 
   try {
@@ -93,8 +96,6 @@ export const register: RequestHandler<
   }
 };
 
-
-
 // @route      /api/user/login
 // @desc       login users
 // @auth       public
@@ -107,15 +108,14 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
   res,
   next
 ) => {
-  
-let doc: User = {
-  _id: "",
-  email: "",
-  name: "",
-  password: "",
-  device_id: [""],
-  media_id: [""],
-};
+  let doc: User = {
+    _id: "",
+    email: "",
+    name: "",
+    password: "",
+    device_id: [""],
+    media_id: [""],
+  };
 
   try {
     const { email, password } = req.body;
@@ -155,22 +155,51 @@ export const viewAllDevices: RequestHandler = async (req, res, next) => {
   try {
     const userID = res.locals.user._id;
     if (!mongoose.isValidObjectId(userID)) {
-      return res.status(400).json({ msg: "Invalid user ID",status:"0" });
+      return res.status(400).json({ msg: "Invalid user ID", status: "0" });
     }
-    const user = await userModel.findById(userID)
-    .populate("device_id");
-    if(!user){
-       return res.status(400).json({ msg: "User Not found", status: "0" });
+    const user = await userModel.findById(userID).populate("device_id");
+    if (!user) {
+      return res.status(400).json({ msg: "User Not found", status: "0" });
     }
-    res.status(200).json({devices:user.device_id,status:"1"})
+    res.status(200).json({ devices: user.device_id, status: "1" });
   } catch (error) {
     next(error);
   }
 };
 
+// @route      /api/user/delete_media/:id
+// @desc       get all users
+// @auth       public
 
+export const deleteMedia: RequestHandler = async (req, res, next) => {
+  try {
+    let user = await userModel.findById(res.locals.user._id);
+    if (!user) {
+      return res.status(400).json({ msg: "User Not Found", status: "0" });
+    }
 
+    const id = req.params.id;
+    if (!mongoose.isValidObjectId(id)) {
+      return res
+        .status(400)
+        .json({ error: "media Id is invalid", status: "0" });
+    }
+    const media = await mediaModel.findById(id);
+    if (!media) {
+      return res.status(404).json({ msg: "media not found", status: "0" });
+    }
 
+    user = await userModel.findByIdAndUpdate(
+      { _id: res.locals.user._id },
+      { $pull: { media_id: media._id } }
+    );
+
+    await mediaModel.findByIdAndDelete(id);
+    res.status(200).json({ msg: "Media is deleted", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // @route      /api/user/all
 // @desc       get all users

@@ -13,7 +13,7 @@ const Media = () => {
   return (
     <div className="w-full mt-8">
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
-      <div className="grid grid-cols-4 gap-4 ">
+      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2  gap-4 ">
         {userMedia &&
           userMedia.map((media) => (
             <a

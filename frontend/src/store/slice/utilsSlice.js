@@ -4,6 +4,7 @@ const initialState = {
   isloading: false,
   errorMsg: null,
   error: false,
+
 };
 
 export const utilsSlice = createSlice({
@@ -35,6 +36,7 @@ export const utilsSlice = createSlice({
         default:
           return { ...state };
       }
+    
     },
   },
 });

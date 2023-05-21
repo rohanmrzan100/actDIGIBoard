@@ -1,6 +1,8 @@
 import {
+  faImage,
   faRotate,
   faSignal,
+  faTrash,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,27 +12,36 @@ import { removeDevice } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setDevice } from "../../store/slice/deviceSlice";
 const DevicesCard = (props) => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     dispatch(isloading({ type: "true" }));
     removeDevice(props.device._id).then((res) => {
+      localStorage.removeItem("device");
       setInterval(() => {
         window.location.href = "/devices";
       }, 2000);
     });
   };
 
-  const handleClick = ()=>{
-  //  window.location.href = `devices/${props.device._id}/info`
-  }
+  const handleClick = () => {
+    localStorage.setItem("device",props.device._id)
+    dispatch(setDevice(props.device._id))
+    // console.log(props.device._id);
+    navigate(`/device/${props.device._id}/info`);
+  };
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
-    <div onClick={handleClick} className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center hover:bg-gray-200 active:scale-105 ">
+    <div className="my-4 px-6 py-12  rounded-xl flex  bg-gray-300 justify-between items-center  ">
       <div className="">
         <h1 className=" text-xl">{props.device.name}</h1>
+        <p className="text-md font-semibold text-gray-500">
+          {props.device.uid}
+        </p>
+
         <p className="text-xs text-gray-500">Added On : {date}</p>
       </div>
 
@@ -50,8 +61,18 @@ const DevicesCard = (props) => {
           <p className="text-lg">inSync</p>
         </div>
         <button
+          onClick= { handleClick }
+          className="flex flex-col items-center space-y-4 hover:text-red-700"
+        >
+          <FontAwesomeIcon
+            icon={faImage}
+            className="scale-150 text-ornage-500"
+          />
+          <p className="text-lg">Add Media</p>
+        </button>
+        <button
           onClick={handleDelete}
-          className="flex flex-col items-center space-y-4"
+          className="flex flex-col items-center space-y-4 hover:text-orange-700"
         >
           <FontAwesomeIcon
             icon={faTrashCan}

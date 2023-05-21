@@ -3,7 +3,6 @@ import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
 import { useDispatch } from "react-redux";
 import Media from "./Media";
-import { isloading } from "../../store/slice/utilsSlice";
 
 const Content = () => {
   const dispatch = useDispatch();

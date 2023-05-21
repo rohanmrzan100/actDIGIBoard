@@ -20,8 +20,10 @@ const Signin = () => {
     };
     dispatch(isloading({ type: "true" }));
     login(data).then((res) => {
-      window.location.href = "/content";
-    });
+
+    
+    dispatch(isloading({ type: "false" }));
+    })
   };
 
   return (

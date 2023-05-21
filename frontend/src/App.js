@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Signup from "./components/auth/Signup";
 import Signin from "./components/auth/Signin";
@@ -11,13 +11,19 @@ import { loadUser } from "./store/slice/authSlice";
 import Content from "./components/content/Content";
 import Devices from "./components/devices/Devices";
 import Add from "./components/devices/Add";
+import DeviceInfo from "./components/devices/device info/DeviceInfo";
+import DeviceAddMedia from "./components/devices/device info/DeviceAddMedia";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
   const isloading = useSelector((state) => state.utils.isloading);
+
+  const _id = useSelector((state) => state.device.device_id);
   if (localStorage.getItem("token")) {
     dispatch(loadUser(localStorage.getItem("token")));
   }
+  const device_id = _id || localStorage.getItem("device");
+
   return (
     <div>
       <BrowserRouter>
@@ -33,7 +39,14 @@ const App = () => {
             <Route path="/content" element={<Content />}></Route>
             <Route path="/devices" element={<Devices />}></Route>
             <Route path="/add_device" element={<Add />}></Route>
-            {/* <Route path={`/devices/${uid}/info`}  element={<DeviceInfo />}></Route> */}
+            <Route
+              path={`/device/${device_id}/info`}
+              element={<DeviceInfo />}
+            ></Route>
+            <Route
+              path={`/device/${device_id}/add`}
+              element={<DeviceAddMedia />}
+            ></Route>
           </Routes>
         </div>
       </BrowserRouter>

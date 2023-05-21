@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const SearchBar = () => {
   return (
     <form className="flex items-center w-full ">
-      <label for="simple-search" className="sr-only text-black bg-gray-300">
+      <label  className="sr-only text-black bg-gray-300">
         Search
       </label>
       <div className="relative w-full">

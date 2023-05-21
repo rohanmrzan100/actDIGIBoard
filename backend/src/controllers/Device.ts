@@ -24,6 +24,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       name: "",
       uid: "",
       owner_id: "",
+      media: [""],
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -68,18 +69,15 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         name: "",
         uid: "",
         owner_id: "",
+        media: [""],
       };
       return res
         .status(400)
         .json({ status: "0", device, token: " ", msg: " " });
     }
-    const token = jwt.sign(
-      {_id: foundDevice.owner_id },
-      env.SECRET,
-      {
-        expiresIn: "30d",
-      }
-    );
+    const token = jwt.sign({ _id: foundDevice.owner_id }, env.SECRET, {
+      expiresIn: "30d",
+    });
     res.status(200).json({
       status: "1",
       device: foundDevice,
@@ -112,6 +110,31 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
 
     await deviceModel.findByIdAndDelete(device_id);
     res.status(200).json({ msg: "Device is removed", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/device/addmedia
+// @desc      add media URL in devices
+// @auth       protected
+
+export const addMedia: RequestHandler = async (req, res, next) => {
+  try {
+    console.log(req.body.array);
+    
+    // const device_id = req.params.id;
+    // if (!mongoose.isValidObjectId(device_id)) {
+    //   return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    // }
+    // const device = await deviceModel.findById(device_id);
+    // if (!device) {
+    //   return res.status(400).json({ msg: "Device not found", status: "0" });
+    // }
+
+
+    
+  
   } catch (error) {
     next(error);
   }

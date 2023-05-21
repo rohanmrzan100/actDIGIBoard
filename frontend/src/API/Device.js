@@ -63,3 +63,20 @@ export const removeDevice = async (id) => {
     return error;
   }
 };
+
+export const add_media = async (id, array) => {
+  try {
+    // console.log(id);
+    // console.log(array);
+    const response = await axios.post(
+      `"http://localhost:3001/api/device/add_media/${id}`,
+      array,
+      { headers: headers }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

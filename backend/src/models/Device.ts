@@ -5,22 +5,27 @@ interface Device {
   name: string;
   uid: string;
   owner_id: string;
+  media: [string];
 }
 
-const deviceSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  uid: {
-    type: String,
-    required: true,
-  },
+const deviceSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    uid: {
+      type: String,
+      required: true,
+    },
+    media: [String],
 
-owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
-},{
-  timestamps:true
-});
+    owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const deviceModel = mongoose.model<Device>("device", deviceSchema);
 export default deviceModel;

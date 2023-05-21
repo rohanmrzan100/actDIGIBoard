@@ -29,14 +29,12 @@ export const login = async (data) => {
     const response = await axios.post("/api/user/login", data);
     successToast("Login Successful");
     store.dispatch(loginSuccess(response.data.token));
-
+    window.location.href = "/content";
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
     store.dispatch(loginError());
-
     errorToast("Login Failed");
-
     return error;
   }
 };
