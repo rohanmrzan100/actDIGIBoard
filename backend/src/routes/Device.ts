@@ -8,6 +8,7 @@ import {
   syncDevice,
   deleteMedia,
   generateUid,
+  checkChange,
 } from "../controllers/Device";
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.post("/add_media/:id", authMiddleware, addMedia);
 router.get("/sync/:uid", syncDevice);
 router.get("/:id", getDevice);
 router.get("/generate/uid", generateUid);
+router.get("/check_change/:id", checkChange);
 
 
 

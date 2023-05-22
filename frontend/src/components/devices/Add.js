@@ -12,14 +12,12 @@ const Add = () => {
 
     const data = {
       name: e.target[0].value,
-      uid: (e.target[1].value).toLocaleLowerCase()
+      uid: e.target[1].value.toLocaleLowerCase(),
     };
-    // addDevice(data).then((res) => {
-    //   console.log(res);
-    //   dispatch(isloading({ type: "false" }));
-    
-    //   //  window.location.href = "/devices"
-    // });
+    addDevice(data).then((res) => {
+      console.log(res);
+      dispatch(isloading({ type: "false" }));
+    });
     console.log(data);
   };
   return (

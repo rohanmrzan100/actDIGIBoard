@@ -6,6 +6,7 @@ interface Device {
   uid: string;
   owner_id: string;
   media: [string];
+  change:boolean
 }
 
 const deviceSchema = new mongoose.Schema(
@@ -17,6 +18,10 @@ const deviceSchema = new mongoose.Schema(
     uid: {
       type: String,
       required: true,
+    },
+    change:{
+      type:Boolean,
+      default:false
     },
 
     owner_id: { type: mongoose.Types.ObjectId, ref: "user" },

@@ -74,7 +74,7 @@ export const upload_Video = async (video) => {
   } catch (error) {
     // store.dispatch(setError(error.response.data.msg));
 
-    errorToast("Image Upload Failed");
+    errorToast("Video Upload Failed");
 
     return error;
   }

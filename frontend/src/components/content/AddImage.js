@@ -10,10 +10,10 @@ const AddImage = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log(uploadImage);
-    //    dispatch(isloading({ type: "true" }))
-    // upload_Image(uploadImage).then((res) =>
-    //   dispatch(isloading({ type: "false" }))
-    // );
+       dispatch(isloading({ type: "true" }))
+    upload_Image(uploadImage).then((res) =>
+      dispatch(isloading({ type: "false" }))
+    );
   };
   const handleChange = (e) => {
     e.preventDefault();

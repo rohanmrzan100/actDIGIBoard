@@ -27,6 +27,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       uid: "",
       owner_id: "",
       media: [""],
+      change: false,
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -41,13 +42,14 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
         .json({ msg: "Please input all data", status: "0", device });
     }
 
-    const checkuid = await uidModel.findOne({uid:uid});
-    if(!checkuid){
-      return res.status(400).json({msg:"Invalid Code",status:"0",device})
+    const checkuid = await uidModel.findOne({ uid: uid });
+    if (!checkuid) {
+      return res.status(400).json({ msg: "Invalid Code", status: "0", device });
     }
     const addedDevice = new deviceModel({
       name: name,
       uid: uid.toLocaleLowerCase(),
+  
       owner_id: owner?._id,
     });
 
@@ -65,10 +67,6 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     next(error);
   }
 };
-
-
-
-
 
 // @route      /api/device/delete/:id
 // @desc       delete added devicess
@@ -117,6 +115,7 @@ export const addMedia: RequestHandler = async (req, res, next) => {
         .json({ msg: "Device not found", doc: media, status: "0" });
     }
     array.map((item: string) => device.media.push(item));
+    device.change = true;
     const doc = await device.save();
     res
       .status(200)
@@ -145,7 +144,8 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       { _id: device_id },
       { $pull: { media: media_id } }
     );
-
+    device.change = true;
+    await device.save();
     res.status(200).json({ msg: "Media is deleted from device", status: "1" });
   } catch (error) {
     next(error);
@@ -162,6 +162,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
     uid: "",
     owner_id: "",
     media: [""],
+    change: false,
   };
   try {
     const device_id = req.params.id;
@@ -189,7 +190,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
 // @desc        generate unique token and store in DB for SYNC
 // @auth       public
 // player
-export const generateUid: RequestHandler = async (req, res, next) => {
+export const generateUid : RequestHandler = async (req, res, next) => {
   try {
     function uniqueid() {
       // always start with a letter (for DOM friendlyness)
@@ -206,19 +207,15 @@ export const generateUid: RequestHandler = async (req, res, next) => {
       return idstr;
     }
 
-    const code = uniqueid().toLocaleLowerCase()
+    const code = uniqueid().toLocaleLowerCase();
     console.log(code);
-    
+
     const uid = new uidModel({
-      uid:code
-    })
-   await uid.save()
-    res.status(200).json({msg:"uid generated and stored in DB",uid:uid})
+      uid: code,
+    });
+    await uid.save();
+    res.status(200).json({ msg: "uid generated and stored in DB", uid: uid });
     // res.json(code)
-
-
-
-    
   } catch (error) {
     next();
   }
@@ -229,7 +226,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
   try {
     const uid = req.params.uid;
     console.log(uid);
-    
+
     let foundDevice = await deviceModel.findOne({ uid: uid });
     if (!foundDevice) {
       const device: Device = {
@@ -238,6 +235,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         uid: "",
         owner_id: "",
         media: [""],
+        change: false,
       };
       return res
         .status(400)
@@ -254,5 +252,35 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+// @route      /api/device/check_change/:id
+// @desc       check for change in device media
+// @auth       public
+// player
+
+export const checkChange: RequestHandler = async (req, res, next) => {
+  try {
+    const device_id = req.params.id;
+
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+
+    if (!device.change) {
+      return res
+        .status(200)
+        .json({ msg: "Device media is not changed", status: "0" });
+    } else {
+      device.change = false;
+      await device.save()
+      return res
+        .status(200)
+        .json({ msg: "Device media is changed.", status: "1" });
+    }
+  } catch (error) {
+    next();
   }
 };

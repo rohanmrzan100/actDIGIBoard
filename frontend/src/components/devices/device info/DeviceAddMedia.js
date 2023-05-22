@@ -18,12 +18,13 @@ const Media = () => {
 
   return (
     <div className="w-full ">
-      
       <GoBack goto={`/device/${localStorage.getItem("device")}/info`} />
       <h1 className="text-2xl mb-8 font-semibold"> Add Media to your Device</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2  gap-4  ">
         {userMedia &&
           userMedia.map((media) => <MediaCard key={media._id} media={media} />)}
+
+    
       </div>
     </div>
   );
