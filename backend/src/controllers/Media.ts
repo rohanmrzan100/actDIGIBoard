@@ -17,6 +17,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
         .json({ msg: "User is not found", status: "0", media });
 
     const fileString = req.body.image;
+console.log(typeof fileString);
 
     const result = await cloudinary.v2.uploader
       .upload(fileString, { folder: "media" })
@@ -29,7 +30,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
     owner.media_id.push(newMedia._id);
     await owner?.save();
     await newMedia.save();
-console.log(result);
+    console.log(result);
 
     res.status(201).json({ msg: "Image Added", status: "1", newMedia });
   } catch (error) {
