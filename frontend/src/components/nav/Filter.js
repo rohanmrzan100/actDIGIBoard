@@ -1,14 +1,12 @@
 import { useState } from "react";
 import {
-  faChevronCircleUp,
-  faChevronCircleDown,
+
   faChevronUp,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Index = () => {
   const [isList, setIsList] = useState(false);
-  const [isSubList, setIsSubList] = useState(3);
   return (
     <div>
       <div

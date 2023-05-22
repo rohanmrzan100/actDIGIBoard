@@ -13,11 +13,12 @@ import Devices from "./components/devices/Devices";
 import Add from "./components/devices/Add";
 import DeviceInfo from "./components/devices/device info/DeviceInfo";
 import DeviceAddMedia from "./components/devices/device info/DeviceAddMedia";
+import ErrorPage from "./components/utils/ErrorPage";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
   const isloading = useSelector((state) => state.utils.isloading);
-
+  const isAuth = useSelector((state) => state.auth.isAuth);
   const _id = useSelector((state) => state.device.device_id);
   if (localStorage.getItem("token")) {
     dispatch(loadUser(localStorage.getItem("token")));
@@ -31,22 +32,35 @@ const App = () => {
         {navToggle && <SideNav />}
         <div className="md:w-[80%] w-full m-auto  h-full p-6">
           <Routes>
-            {["/", "/signin"].map((path) => (
-              <Route key={path} path={path} element={<Signin />} />
-            ))}
-            <Route path="/signup" element={<Signup />}></Route>
+            {!isAuth && (
+              <>
+                {["/", "/signin"].map((path) => (
+                  <Route key={path} path={path} element={<Signin />} />
+                ))}
+              </>
+            )}
+            {isAuth && (
+              <>
+                {["/", "/content"].map((path) => (
+                  <Route key={path} path={path} element={<Content />} />
+                ))}
+                <Route path="/signin" element={<Signin />}></Route>
 
-            <Route path="/content" element={<Content />}></Route>
-            <Route path="/devices" element={<Devices />}></Route>
-            <Route path="/add_device" element={<Add />}></Route>
-            <Route
-              path={`/device/${device_id}/info`}
-              element={<DeviceInfo />}
-            ></Route>
-            <Route
-              path={`/device/${device_id}/add`}
-              element={<DeviceAddMedia />}
-            ></Route>
+                <Route path="/signup" element={<Signup />}></Route>
+
+                <Route path="/devices" element={<Devices />}></Route>
+                <Route path="/add_device" element={<Add />}></Route>
+                <Route
+                  path={`/device/${device_id}/info`}
+                  element={<DeviceInfo />}
+                ></Route>
+                <Route
+                  path={`/device/${device_id}/add`}
+                  element={<DeviceAddMedia />}
+                ></Route>
+              </>
+            )}
+            <Route path="/*" element={<ErrorPage />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

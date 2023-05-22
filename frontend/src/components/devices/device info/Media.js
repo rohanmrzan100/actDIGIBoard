@@ -17,7 +17,9 @@ const MediaCard = (props) => {
       return;
     }
     // console.log(array);
-    add_media(id,array)
+    add_media(id,array).then(()=>{
+       window.location.href = `/device/${localStorage.getItem("device")}/info`
+    })
   };
   return (
     <div>
@@ -30,7 +32,7 @@ const MediaCard = (props) => {
           />
         ) : (
           <img
-            className={`w-full border-2 border-gray-500 scale-105 border-gray-400`}
+            className={`w-full border-2 border-gray-500 scale-105`}
             src={media.media}
             alt={media.type}
           />
@@ -67,7 +69,7 @@ const MediaCard = (props) => {
 
       <button
         onClick={handleAdd}
-        className="absolute h-16 w-16 rounded-full right-0 border border-green-400 z-10 m-16 bottom-0 bg-green-500 text-white p-2 rounded hover:bg-green-800 active:bg-green-800 m-2"
+        className="absolute h-16 w-16 rounded-full right-0 border border-green-400 z-10 m-16 bottom-0 bg-green-500 text-white p-2  hover:bg-green-800 active:bg-green-800 "
       >
         <FontAwesomeIcon icon={faPlus} />
         Add

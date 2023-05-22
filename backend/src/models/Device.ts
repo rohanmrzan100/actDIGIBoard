@@ -18,9 +18,9 @@ const deviceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    media: [String],
 
     owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
+    media:[ { type: mongoose.Types.ObjectId, ref: "media" }],
   },
   {
     timestamps: true,

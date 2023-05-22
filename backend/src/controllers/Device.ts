@@ -6,6 +6,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
+import mediaModel from "../models/Media";
+import uidModel from "../models/UniqueID";
 
 interface addDevice {
   name: string;
@@ -38,6 +40,11 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
         .status(400)
         .json({ msg: "Please input all data", status: "0", device });
     }
+
+    const checkuid = await uidModel.findOne({uid:uid});
+    if(!checkuid){
+      return res.status(400).json({msg:"Invalid Code",status:"0",device})
+    }
     const addedDevice = new deviceModel({
       name: name,
       uid: uid.toLocaleLowerCase(),
@@ -59,6 +66,161 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
   }
 };
 
+
+
+
+
+// @route      /api/device/delete/:id
+// @desc       delete added devicess
+// @auth       protected
+
+export const deleteDevices: RequestHandler = async (req, res, next) => {
+  try {
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+    const owner = await userModel.findByIdAndUpdate(
+      { _id: device.owner_id },
+      { $pull: { device_id: device_id } }
+    );
+
+    await deviceModel.findByIdAndDelete(device_id);
+    res.status(200).json({ msg: "Device is removed", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/device/add_media/:id
+// @desc      add media URL in devices
+// @auth       protected
+
+export const addMedia: RequestHandler = async (req, res, next) => {
+  try {
+    let media = [""];
+    const array = req.body.array;
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res
+        .status(400)
+        .json({ msg: "Invalid device ID", doc: media, status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", doc: media, status: "0" });
+    }
+    array.map((item: string) => device.media.push(item));
+    const doc = await device.save();
+    res
+      .status(200)
+      .json({ msg: "Media added to device", doc: doc.media, status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+// @route     /api/device/remove_media/:did/:mid
+// @desc      get devices
+// @auth      protected
+
+export const deleteMedia: RequestHandler = async (req, res, next) => {
+  try {
+    const media_id = req.params.mid;
+    const device_id = req.params.did;
+    if (!mongoose.isValidObjectId(media_id)) {
+      return res.status(400).json({ msg: "Invalid media ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+
+    await deviceModel.findByIdAndUpdate(
+      { _id: device_id },
+      { $pull: { media: media_id } }
+    );
+
+    res.status(200).json({ msg: "Media is deleted from device", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route     /api/device/:id
+// @desc      get devices
+// @auth      protected
+export const getDevice: RequestHandler = async (req, res, next) => {
+  let device: Device = {
+    _id: "",
+    name: "",
+    uid: "",
+    owner_id: "",
+    media: [""],
+  };
+  try {
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res
+        .status(400)
+        .json({ msg: "Invalid device ID", device: device, status: "0" });
+    }
+    const foundDevice = await deviceModel.findById(device_id).populate("media");
+    if (!foundDevice) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", device: device, status: "0" });
+    }
+
+    res
+      .status(200)
+      .json({ msg: "Device  found", device: foundDevice, status: "1" });
+  } catch (error) {
+    next();
+  }
+};
+
+// @route      /api/device/generateuid
+// @desc        generate unique token and store in DB for SYNC
+// @auth       public
+// player
+export const generateUid: RequestHandler = async (req, res, next) => {
+  try {
+    function uniqueid() {
+      // always start with a letter (for DOM friendlyness)
+      let idstr = String.fromCharCode(Math.floor(Math.random() * 25 + 65));
+      do {
+        // between numbers and characters (48 is 0 and 90 is Z (42-48 = 90)
+        var ascicode = Math.floor(Math.random() * 42 + 48);
+        if (ascicode < 58 || ascicode > 64) {
+          // exclude all chars between : (58) and @ (64)
+          idstr += String.fromCharCode(ascicode);
+        }
+      } while (idstr.length < 6);
+
+      return idstr;
+    }
+    const uid = new uidModel({
+      uid:uniqueid()
+    })
+   await uid.save()
+    res.status(200).json({msg:"uid generated and stored in DB",uid:uid})
+
+
+
+    
+    res.status(200).json({ uid: uid });
+  } catch (error) {
+    next();
+  }
+};
+
+//player
 export const syncDevice: RequestHandler = async (req, res, next) => {
   try {
     const uid = req.params.uid;
@@ -88,99 +250,3 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
-// @route      /api/device/delete/:id
-// @desc       delete added devicess
-// @auth       protected
-
-export const deleteDevices: RequestHandler = async (req, res, next) => {
-  try {
-    const device_id = req.params.id;
-    if (!mongoose.isValidObjectId(device_id)) {
-      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
-    }
-    const device = await deviceModel.findById(device_id);
-    if (!device) {
-      return res.status(400).json({ msg: "Device not found", status: "0" });
-    }
-    const owner = await userModel.findByIdAndUpdate(
-      { _id: device.owner_id },
-      { $pull: { device_id: device_id } }
-    );
-
-    await deviceModel.findByIdAndDelete(device_id);
-    res.status(200).json({ msg: "Device is removed", status: "1" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @route      /api/device/addmedia/:id
-// @desc      add media URL in devices
-// @auth       protected
-
-export const addMedia: RequestHandler = async (req, res, next) => {
-  try {
-    let media = [""];
-    const array = req.body.array;
-    const device_id = req.params.id;
-    if (!mongoose.isValidObjectId(device_id)) {
-      return res
-        .status(400)
-        .json({ msg: "Invalid device ID", doc: media, status: "0" });
-    }
-    const device = await deviceModel.findById(device_id);
-    if (!device) {
-      return res
-        .status(400)
-        .json({ msg: "Device not found", doc: media, status: "0" });
-    }
-    array.map((item: string) => device.media.push(item));
-    const doc = await device.save();
-    res
-      .status(200)
-      .json({ msg: "Media added to device", doc: doc.media, status: "1" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-
-
-// @route      /api/device/:id
-// @desc      get devices
-// @auth       protected
-
-
-
-export const getDevice:RequestHandler =async  (req,res,next)=>{
-     let device: Device = {
-        _id: "",
-        name: "",
-        uid: "",
-        owner_id: "",
-        media: [""],
-      };
-  try {
-    
-       const device_id = req.params.id;
-       if (!mongoose.isValidObjectId(device_id)) {
-         return res
-           .status(400)
-           .json({ msg: "Invalid device ID",device:device , status: "0" });
-       }
-        const foundDevice = await deviceModel.findById(device_id);
-        if (!foundDevice) {
-          return res
-            .status(400)
-            .json({ msg: "Device not found", device: device, status: "0" });
-        }
-
-        res
-          .status(200)
-          .json({ msg: "Device  found", device: foundDevice, status: "1" });
-  } catch (error) {
-    next()
-  }
-}

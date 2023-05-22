@@ -17,13 +17,13 @@ const Add = () => {
     addDevice(data).then((res) => {
       console.log(res);
       dispatch(isloading({ type: "false" }));
-      navigate("/devices");
+    
       //  window.location.href = "/devices"
     });
   };
   return (
     <div>
-      <div className="max-w-lg px-8  py-8 border border-2 shadow-2xl rounded-lg mx-auto   mt-4 rounded-xl">
+      <div className="max-w-lg px-8  py-8 border-2 shadow-2xl  mx-auto   mt-4 rounded-xl">
         <p className="text-2xl my-4">
           {" "}
           Once you've installed Digi Board on your device, type in the given

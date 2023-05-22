@@ -68,7 +68,7 @@ export const upload_Video = async (video) => {
       }
     );
     successToast("Video Uploaded Successfully");
-    
+
     window.location.href = "/content";
     return response.data;
   } catch (error) {
@@ -85,6 +85,19 @@ export const getUserData = async () => {
     const response = await axios.get("/api/user/content", { headers: headers });
     return response.data;
   } catch (error) {
+    return error;
+  }
+};
+
+export const deleteMedia = async (id) => {
+  try {
+    const response = await axios.delete(`api/user/delete_media/${id}`, {
+      headers: headers,
+    });
+    successToast("Medua deleted successfully")
+    return response.data;
+  } catch (error) {
+    errorToast(error.response.data.msg);
     return error;
   }
 };

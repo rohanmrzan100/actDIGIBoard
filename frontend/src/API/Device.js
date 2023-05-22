@@ -19,12 +19,13 @@ export const addDevice = async (data) => {
     );
     successToast(response.data.msg);
     store.dispatch(unsetError());
+    window.location.href = "/devices"
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
     console.log(error.response.data.msg);
     errorToast(error.response.data.msg);
-
+  
     return error;
   }
 };
@@ -79,6 +80,23 @@ export const add_media = async (id, array) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    errorToast(error.response.data.msg);
+    return error;
+  }
+};
+
+export const loadDeviceInfo = async (id) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/api/device/${id}`,
+
+      { headers: headers }
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    errorToast(error.response.data.msg);
     return error;
   }
 };

@@ -62,7 +62,7 @@ const DevicesCard = (props) => {
         </div>
         <button
           onClick={handleClick}
-          className="flex flex-col items-center space-y-4 hover:text-red-700"
+          className="flex flex-col items-center space-y-4 hover:text-orange-500"
         >
           <FontAwesomeIcon
             icon={faImage}
@@ -72,11 +72,11 @@ const DevicesCard = (props) => {
         </button>
         <button
           onClick={handleDelete}
-          className="flex flex-col items-center space-y-4 hover:text-orange-700"
+          className="flex flex-col items-center space-y-4 hover:text-red-700"
         >
           <FontAwesomeIcon
             icon={faTrashCan}
-            className="scale-150 text-red-500"
+            className="scale-150"
           />
           <p className="text-lg">Remove</p>
         </button>

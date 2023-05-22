@@ -6,18 +6,19 @@ import {
   deleteDevices,
   getDevice,
   syncDevice,
-//   deleteMedia,
+  deleteMedia,
+  generateUid,
 } from "../controllers/Device";
 const router = express.Router();
 
-
-
-
-router.post("/add",authMiddleware,addDevice)
+router.post("/add", authMiddleware, addDevice);
 router.delete("/delete/:id", authMiddleware, deleteDevices);
-// router.delete("/delete_media/:id", authMiddleware, deleteMedia);
+router.delete("/remove_media/:did/:mid", authMiddleware, deleteMedia);
 router.post("/add_media/:id", authMiddleware, addMedia);
-router.get("/sync/:uid",syncDevice)
+router.get("/sync/:uid", syncDevice);
 router.get("/:id", getDevice);
+router.get("/generate/uid", generateUid);
+
+
 
 export default router;

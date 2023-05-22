@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import AddImage from "./AddImage";
 import AddVideo from "./AddVideo";
-import { useDispatch } from "react-redux";
 import Media from "./Media";
 
 const Content = () => {
-  const dispatch = useDispatch();
 
   return (
     <div>
