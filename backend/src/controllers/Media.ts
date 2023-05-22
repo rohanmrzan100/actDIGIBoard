@@ -29,6 +29,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
     owner.media_id.push(newMedia._id);
     await owner?.save();
     await newMedia.save();
+console.log(result);
 
     res.status(201).json({ msg: "Image Added", status: "1", newMedia });
   } catch (error) {

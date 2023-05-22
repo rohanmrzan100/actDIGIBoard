@@ -37,6 +37,8 @@ const App = () => {
                 {["/", "/signin"].map((path) => (
                   <Route key={path} path={path} element={<Signin />} />
                 ))}
+
+                <Route path="/signup" element={<Signup />}></Route>
               </>
             )}
             {isAuth && (

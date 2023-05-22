@@ -205,16 +205,20 @@ export const generateUid: RequestHandler = async (req, res, next) => {
 
       return idstr;
     }
+
+    const code = uniqueid().toLocaleLowerCase()
+    console.log(code);
+    
     const uid = new uidModel({
-      uid:uniqueid()
+      uid:code
     })
    await uid.save()
     res.status(200).json({msg:"uid generated and stored in DB",uid:uid})
+    // res.json(code)
 
 
 
     
-    res.status(200).json({ uid: uid });
   } catch (error) {
     next();
   }
@@ -224,6 +228,8 @@ export const generateUid: RequestHandler = async (req, res, next) => {
 export const syncDevice: RequestHandler = async (req, res, next) => {
   try {
     const uid = req.params.uid;
+    console.log(uid);
+    
     let foundDevice = await deviceModel.findOne({ uid: uid });
     if (!foundDevice) {
       const device: Device = {
@@ -235,7 +241,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
       };
       return res
         .status(400)
-        .json({ status: "0", device, token: " ", msg: " " });
+        .json({ status: "0", device, token: " ", msg: "Device not found" });
     }
     const token = jwt.sign({ _id: foundDevice.owner_id }, env.SECRET, {
       expiresIn: "30d",
