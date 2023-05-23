@@ -6,11 +6,9 @@ import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
-  Button,
   Popover,
   PopoverContent,
   PopoverHandler,
-  Typography,
 } from "@material-tailwind/react";
 
 const Media = () => {
@@ -20,15 +18,16 @@ const Media = () => {
 
   useEffect(() => {
     getUserData().then((res) => {
-      setUserMedia(res.doc.media_id);
+      setUserMedia(res.doc.media_id.reverse());
     });
   }, []);
 
   const handleDelete = (id) => {
     dispatch(isloading({ type: "true" }));
     deleteMedia(id).then(() => {
+        window.location.reload(true);
       dispatch(isloading({ type: "false" }));
-      window.location.reload(true);
+    
     });
   };
 
@@ -62,24 +61,33 @@ const Media = () => {
                       <PopoverHandler>
                         <FontAwesomeIcon
                           icon={faEllipsisVertical}
-                          className="scale-125"
+                          className="scale-150 cursor-pointer hover:text-gray-700"
                         />
                       </PopoverHandler>
-                      <PopoverContent>
-                        <div className="flex flex-col gap-2   text-lg">
-                          <button
-                            className="hover:bg-red-600 hover:text-white w-24 rounded-md"
-                            onClick={() => handleDelete(media._id)}
-                          >
-                            Delete
-                          </button>
-                          <button
-                            className="hover:bg-green-600 hover:text-white w-24 rounded-md"
-                            onClick={() => window.location.replace(media.media)}
-                          >
-                            Preview
-                          </button>
-                        </div>
+                      <PopoverContent className="bg-gray-200 border-2 border-black ">
+                        <ul className="font-semibold space-y-2 text-md">
+                          <li>
+                            {" "}
+                            <button
+                              className="hover:bg-red-600 hover:text-white w-full h-10 border-black rounded-md text-red-600  border-2"
+                              onClick={() => handleDelete(media._id)}
+                            >
+                              Delete
+                            </button>
+                          </li>
+
+                          <li>
+                            <a
+                              href={media.media}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md">
+                                Preview
+                              </button>
+                            </a>
+                          </li>
+                        </ul>
                       </PopoverContent>
                     </Popover>
                   </div>
@@ -107,24 +115,33 @@ const Media = () => {
                       <PopoverHandler>
                         <FontAwesomeIcon
                           icon={faEllipsisVertical}
-                          className="scale-125"
+                          className="scale-150 cursor-pointer hover:text-gray-700"
                         />
                       </PopoverHandler>
-                      <PopoverContent>
-                        <div className="flex flex-col gap-2   text-lg">
-                          <button
-                            className="hover:bg-red-600 hover:text-white w-24 rounded-md"
-                            onClick={() => handleDelete(media._id)}
-                          >
-                            Delete
-                          </button>
-                          <button
-                            className="hover:bg-green-600 hover:text-white w-24 rounded-md"
-                            onClick={() => window.location.replace(media.media)}
-                          >
-                            Preview
-                          </button>
-                        </div>
+                      <PopoverContent className="bg-gray-200 border-2 border-black ">
+                        <ul className="font-semibold space-y-2 text-md">
+                          <li>
+                            {" "}
+                            <button
+                              className="hover:bg-red-600 hover:text-white w-full h-10 border-black rounded-md text-red-600  border-2"
+                              onClick={() => handleDelete(media._id)}
+                            >
+                              Delete
+                            </button>
+                          </li>
+
+                          <li>
+                            <a
+                              href={media.media}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md">
+                                Preview
+                              </button>
+                            </a>
+                          </li>
+                        </ul>
                       </PopoverContent>
                     </Popover>
                   </div>

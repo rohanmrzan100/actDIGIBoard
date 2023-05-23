@@ -1,48 +1,52 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { uploadMedia } from "../../API/User";
 import { isloading } from "../../store/slice/utilsSlice";
-import { upload_Video } from "../../API/User";
-const Addvideo = () => {
-  const [uploadVideo, setUploadVideo] = useState("");
-  const [video, setVideo] = useState();
+import { useDispatch } from "react-redux";
+
+const AddImage = () => {
+  const [uploadImage, setUploadImage] = useState("");
+  const [image, setImage] = useState();
+  const [empty, setEmpty] = useState(false);
   const dispatch = useDispatch();
   const handleFormSubmit = (e) => {
+    if (!image) {
+      setEmpty(true);
+      return
+    }
     e.preventDefault();
     const data = {
-      media: uploadVideo,
-      name: video.name,
+      media: uploadImage,
+      name: image.name,
     };
-    console.log(data);
+
     dispatch(isloading({ type: "true" }));
-    upload_Video(data).then((res) => dispatch(isloading({ type: "false" })));
+    uploadMedia(data).then((res) => dispatch(isloading({ type: "false" })));
   };
   const handleChange = (e) => {
+    setEmpty(false)
     e.preventDefault();
-    const video = e.target.files[0];
-    if (!video) {
-      return;
-    }
-    setVideo(video);
+    const image = e.target.files[0];
+
+    setImage(image);
     const reader = new FileReader();
-    reader.readAsDataURL(video);
+    reader.readAsDataURL(image);
     reader.onloadend = () => {
-      const uploadVideo = reader.result;
-      setUploadVideo(uploadVideo);
+      const uploadImage = reader.result;
+      setUploadImage(uploadImage);
     };
   };
 
   return (
     <div>
-      {/* <p className="my-6  p-2  text-red-700 font-semibold">
-        Please Select Video File
-      </p> */}
-
+     {empty && <p className="my-6  p-2  text-red-700 font-semibold">
+        Please Select Image or Video File to upload
+      </p>}
       <form
         onSubmit={handleFormSubmit}
-        className="w-full bg-gray-200  mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
+        className="w-full bg-gray-200 mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
       >
         <label className="block mb-2 text-lg font-medium text-black">
-          Upload Video FIle
+          Upload Video or Image 
         </label>
         <input
           onChange={handleChange}
@@ -63,4 +67,4 @@ const Addvideo = () => {
   );
 };
 
-export default Addvideo;
+export default AddImage;
