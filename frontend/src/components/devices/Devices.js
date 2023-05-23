@@ -14,11 +14,9 @@ const Devices = () => {
   useEffect(() => {
     dispatch(isloading({ type: "false" }));
     getDevices().then((res) => {
-      if(res.device){
+      if (res.devices) {
         setDevices(res.devices);
-         console.log(res);
       }
-     
     });
   }, []);
 
