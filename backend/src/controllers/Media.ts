@@ -9,6 +9,8 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
       _id: "",
       media: "",
       type: "",
+      thumbnail: "",
+      name: " ",
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -16,23 +18,35 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
         .status(400)
         .json({ msg: "User is not found", status: "0", media });
 
-    const fileString = req.body.image;
-console.log(typeof fileString);
+    const image = req.body.image;
 
-    const result = await cloudinary.v2.uploader
-      .upload(fileString, { folder: "media" })
-      //   .then((res) => console.log(res))
-      .catch((err: Error) => console.log(err));
-    const newMedia = new mediaModel({
-      media: result?.url,
-      type: "image",
-    });
-    owner.media_id.push(newMedia._id);
-    await owner?.save();
-    await newMedia.save();
-    console.log(result);
+    await cloudinary.v2.uploader
+      .upload(image, { folder: "media" })
+      .then(async (result) => {
+        const newMedia = new mediaModel({
+          media: result?.url,
+          type: "image",
+          thumbnail: " ",
+          name: req.body.name,
+        });
+        owner.media_id.push(newMedia._id);
+        await owner?.save();
+        await newMedia.save();
+        console.log(result);
 
-    res.status(201).json({ msg: "Image Added", status: "1", newMedia });
+        return res
+          .status(201)
+          .json({ msg: "Image Added", status: "1", media: newMedia });
+      })
+      .catch((err: Error) => {
+        console.log(err);
+
+        return res.status(400).json({
+          msg: "Video adding Unsuccessful",
+          status: "0",
+          media: media,
+        });
+      });
   } catch (error) {
     next(error);
   }
@@ -43,34 +57,52 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
       _id: "",
       media: "",
       type: "",
+      thumbnail: "",
+      name: "",
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
       return res
         .status(400)
-        .json({ msg: "User is not found", status: "0", media:media });
+        .json({ msg: "User is not found", status: "0", media: media });
 
-    const videoString = req.body.video;
+    const video = req.body.video;
 
     // Upload video to Cloudinary
-    const result = await cloudinary.v2.uploader
-      .upload(videoString, {
-        resource_type: "video",
-      })
-      .catch((err) =>
-        console.log({ msg: "Video adding Unsuccessful", status: "0", media:media })
-      );
-    const newMedia = new mediaModel({
-      media: result?.url,
-      type: "video",
-    });
-    console.log(result?.url);
-    
-    owner.media_id.push(newMedia._id);
-    await owner?.save();
-    await newMedia.save();
+    await cloudinary.v2.uploader
 
-    res.status(201).json({ msg: "Video Added", status: "1", newMedia });
+      .upload(video, {
+        resource_type: "video",
+        folder: "media",
+      })
+      .then(async (result) => {
+        let thumbnail = result.url;
+        const count = thumbnail.length - 3;
+        thumbnail = thumbnail.substring(0, count);
+        thumbnail = thumbnail + "jpg";
+        console.log(thumbnail);
+        const newMedia = new mediaModel({
+          thumbnail: thumbnail,
+          name: req.body.name,
+          media: result.url,
+          type: "video",
+        });
+
+        console.log(result);
+
+        owner.media_id.push(newMedia._id);
+        await owner?.save();
+        await newMedia.save();
+
+        res.status(201).json({ msg: "Video Added", status: "1", newMedia });
+      })
+      .catch((err) => {
+        return res.status(400).json({
+          msg: "Video adding Unsuccessful",
+          status: "0",
+          media: media,
+        });
+      });
   } catch (error) {
     next(error);
   }

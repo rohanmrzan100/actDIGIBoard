@@ -5,15 +5,17 @@ import { useDispatch } from "react-redux";
 
 const AddImage = () => {
   const [uploadImage, setUploadImage] = useState("");
+  const [image, setImage] = useState();
   const dispatch = useDispatch();
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log(uploadImage);
-       dispatch(isloading({ type: "true" }))
-    upload_Image(uploadImage).then((res) =>
-      dispatch(isloading({ type: "false" }))
-    );
+    const data = {
+      media: uploadImage,
+      name: image.name,
+    };
+    console.log(data);
+    dispatch(isloading({ type: "true" }));
+    upload_Image(data).then((res) => dispatch(isloading({ type: "false" })));
   };
   const handleChange = (e) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ const AddImage = () => {
     if (!image) {
       return;
     }
+    setImage(image);
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onloadend = () => {
@@ -38,7 +41,7 @@ const AddImage = () => {
       {/* <h1 className="text-lg font-semibold">Image</h1> */}
       <form
         onSubmit={handleFormSubmit}
-        className="w-full bg-gray-200  rounded-lg p-4 border-2 hover:bg-gray-100"
+        className="w-full bg-gray-200 mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
       >
         <label className="block mb-2 text-lg font-medium text-black">
           Upload Image File

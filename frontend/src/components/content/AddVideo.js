@@ -3,32 +3,32 @@ import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import { upload_Video } from "../../API/User";
 const Addvideo = () => {
+  const [uploadVideo, setUploadVideo] = useState("");
   const [video, setVideo] = useState();
-  const [uploadVideo, setUploadVideo] = useState();
   const dispatch = useDispatch();
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      media: uploadVideo,
+      name: video.name,
+    };
+    console.log(data);
+    dispatch(isloading({ type: "true" }));
+    upload_Video(data).then((res) => dispatch(isloading({ type: "false" })));
+  };
   const handleChange = (e) => {
+    e.preventDefault();
     const video = e.target.files[0];
-    setVideo(video);
     if (!video) {
       return;
     }
+    setVideo(video);
     const reader = new FileReader();
-
     reader.readAsDataURL(video);
-
     reader.onloadend = () => {
       const uploadVideo = reader.result;
       setUploadVideo(uploadVideo);
     };
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(isloading({ type: "true" }));
-    upload_Video(uploadVideo).then(() => {
-      dispatch(isloading({ type: "false" }));
-    });
-    // console.log(uploadVideo);
   };
 
   return (
@@ -39,7 +39,7 @@ const Addvideo = () => {
 
       <form
         onSubmit={handleFormSubmit}
-        className="w-full bg-gray-200  rounded-lg p-4 border-2 hover:bg-gray-100"
+        className="w-full bg-gray-200  mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
       >
         <label className="block mb-2 text-lg font-medium text-black">
           Upload Video FIle

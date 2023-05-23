@@ -38,11 +38,11 @@ export const login = async (data) => {
     return error;
   }
 };
-export const upload_Image = async (image) => {
+export const upload_Image = async (data) => {
   try {
     const response = await axios.post(
       "/api/user/add_image",
-      { image: image },
+      { image: data.media, name: data.name },
       {
         headers: headers,
       }
@@ -58,11 +58,11 @@ export const upload_Image = async (image) => {
     return error;
   }
 };
-export const upload_Video = async (video) => {
+export const upload_Video = async (data) => {
   try {
     const response = await axios.post(
       "/api/user/add_video",
-      { video: video },
+      { video: data.media, name: data.name },
       {
         headers: headers,
       }
@@ -94,7 +94,7 @@ export const deleteMedia = async (id) => {
     const response = await axios.delete(`api/user/delete_media/${id}`, {
       headers: headers,
     });
-    successToast("Medua deleted successfully")
+    successToast("Medua deleted successfully");
     return response.data;
   } catch (error) {
     errorToast(error.response.data.msg);
