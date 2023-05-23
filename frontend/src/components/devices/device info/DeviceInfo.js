@@ -1,21 +1,25 @@
-import {
-  faChevronLeft,
-  faEllipsisVertical,
-  faImage,
-  faPlus,
-  faTrash,
-  faVideo,
-} from "@fortawesome/free-solid-svg-icons";
+import { faImage, faTrash, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loadDeviceInfo } from "../../../API/Device";
+import { deleteMedia, loadDeviceInfo } from "../../../API/Device";
+import { useDispatch } from "react-redux";
 import GoBack from "../../utils/GoBack";
+import { isloading } from "../../../store/slice/utilsSlice";
 const DeviceInfo = () => {
   // const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [userMedia, setUserMedia] = useState();
   const handleClick = () => {
     window.location.href = `/device/${localStorage.getItem("device")}/add`;
+  };
+
+  const handleDelete = (did, mid) => {
+    dispatch(isloading({ type: "true" }));
+    deleteMedia(did, mid).then((res) => {
+      console.log(res);
+      dispatch(isloading({ type: "false" }));
+      window.location.href = `/device/${localStorage.getItem("device")}/info`;
+    });
   };
 
   useEffect(() => {
@@ -64,14 +68,13 @@ const DeviceInfo = () => {
                       <FontAwesomeIcon icon={faVideo} />
                       <div className="px-2">{media.name}</div>
                     </div>
-
-                    <input
-                      // onChange={(e) => handleChange(e, media)}
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    ></input>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="scale-125 text-red-500 hover:text-red-800"
+                      onClick={() =>
+                        handleDelete(localStorage.getItem("device"), media._id)
+                      }
+                    />
                   </div>
                 </div>
               );
@@ -94,13 +97,13 @@ const DeviceInfo = () => {
                       <div className="px-2">{media.name}</div>
                     </div>
 
-                    <input
-                      // onChange={(e) => handleChange(e, media)}
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    ></input>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="scale-125 text-red-500 hover:text-red-800"
+                      onClick={() =>
+                        handleDelete(localStorage.getItem("device"), media._id)
+                      }
+                    />
                   </div>
                 </div>
               );

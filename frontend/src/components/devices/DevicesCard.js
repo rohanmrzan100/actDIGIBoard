@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import moment from "moment";
-import { removeDevice } from "../../API/Device";
+import { removeDevice, resyncDevice } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -24,6 +24,13 @@ const DevicesCard = (props) => {
       setInterval(() => {
         window.location.href = "/devices";
       }, 2000);
+    });
+  };
+
+  const handleSync = () => {
+    resyncDevice(props.device._id).then((res) => {
+      console.log(res);
+      window.location.href = "/devices";
     });
   };
 
@@ -46,14 +53,17 @@ const DevicesCard = (props) => {
       </div>
 
       <div className="flex justify-between items-center space-x-12  ">
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200">
           <FontAwesomeIcon
             icon={faSignal}
             className="scale-150 text-green-500"
           />
           <p className="text-lg">Status</p>
         </div>
-        <div className="flex flex-col items-center space-y-4 ">
+        <div
+          onClick={handleSync}
+          className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200"
+        >
           <FontAwesomeIcon
             icon={faRotate}
             className="scale-150 text-green-500"
@@ -62,7 +72,7 @@ const DevicesCard = (props) => {
         </div>
         <button
           onClick={handleClick}
-          className="flex flex-col items-center space-y-4 hover:text-orange-500"
+          className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
         >
           <FontAwesomeIcon
             icon={faImage}
@@ -72,12 +82,9 @@ const DevicesCard = (props) => {
         </button>
         <button
           onClick={handleDelete}
-          className="flex flex-col items-center space-y-4 hover:text-red-700"
+          className="flex flex-col items-center space-y-4 hover:text-red-700 p-4 rounded-md hover:bg-gray-200"
         >
-          <FontAwesomeIcon
-            icon={faTrashCan}
-            className="scale-150"
-          />
+          <FontAwesomeIcon icon={faTrashCan} className="scale-150" />
           <p className="text-lg">Remove</p>
         </button>
       </div>

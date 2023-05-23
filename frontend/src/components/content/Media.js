@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { deleteMedia, getUserData } from "../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faImage, faTrash, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {

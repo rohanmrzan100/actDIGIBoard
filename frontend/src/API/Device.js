@@ -3,8 +3,7 @@ import { store } from "../store/store";
 import { setError, unsetError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
 
-// axios.defaults.baseURL = ":3001/";
-// axios.defaults.baseURL = "http://localhost:3001/";
+axios.defaults.baseURL = "http://localhost:3001/";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const headers = {
@@ -87,7 +86,7 @@ export const add_media = async (id, array) => {
 export const loadDeviceInfo = async (id) => {
   try {
     const response = await axios.get(
-      `http://localhost:3001/api/device/${id}`,
+      `http://localhost:3001/api/device/get/${id}`,
 
       { headers: headers }
     );
@@ -99,3 +98,39 @@ export const loadDeviceInfo = async (id) => {
     return error;
   }
 };
+
+export const deleteMedia = async (did, mid) => {
+  try {
+    const response = await axios.delete(
+      `api/device/remove_media/${did}/${mid}`,
+
+      { headers: headers }
+    );
+    console.log(response.data);
+    successToast("Media removed from device successfully");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    errorToast(error.response.data.msg);
+    return error;
+  }
+};
+
+
+
+export const resyncDevice = async (id)=>{
+  try {
+       const response = await axios.delete(
+         `api/device/update_sync/${id}`,
+
+         { headers: headers }
+       );
+       console.log(response.data);
+       successToast("Device is Synced");
+       return response.data;
+  } catch (error) {
+     console.log(error);
+     errorToast("Error in syncing device");
+     return error;
+  }
+}

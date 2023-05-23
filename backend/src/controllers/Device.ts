@@ -304,12 +304,40 @@ export const createPlaylist: RequestHandler = async (req, res, next) => {
     if (!device) {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
-////////////////////////logic here ///////////////////////////////
+    ////////////////////////logic here ///////////////////////////////
     const doc = await device.save();
     res
       .status(200)
       .json({ msg: "Media added to device", doc: doc.media, status: "1" });
   } catch (error) {
     next();
+  }
+};
+
+// @route      /api/device/update_sync/:id
+// @desc       resync device from website
+// @auth       private
+
+export const resyncDevice: RequestHandler = async (req, res, next) => {
+  try {
+
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    }
+
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+
+    console.log(device);
+
+    device.change = false;
+    await device.save();
+
+    res.status(200).json({ msg: "Device is resynced", status: "1" });
+  } catch (error) {
+    next(error);
   }
 };

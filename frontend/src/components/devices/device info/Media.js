@@ -5,6 +5,8 @@ import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addArray, removeArray } from "../../../store/slice/arraySlice";
 import { add_media } from "../../../API/Device";
+import { isloading } from "../../../store/slice/utilsSlice";
+import { errorToast } from "../../utils/Toast";
 const Media = (props) => {
   const dispatch = useDispatch();
 
@@ -16,9 +18,16 @@ const Media = (props) => {
   });
 
   const handleClick = () => {
+    if(array.length<=0){
+      return errorToast("Please Select Media before Adding")
+    }
+    dispatch(isloading({ type: "true" }));
     const id = localStorage.getItem("device");
-    console.log(array);
-    add_media(id, array).then((res) => console.log(res));
+
+    add_media(id, array).then((res) => {
+      window.location.href = `/device/${localStorage.getItem("device")}/info`;
+      dispatch(isloading({ type: "false" }));
+    });
   };
   const handleChange = (event, media) => {
     const id = media._id;
