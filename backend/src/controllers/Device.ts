@@ -27,6 +27,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       uid: "",
       owner_id: "",
       media: [""],
+      playlist: [""],
       change: false,
     };
     const owner = await userModel.findById(res.locals.user._id);
@@ -49,7 +50,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     const addedDevice = new deviceModel({
       name: name,
       uid: uid.toLocaleLowerCase(),
-  
+
       owner_id: owner?._id,
     });
 
@@ -59,6 +60,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
     const doc = await addedDevice.save();
 
     device = <Device>await deviceModel.findById(doc._id);
+
     // .populate("owner_id");
     res
       .status(200)
@@ -162,6 +164,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
     uid: "",
     owner_id: "",
     media: [""],
+    playlist: [""],
     change: false,
   };
   try {
@@ -190,7 +193,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
 // @desc        generate unique token and store in DB for SYNC
 // @auth       public
 // player
-export const generateUid : RequestHandler = async (req, res, next) => {
+export const generateUid: RequestHandler = async (req, res, next) => {
   try {
     function uniqueid() {
       // always start with a letter (for DOM friendlyness)
@@ -236,6 +239,7 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         owner_id: "",
         media: [""],
         change: false,
+        playlist: [""],
       };
       return res
         .status(400)
@@ -275,11 +279,36 @@ export const checkChange: RequestHandler = async (req, res, next) => {
         .json({ msg: "Device media is not changed", status: "0" });
     } else {
       device.change = false;
-      await device.save()
+      await device.save();
       return res
         .status(200)
         .json({ msg: "Device media is changed.", status: "1" });
     }
+  } catch (error) {
+    next();
+  }
+};
+
+// @route      /api/device/create_playlist/:id
+// @desc       check for change in device media
+// @auth       public
+
+export const createPlaylist: RequestHandler = async (req, res, next) => {
+  try {
+    const device_id = req.params.id;
+    const array: [string] = req.body.array;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+////////////////////////logic here ///////////////////////////////
+    const doc = await device.save();
+    res
+      .status(200)
+      .json({ msg: "Media added to device", doc: doc.media, status: "1" });
   } catch (error) {
     next();
   }

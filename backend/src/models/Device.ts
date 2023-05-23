@@ -6,7 +6,8 @@ interface Device {
   uid: string;
   owner_id: string;
   media: [string];
-  change:boolean
+  playlist: [string];
+  change: boolean;
 }
 
 const deviceSchema = new mongoose.Schema(
@@ -19,13 +20,14 @@ const deviceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    change:{
-      type:Boolean,
-      default:false
+    change: {
+      type: Boolean,
+      default: false,
     },
 
     owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
-    media:[ { type: mongoose.Types.ObjectId, ref: "media" }],
+    media: [{ type: mongoose.Types.ObjectId, ref: "media" }],
+    playlist: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
   },
   {
     timestamps: true,

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Signup from "./components/auth/Signup";
 import Signin from "./components/auth/Signin";
@@ -10,7 +10,7 @@ import { ToastContainer } from "react-toastify";
 import { loadUser } from "./store/slice/authSlice";
 import Content from "./components/content/Content";
 import Devices from "./components/devices/Devices";
-import Add from "./components/devices/Add";
+import Add from "./components/devices/AddDevicePage";
 import DeviceInfo from "./components/devices/device info/DeviceInfo";
 import DeviceAddMedia from "./components/devices/device info/DeviceAddMedia";
 import ErrorPage from "./components/utils/ErrorPage";
@@ -30,7 +30,7 @@ const App = () => {
       <BrowserRouter>
         <Navbar />
         {navToggle && <SideNav />}
-        <div className="md:w-[80%] w-full m-auto  h-full p-6">
+        <div className="md:w-[80%]  w-full m-auto  h-full p-6">
           <Routes>
             {!isAuth && (
               <>

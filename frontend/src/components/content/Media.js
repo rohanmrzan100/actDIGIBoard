@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { deleteMedia, getUserData } from "../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faImage, faTrash, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
@@ -18,7 +18,10 @@ const Media = () => {
 
   useEffect(() => {
     getUserData().then((res) => {
-      setUserMedia(res.doc.media_id.reverse());
+   
+      if(res.doc){
+        setUserMedia(res.doc.media_id.reverse());
+      }
     });
   }, []);
 
@@ -53,8 +56,9 @@ const Media = () => {
                   </video>
 
                   <div className="p-6 flex justify-between items-start">
-                    <div className="flex items-baseline">
-                      <div className="">{media.name}</div>
+                    <div className="flex  flex-start items-center">
+                      <FontAwesomeIcon icon={faVideo} />
+                      <div className="px-2">{media.name.substring(0,15)}</div>
                     </div>
 
                     <Popover placement="right">
@@ -107,8 +111,9 @@ const Media = () => {
                   />
 
                   <div className="p-6 flex justify-between items-start">
-                    <div className="flex items-baseline">
-                      <div className="">{media.name}</div>
+                    <div className="flex items-center justify-start">
+                      <FontAwesomeIcon icon={faImage} />
+                      <div className="px-2">{media.name}</div>
                     </div>
 
                     <Popover placement="right">

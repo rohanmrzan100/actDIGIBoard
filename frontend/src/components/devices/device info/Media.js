@@ -1,81 +1,114 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addArray } from "../../../store/slice/arraySlice";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { errorToast } from "../../utils/Toast";
+import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { addArray, removeArray } from "../../../store/slice/arraySlice";
 import { add_media } from "../../../API/Device";
-const MediaCard = (props) => {
+const Media = (props) => {
   const dispatch = useDispatch();
-  const [add, setAdd] = useState(true);
-  const media = props.media;
-  const id = localStorage.getItem("device");
-  let array = useSelector((state) => state.array);
-  const handleAdd = () => {
-    if (array.length <= 0) {
-      errorToast("Plase select media before adding.");
-      return;
-    }
-    // console.log(array);
-    add_media(id,array).then(()=>{
-       window.location.href = `/device/${localStorage.getItem("device")}/info`
-    })
+
+  const array = useSelector((state) => state.array);
+  const [userMedia, setUserMedia] = useState([]);
+
+  useEffect(() => {
+    setUserMedia(props.media);
+  });
+
+  const handleClick = () => {
+    const id = localStorage.getItem("device");
+    console.log(array);
+    add_media(id, array).then((res) => console.log(res));
   };
+  const handleChange = (event, media) => {
+    const id = media._id;
+
+    if (event.target.checked) {
+      dispatch(addArray(id));
+    } else {
+      dispatch(removeArray({ id, array }));
+    }
+  };
+
   return (
-    <div>
-      <div className=" relative w-84 my-4 mx-auto">
-        {add ? (
-          <img
-            className={`w-full border-2 border-gray-500`}
-            src={media.media}
-            alt={media.type}
-          />
-        ) : (
-          <img
-            className={`w-full border-2 border-gray-500 scale-105`}
-            src={media.media}
-            alt={media.type}
-          />
-        )}
-
-        {add && (
-          <button
-            onClick={() => {
-              setAdd(false);
-              dispatch(addArray(media._id));
-            }}
-            className="absolute  left-0 top-0 bg-orange-500 text-white p-2 rounded hover:bg-orange-800 active:bg-orange-800 m-2"
-            type="submit"
-          >
-            Add
-          </button>
-        )}
-        {!add && (
-          <div
-            className="     absolute
-            left-0
-            top-0
-            bg-green-500
-            text-white
-            p-2
-            rounded
-         
-            m-2"
-          >
-            <FontAwesomeIcon icon={faCheck} />
-          </div>
-        )}
+    <div className="w-full mt-8 ">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
+        <button
+          onClick={handleClick}
+          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Add
+        </button>
       </div>
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
+        {userMedia &&
+          userMedia.map((media) => {
+            if (media.type === "video") {
+              return (
+                <div
+                  className="rounded  overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <video
+                    poster={media.thumbnail}
+                    controls
+                    className="w-full h-48 object-cover brightness-90 hover:brightness-100"
+                  >
+                    <source src={media.media} type="video/mp4" />
+                  </video>
 
-      <button
-        onClick={handleAdd}
-        className="absolute h-16 w-16 rounded-full right-0 border border-green-400 z-10 m-16 bottom-0 bg-green-500 text-white p-2  hover:bg-green-800 active:bg-green-800 "
-      >
-        <FontAwesomeIcon icon={faPlus} />
-        Add
-      </button>
+                  <div className=" p-6 flex justify-between items-start">
+                    <div className="flex  flex-start items-center">
+                      <FontAwesomeIcon icon={faVideo} />
+                      <div className="px-2">{media.name}</div>
+                    </div>
+
+                    <input
+                      onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  className="rounded overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <img
+                    className="w-full h-48 object-cover"
+                    src={media.media}
+                    loading="lazy"
+                    alt={""}
+                  />
+
+                  <div className="p-6 flex justify-between items-start">
+                    <div className="flex items-center justify-start">
+                      <FontAwesomeIcon icon={faImage} />
+                      <div className="px-2">{media.name}</div>
+                    </div>
+
+                    <input
+                      onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
+                  </div>
+                </div>
+              );
+            }
+          })}
+      </div>
     </div>
   );
 };
 
-export default MediaCard;
+export default Media;

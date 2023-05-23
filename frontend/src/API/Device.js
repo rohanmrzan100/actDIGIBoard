@@ -3,7 +3,8 @@ import { store } from "../store/store";
 import { setError, unsetError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
 
-axios.defaults.baseURL = "http://localhost:3001/";
+// axios.defaults.baseURL = ":3001/";
+// axios.defaults.baseURL = "http://localhost:3001/";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const headers = {
@@ -19,13 +20,13 @@ export const addDevice = async (data) => {
     );
     successToast(response.data.msg);
     store.dispatch(unsetError());
-    window.location.href = "/devices"
+    window.location.href = "/devices";
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
     console.log(error.response.data.msg);
     errorToast(error.response.data.msg);
-  
+
     return error;
   }
 };
@@ -68,9 +69,7 @@ export const removeDevice = async (id) => {
 export const add_media = async (id, array) => {
   try {
     let media = [];
-
-    array.map((item) => media.push(item.array));
-
+    array.map((item) => media.push(item));
     const response = await axios.post(
       `http://localhost:3001/api/device/add_media/${id}`,
       { array: media },

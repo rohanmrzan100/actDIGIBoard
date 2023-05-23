@@ -1,21 +1,31 @@
-import { faChevronLeft, faEllipsisVertical, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faEllipsisVertical,
+  faImage,
+  faPlus,
+  faTrash,
+  faVideo,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadDeviceInfo } from "../../../API/Device";
 import GoBack from "../../utils/GoBack";
 const DeviceInfo = () => {
-  const navigate = useNavigate()
-  const [device,setDevice] = useState()
-  const handleClick = ()=>{
+  // const navigate = useNavigate();
+  const [userMedia, setUserMedia] = useState();
+  const handleClick = () => {
     window.location.href = `/device/${localStorage.getItem("device")}/add`;
-  }
-  
-  useEffect(()=>{
-    loadDeviceInfo(localStorage.getItem("device")).then(res=>{
-      setDevice(res.device)
-    })
-  },[])
+  };
+
+  useEffect(() => {
+    loadDeviceInfo(localStorage.getItem("device")).then((res) => {
+      if (res.device.media) {
+        console.log(res.device.media);
+        setUserMedia(res.device.media);
+      }
+    });
+  }, []);
   return (
     <div className="w-full ">
       <GoBack goto={`/devices`} />
@@ -32,41 +42,70 @@ const DeviceInfo = () => {
           Add More
         </button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-4 gap-y-4 ">
-        {device &&
-          device.media.map((media) => (
-            <div
-              // href={media.media}
-              className="w-72  group/main relative h-auto border-2 z-0 transition rounded-md  "
-              key={media._id}
-            >
-              <img
-                className="w-72 brightness-90 border-2"
-                src={media.media}
-                alt={media.type}
-              />
-              <button
-                // onClick={}
-                className="absolute mr-4 rounded-lg  right-0 top-0 group-hover/main:scale-100 scale-0 "
-              >
-                <div className="group/secondary relative flex justify-center">
-                  <FontAwesomeIcon
-                    icon={faEllipsisVertical}
-                    className="  text-3xl text-yellow"
-                  />
-                  <span className="absolute left-0 w-24 z-50  bottom-5 scale-0 transition-all rounded bg-gray-800  text-lg text-white group-hover/secondary:scale-100  ">
-                    <ul>
-                      <li>
-                        <div className="w-full rounded-md hover:bg-red-600 px-2 py-2 ">
-                          Delete
-                        </div>
-                      </li>
-                    </ul>
-                  </span>
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
+        {userMedia &&
+          userMedia.map((media) => {
+            if (media.type === "video") {
+              return (
+                <div
+                  className="rounded  overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <video
+                    poster={media.thumbnail}
+                    controls
+                    className="w-full h-48 object-cover brightness-90 hover:brightness-100"
+                  >
+                    <source src={media.media} type="video/mp4" />
+                  </video>
+
+                  <div className=" p-6 flex justify-between items-start">
+                    <div className="flex  flex-start items-center">
+                      <FontAwesomeIcon icon={faVideo} />
+                      <div className="px-2">{media.name}</div>
+                    </div>
+
+                    <input
+                      // onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
+                  </div>
                 </div>
-              </button>
-            </div>
-          ))}
+              );
+            } else {
+              return (
+                <div
+                  className="rounded overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <img
+                    className="w-full h-48 object-cover"
+                    src={media.media}
+                    loading="lazy"
+                    alt={""}
+                  />
+
+                  <div className="p-6 flex justify-between items-start">
+                    <div className="flex items-center justify-start">
+                      <FontAwesomeIcon icon={faImage} />
+                      <div className="px-2">{media.name}</div>
+                    </div>
+
+                    <input
+                      // onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
+                  </div>
+                </div>
+              );
+            }
+          })}
       </div>
     </div>
   );

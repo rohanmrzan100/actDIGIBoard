@@ -9,6 +9,7 @@ import {
   deleteMedia,
   generateUid,
   checkChange,
+  createPlaylist,
 } from "../controllers/Device";
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.get("/sync/:uid", syncDevice);
 router.get("/:id", getDevice);
 router.get("/generate/uid", generateUid);
 router.get("/check_change/:id", checkChange);
+router.get("create_playlist/:id", createPlaylist);
 
 
 
