@@ -17,14 +17,14 @@ export const addDevice = async (data) => {
       data,
       { headers: headers }
     );
-    successToast(response.data.msg);
+    successToast("Device Added Successfully");
     store.dispatch(unsetError());
     window.location.href = "/devices";
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));
     console.log(error.response.data.msg);
-    errorToast(error.response.data.msg);
+    errorToast("Adding Device Failed");
 
     return error;
   }
@@ -120,8 +120,8 @@ export const deleteMedia = async (did, mid) => {
 
 export const resyncDevice = async (id)=>{
   try {
-       const response = await axios.delete(
-         `api/device/update_sync/${id}`,
+       const response = await axios.get(
+         `api/device/sync_update/${id}`,
 
          { headers: headers }
        );

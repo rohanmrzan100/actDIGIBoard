@@ -9,6 +9,7 @@ import {
   deleteMedia,
 } from "../controllers/User";
 import { uploadImage, uploadVideo } from "../controllers/Media";
+import { createPlaylist } from "../controllers/Playlist";
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get("/content", authMiddleware, getUserData);
 router.get("/view_devices", authMiddleware, viewAllDevices);
 router.delete("/delete_media/:id", authMiddleware, deleteMedia);
 
-
+router.post("/create/playlist",authMiddleware,createPlaylist)
 
 
 //test

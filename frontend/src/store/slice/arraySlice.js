@@ -11,15 +11,13 @@ export const arraySlice = createSlice({
       let arrr = [];
       let arr = action.payload.array;
       const id = action.payload.id;
-      const index = arr.indexOf(id);
-      console.log(arr, id);
-      console.log(index);
       const array = [...arr];
+
       if (array.length === 1) {
-        arrr = []
+        arrr = [];
         return arrr;
       } else {
-        arrr = array.splice(index, 1);
+        arrr = array.filter((e) => e !== id);
         return arrr;
       }
     },

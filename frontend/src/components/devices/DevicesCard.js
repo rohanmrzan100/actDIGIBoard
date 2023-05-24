@@ -2,7 +2,6 @@ import {
   faImage,
   faRotate,
   faSignal,
-  faTrash,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +29,8 @@ const DevicesCard = (props) => {
   const handleSync = () => {
     resyncDevice(props.device._id).then((res) => {
       console.log(res);
-      window.location.href = "/devices";
+      // window.location.href = "/devices";
+      navigate("/devices")
     });
   };
 

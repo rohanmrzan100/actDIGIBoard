@@ -1,5 +1,6 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@material-tailwind/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,19 +10,20 @@ const GoBack = (props) => {
   return (
     <div className="">
 
-      <button
+      <Button
+      variant="gradient"
         onClick={() => {
           navigate(`${props.goto}`);
         //   console.log(props.goto);
         }}
-        className=" flex items-center justify-center  px-4 rounded-md text-lg h-16 hover:bg-gray-300  m-2"
+    className="flex justify-between items-center"
       >
         <FontAwesomeIcon
           icon={faChevronLeft}
-          className="scale-150 mx-2 text-green-500"
+          className=" mx-2 text-white"
         />
-        <p className="text-lg">Go Back To Previous Page</p>
-      </button>
+        <p className="">Go Back</p>
+      </Button>
       <hr className="h-px my-4 border-0 bg-gray-700"></hr>
     </div>
   );

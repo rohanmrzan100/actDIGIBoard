@@ -35,7 +35,7 @@ const Media = () => {
   };
 
   return (
-    <div className="w-full mt-8 ">
+    <div className="w-full mt-8  ">
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
@@ -58,7 +58,7 @@ const Media = () => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0,15)}</div>
+                      <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
 
                     <Popover placement="right">

@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addArray, removeArray } from "../../../store/slice/arraySlice";
-import { add_media } from "../../../API/Device";
-import { isloading } from "../../../store/slice/utilsSlice";
 import { errorToast } from "../../utils/Toast";
+import { isloading } from "../../../store/slice/utilsSlice";
+import { addArray, removeArray } from "../../../store/slice/arraySlice";
+import { Input } from "@material-tailwind/react";
 const Media = (props) => {
   const dispatch = useDispatch();
 
@@ -17,17 +17,10 @@ const Media = (props) => {
     setUserMedia(props.media);
   });
 
-  const handleClick = () => {
-    if (array.length <= 0) {
-      return errorToast("Please Select Media before Adding");
-    }
-    dispatch(isloading({ type: "true" }));
-    const id = localStorage.getItem("device");
-
-    add_media(id, array).then((res) => {
-      window.location.href = `/device/${localStorage.getItem("device")}/info`;
-      dispatch(isloading({ type: "false" }));
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(e.target[0].value);
+    console.log(array);
   };
   const handleChange = (event, media) => {
     const id = media._id;
@@ -38,20 +31,32 @@ const Media = (props) => {
       dispatch(removeArray({ id, array }));
     }
   };
-
   return (
     <div className="w-full mt-8 ">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
+      <form
+        onSubmit={handleSubmit}
+        className=" flex justify-between flex-col sm:flex-row items-center mb-8"
+      >
+        <div className="mb-2 w-5/12">
+          <label className="block text-sm font-semibold text-gray-800">
+            Enter Name of Playlist
+          </label>
+          <input
+            name="mname"
+            type="text"
+            className="block w-full  px-4 py-2 mt-2 text-black bg-white border border-black rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+          />
+        </div>
         <button
-          onClick={handleClick}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Add
+          Create Playlist
         </button>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
+      </form>
+
+      <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4  ">
         {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {

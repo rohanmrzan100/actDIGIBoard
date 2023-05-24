@@ -289,30 +289,6 @@ export const checkChange: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route      /api/device/create_playlist/:id
-// @desc       check for change in device media
-// @auth       public
-
-export const createPlaylist: RequestHandler = async (req, res, next) => {
-  try {
-    const device_id = req.params.id;
-    const array: [string] = req.body.array;
-    if (!mongoose.isValidObjectId(device_id)) {
-      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
-    }
-    const device = await deviceModel.findById(device_id);
-    if (!device) {
-      return res.status(400).json({ msg: "Device not found", status: "0" });
-    }
-    ////////////////////////logic here ///////////////////////////////
-    const doc = await device.save();
-    res
-      .status(200)
-      .json({ msg: "Media added to device", doc: doc.media, status: "1" });
-  } catch (error) {
-    next();
-  }
-};
 
 // @route      /api/device/update_sync/:id
 // @desc       resync device from website

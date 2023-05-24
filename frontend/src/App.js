@@ -14,6 +14,7 @@ import Add from "./components/devices/AddDevicePage";
 import DeviceInfo from "./components/devices/device info/DeviceInfo";
 import DeviceAddMedia from "./components/devices/device info/DeviceAddMedia";
 import ErrorPage from "./components/utils/ErrorPage";
+import Playlist from "./components/content/playlist/Playlist";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -26,7 +27,7 @@ const App = () => {
   const device_id = _id || localStorage.getItem("device");
 
   return (
-    <div>
+    <div >
       <BrowserRouter>
         <Navbar />
         {navToggle && <SideNav />}
@@ -51,7 +52,8 @@ const App = () => {
                 <Route path="/signup" element={<Signup />}></Route>
 
                 <Route path="/devices" element={<Devices />}></Route>
-                <Route path="/add_device" element={<Add />}></Route>
+                <Route path="/devices" element={<Devices />}></Route>
+                <Route path="/create/playlist" element={<Playlist />}></Route>
                 <Route
                   path={`/device/${device_id}/info`}
                   element={<DeviceInfo />}

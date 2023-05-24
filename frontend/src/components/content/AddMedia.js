@@ -4,6 +4,7 @@ import { isloading } from "../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
 
 const AddImage = () => {
+
   const [uploadImage, setUploadImage] = useState("");
   const [image, setImage] = useState();
   const [empty, setEmpty] = useState(false);
@@ -11,7 +12,7 @@ const AddImage = () => {
   const handleFormSubmit = (e) => {
     if (!image) {
       setEmpty(true);
-      return
+      return;
     }
     e.preventDefault();
     const data = {
@@ -23,7 +24,7 @@ const AddImage = () => {
     uploadMedia(data).then((res) => dispatch(isloading({ type: "false" })));
   };
   const handleChange = (e) => {
-    setEmpty(false)
+    setEmpty(false);
     e.preventDefault();
     const image = e.target.files[0];
 
@@ -38,15 +39,17 @@ const AddImage = () => {
 
   return (
     <div>
-     {empty && <p className="my-6  p-2  text-red-700 font-semibold">
-        Please Select Image or Video File to upload
-      </p>}
+      {empty && (
+        <p className="my-6  p-2  text-red-700 font-semibold">
+          Please Select Image or Video File to upload
+        </p>
+      )}
       <form
         onSubmit={handleFormSubmit}
         className="w-full bg-gray-200 mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
       >
         <label className="block mb-2 text-lg font-medium text-black">
-          Upload Video or Image 
+          Upload Video or Image
         </label>
         <input
           onChange={handleChange}
