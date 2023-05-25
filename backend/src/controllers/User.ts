@@ -19,6 +19,7 @@ export const getUserData: RequestHandler = async (req, res, next) => {
     password: "",
     device_id: [""],
     media_id: [""],
+    playlist: [""],
   };
 
   const userID = res.locals.user._id;
@@ -30,7 +31,8 @@ export const getUserData: RequestHandler = async (req, res, next) => {
   const user = await userModel
     .findById(userID)
     .select("-doc")
-    .populate("media_id");
+    .populate("media_id")
+    .populate("playlist");
   if (!user) {
     return res
       .status(400)
@@ -61,6 +63,7 @@ export const register: RequestHandler<
     password: "",
     device_id: [""],
     media_id: [""],
+    playlist: [""],
   };
 
   try {
@@ -115,6 +118,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
     password: "",
     device_id: [""],
     media_id: [""],
+    playlist: [""],
   };
 
   try {
@@ -158,6 +162,8 @@ export const viewAllDevices: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Invalid user ID", status: "0" });
     }
     const user = await userModel.findById(userID).populate("device_id");
+
+
     if (!user) {
       return res.status(400).json({ msg: "User Not found", status: "0" });
     }

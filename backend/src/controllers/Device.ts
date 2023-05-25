@@ -2,11 +2,9 @@ import "dotenv/config";
 import env from "../env";
 import { RequestHandler } from "express";
 import deviceModel, { Device } from "../models/Device";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
-import mediaModel from "../models/Media";
 import uidModel from "../models/UniqueID";
 
 interface addDevice {

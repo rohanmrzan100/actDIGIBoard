@@ -3,11 +3,14 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { errorToast } from "../../utils/Toast";
+import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import { addArray, removeArray } from "../../../store/slice/arraySlice";
 import { Input } from "@material-tailwind/react";
+import { createPlaylist } from "../../../API/Playlist";
+import { useNavigate } from "react-router-dom";
 const Media = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const array = useSelector((state) => state.array);
@@ -18,9 +21,19 @@ const Media = (props) => {
   });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(e.target[0].value);
-    console.log(array);
+    e.preventDefault();
+    const name = e.target[0].value;
+    if(!array || !name){
+      return errorToast("Please Provide name and at least one media.")
+    }
+    createPlaylist(name, array).then((res) => {
+      console.log(res);
+      successToast("Playlist Created Successfully")
+      navigate("/content");
+    }).catch((error)=>{
+      console.log(error);
+      errorToast("Creation of Playist Failed")
+    })
   };
   const handleChange = (event, media) => {
     const id = media._id;
@@ -76,7 +89,7 @@ const Media = (props) => {
                   <div className=" p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name}</div>
+                      <div className="px-2">{media.name.substring(0, 25)}</div>
                     </div>
 
                     <input
@@ -105,7 +118,7 @@ const Media = (props) => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name}</div>
+                      <div className="px-2">{media.name.substring(0, 25)}</div>
                     </div>
 
                     <input

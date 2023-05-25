@@ -22,8 +22,7 @@ export const addDevice = async (data) => {
     window.location.href = "/devices";
     return response.data;
   } catch (error) {
-    store.dispatch(setError(error.response.data.msg));
-    console.log(error.response.data.msg);
+    store.dispatch(setError("Adding device Failed"));
     errorToast("Adding Device Failed");
 
     return error;
@@ -41,9 +40,8 @@ export const getDevices = async () => {
     store.dispatch(unsetError());
     return response.data;
   } catch (error) {
-    store.dispatch(setError(error.response.data.msg));
-    console.log(error.response.data.msg);
-    errorToast(error.response.data.msg);
+    store.dispatch(setError("Device adding failed."));
+    errorToast("Device adding failed.");
     return error;
   }
 };
@@ -58,9 +56,8 @@ export const removeDevice = async (id) => {
     store.dispatch(unsetError());
     return response.data;
   } catch (error) {
-    store.dispatch(setError(error.response.data.msg));
-    console.log(error.response.data.msg);
-    errorToast(error.response.data.msg);
+    store.dispatch(setError("Deleting deive Failed"));
+    errorToast("Deleting deive Failed");
     return error;
   }
 };
@@ -74,11 +71,9 @@ export const add_media = async (id, array) => {
       { array: media },
       { headers: headers }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error);
-    errorToast(error.response.data.msg);
+    errorToast("Media Adding Failed");
     return error;
   }
 };
@@ -90,11 +85,10 @@ export const loadDeviceInfo = async (id) => {
 
       { headers: headers }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
-    errorToast(error.response.data.msg);
+    errorToast("Loading device failed.");
     return error;
   }
 };
@@ -111,7 +105,7 @@ export const deleteMedia = async (did, mid) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    errorToast(error.response.data.msg);
+    errorToast("Deleting Media Failed");
     return error;
   }
 };

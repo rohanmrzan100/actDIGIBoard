@@ -71,7 +71,7 @@ const Media = (props) => {
                   <div className=" p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name}</div>
+                      <div className="px-2">{}</div>
                     </div>
 
                     <input
@@ -100,7 +100,7 @@ const Media = (props) => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name}</div>
+                      <div className="px-2">{media.name.substring(0, 25)}</div>
                     </div>
 
                     <input

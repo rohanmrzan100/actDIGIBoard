@@ -16,8 +16,7 @@ export const register = async (data) => {
     window.location.href = "/signin";
     return response.data;
   } catch (error) {
-    store.dispatch(setError(error.response.data.msg));
-    // console.log(error.response.data.msg);
+    store.dispatch(setError("Registration Failed"));
     errorToast("Registration Failed");
 
     return error;

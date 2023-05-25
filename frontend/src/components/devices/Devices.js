@@ -16,6 +16,7 @@ const Devices = () => {
     getDevices().then((res) => {
       if (res.devices) {
         setDevices(res.devices);
+        console.log(res.devices);
       }
     });
   }, []);

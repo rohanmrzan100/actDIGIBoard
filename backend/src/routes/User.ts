@@ -24,7 +24,7 @@ router.get("/content", authMiddleware, getUserData);
 router.get("/view_devices", authMiddleware, viewAllDevices);
 router.delete("/delete_media/:id", authMiddleware, deleteMedia);
 
-router.post("/create/playlist",authMiddleware,createPlaylist)
+
 
 
 //test

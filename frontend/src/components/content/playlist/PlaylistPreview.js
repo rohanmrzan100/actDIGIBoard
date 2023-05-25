@@ -1,61 +1,62 @@
 import React, { useEffect, useState } from "react";
 
-import { deleteMedia, getUserData } from "../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisVertical,
   faImage,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
-import { isloading } from "../../store/slice/utilsSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Popover,
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
-import Playlist from "./playlist/Playlist";
-import PlaylistCard from "./playlist/PlaylistCard";
+import { deleteMediaFromPlaylist, getPlaylist } from "../../../API/Playlist";
+import { errorToast, successToast } from "../../utils/Toast";
+import { isloading } from "../../../store/slice/utilsSlice";
 
-const Media = () => {
-  const [userMedia, setUserMedia] = useState([]);
+const Preview = () => {
+  const playlist_id = useSelector((state) => state.utils.playlist_id);
   const [playlist, setPlaylist] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getUserData().then((res) => {
-      if (res.doc) {
-        setUserMedia(res.doc.media_id.reverse());
-        setPlaylist(res.doc.playlist);
-      }
-    });
+    getPlaylist(playlist_id)
+      .then((res) => {
+        //   if (res) {
+        //     setPlaylist(res);
+        //   }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast("Error Loading Playlist");
+      });
   }, []);
 
-  const handleDelete = (id) => {
+  const handleDelete = (mid, pid) => {
     dispatch(isloading({ type: "true" }));
-    deleteMedia(id).then(() => {
-      window.location.reload(true);
-      dispatch(isloading({ type: "false" }));
-    });
+    deleteMediaFromPlaylist(mid, pid)
+      .then((res) => {
+        dispatch(isloading({ type: "false" }));
+        successToast("Media Removed from Playlist");
+        //reload page
+      })
+      .catch((err) => {
+        dispatch(isloading({ type: "false" }));
+        errorToast("Error removing media ");
+        //reload page
+      });
   };
 
   return (
     <div className="w-full mt-8 ">
-      <div className="mb-8">
-        <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-6 md:grid-cols-4  gap-x-4 gap-y-4 ">
-          {playlist.map((playlist) => (
-            <PlaylistCard playlist={playlist} />
-          ))}
-        </div>
-      </div>
-
-      <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
+      <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
-        {userMedia &&
-          userMedia.map((media) => {
+        {playlist &&
+          playlist.map((media) => {
             if (media.type === "video") {
               return (
                 <div
@@ -89,7 +90,9 @@ const Media = () => {
                             {" "}
                             <button
                               className="hover:bg-red-600 hover:text-white w-full h-10 border-black rounded-md text-red-600  border-2"
-                              onClick={() => handleDelete(media._id)}
+                              onClick={() =>
+                                handleDelete(media._id, playlist_id)
+                              }
                             >
                               Delete
                             </button>
@@ -128,7 +131,7 @@ const Media = () => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0,25)}</div>
+                      <div className="px-2">{media.name.substring(0, 25)}</div>
                     </div>
 
                     <Popover placement="right">
@@ -174,4 +177,4 @@ const Media = () => {
   );
 };
 
-export default Media;
+export default Preview;
