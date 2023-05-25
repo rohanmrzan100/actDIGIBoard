@@ -22,12 +22,13 @@ const App = () => {
   const isloading = useSelector((state) => state.utils.isloading);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const _id = useSelector((state) => state.device.device_id);
-  const playlist_id = useSelector((state)=>state.utils.playlist_id)
+  const p_id = useSelector((state) => state.utils.playlist_id);
   if (localStorage.getItem("token")) {
     dispatch(loadUser(localStorage.getItem("token")));
   }
-  const device_id = _id || localStorage.getItem("device");
 
+  const device_id = _id || localStorage.getItem("device");
+const playlist_id = p_id || localStorage.getItem("playlist")
   return (
     <div>
       <BrowserRouter>

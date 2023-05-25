@@ -1,7 +1,6 @@
 import {
   faCirclePlay,
   faEllipsisVertical,
-  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,16 +20,19 @@ export default function PlaylistCard(props) {
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(isloading({ type: "true" }));
+
     deletePlaylist(id)
       .then((res) => {
-        dispatch(isloading({ type: "fasle" }));
+   
+    dispatch(isloading({ type: "false" }));
         successToast("Playlist deleted sucessfully");
-        navigate("/content");
+        window.location.reload(false)
+        console.log(res);
       })
       .catch((err) => {
         errorToast("Deletion Failed.");
-
         dispatch(isloading({ type: "false" }));
+        console.log(err);
       });
   };
   return (
@@ -40,7 +42,7 @@ export default function PlaylistCard(props) {
     >
       <img
         src="https://res.cloudinary.com/dsfhocvcs/image/upload/v1684936388/media/qz402v1xlzccv3k9uvko.jpg"
-        className="w-full h-36 object-cover brightness-90 hover:brightness-100  overflow-hidden"
+        className="w-full scale-125 h-36 object-cover brightness-90 hover:brightness-100  overflow-hidden"
         alt=""
       />
 
@@ -57,7 +59,7 @@ export default function PlaylistCard(props) {
               className="scale-150 cursor-pointer hover:text-gray-700"
             />
           </PopoverHandler>
-          <PopoverContent className="bg-gray-200 border-2 border-black ">
+          <PopoverContent className=" border-2 border-black ">
             <ul className="font-semibold space-y-2 text-md">
               <li>
                 {" "}
@@ -70,14 +72,16 @@ export default function PlaylistCard(props) {
               </li>
 
               <li>
-                <a href={`/playlist/preview/${playlist._id}`}>
-                  <button
-                    onClick={() => dispatch(setPlaylist_id(playlist._id))}
-                    className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md"
-                  >
-                    Preview
-                  </button>
-                </a>
+                <button
+                  onClick={() => {
+                    localStorage.setItem("playlist", playlist._id);
+                    navigate(`/playlist/preview/${playlist._id}`);
+                    dispatch(setPlaylist_id(playlist._id));
+                  }}
+                  className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md"
+                >
+                  Preview
+                </button>
               </li>
             </ul>
           </PopoverContent>

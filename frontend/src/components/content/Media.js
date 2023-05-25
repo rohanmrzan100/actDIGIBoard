@@ -44,10 +44,14 @@ const Media = () => {
     <div className="w-full mt-8 ">
       <div className="mb-8">
         <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-6 md:grid-cols-4  gap-x-4 gap-y-4 ">
-          {playlist.map((playlist) => (
-            <PlaylistCard playlist={playlist} />
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-5  md:grid-col-3 m-auto sm:grid-cols-2  gap-x-4 gap-y-4 ">
+          {playlist.length <= 0 ? (
+            <h1>You have not creted any playlist.</h1>
+          ) : (
+            playlist.map((playlist) => (
+              <PlaylistCard playlist={playlist} key={playlist._id} />
+            ))
+          )}
         </div>
       </div>
 
@@ -128,7 +132,7 @@ const Media = () => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0,25)}</div>
+                      <div className="px-2">{media.name.substring(0, 25)}</div>
                     </div>
 
                     <Popover placement="right">

@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { createPlaylist, deleteMedia, deletePlaylistByID, getPlaylistById } from "../controllers/Playlist";
+import {
+  createPlaylist,
+  deleteMedia,
+  deletePlaylistByID,
+  getPlaylistById,
+} from "../controllers/Playlist";
 import authMiddleware from "../middleware/isAuth";
 const router = Router();
 

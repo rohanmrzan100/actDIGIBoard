@@ -67,7 +67,7 @@ export const getPlaylistById: RequestHandler = async (req, res, next) => {
         .json({ msg: "Playlist not found", playlist, status: "0" });
     }
     res
-      .status(400)
+      .status(200)
       .json({ msg: "Playlist Found.", status: "1", foundPlaylist });
   } catch (error) {
     next();
@@ -94,7 +94,7 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
       { $pull: { playlist: id } }
     );
 
-    res.status(400).json({ msg: "Playlist Deleted.", status: "1" });
+    res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
     next();
   }
@@ -120,9 +120,12 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
 
-    playlist.media.filter((e) => e !== media_id);
-    await playlist.save();
-    res.status(200).json({ msg: "Playlist deleted Successfully", status: "1" });
+   await playlistModel.findByIdAndUpdate(
+       { _id: playlist_id },
+       { $pull: { media: media_id } }
+     );
+  
+    res.status(200).json({ msg: "Media deleted from playlist Successfully", status: "1" });
   } catch (error) {
     next(error);
   }

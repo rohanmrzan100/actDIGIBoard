@@ -124,6 +124,25 @@ export const addMedia: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
+// @route      /api/device/add_playlist/:id
+// @desc      add playlist in devices
+// @auth       protected
+
+export const addPlaylist: RequestHandler = async (req, res, next) => {
+  try {
+  
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
 // @route     /api/device/remove_media/:did/:mid
 // @desc      get devices
 // @auth      protected
@@ -216,7 +235,6 @@ export const generateUid: RequestHandler = async (req, res, next) => {
     });
     await uid.save();
     res.status(200).json({ msg: "uid generated and stored in DB", uid: uid });
-    // res.json(code)
   } catch (error) {
     next();
   }

@@ -23,7 +23,7 @@ const Media = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = e.target[0].value;
-    if(!array || !name){
+    if(array.length<1 || !name){
       return errorToast("Please Provide name and at least one media.")
     }
     createPlaylist(name, array).then((res) => {

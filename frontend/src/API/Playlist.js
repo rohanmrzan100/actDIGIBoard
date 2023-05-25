@@ -1,5 +1,4 @@
 import axios from "axios";
-import { successToast } from "../components/utils/Toast";
 axios.defaults.baseURL = "http://localhost:3001/";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -22,34 +21,27 @@ export const createPlaylist = async (name, array) => {
 };
 
 export const getPlaylist = async (id) => {
-  const response = await axios.get(
-    `http://localhost:3001/api/playlist/get/${id}`,
-    {
-      headers: headers,
-    }
-  );
+  const response = await axios.get(`/api/playlist/get/${id}`, {
+    headers: headers,
+  });
 
   return response.data;
 };
 
 export const deletePlaylist = async (id) => {
-  const response = await axios.get(
-    `http://localhost:3001/api/playlist/delete/${id}`,
-    {
-      headers: headers,
-    }
-  );
+  const response = await axios.delete(`/api/playlist/delete/${id}`, {
+    headers: headers,
+  });
 
   return response.data;
 };
 
-export const deleteMediaFromPlaylist = async (mid,pid) => {
-  const response = await axios.get(
+export const deleteMediaFromPlaylist = async (mid, pid) => {
+  const response = await axios.delete(
     `http://localhost:3001/api/playlist//media_delete/${pid}/${mid}`,
     {
       headers: headers,
     }
   );
-
   return response.data;
 };
