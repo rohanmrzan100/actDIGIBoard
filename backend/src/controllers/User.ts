@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { User } from "../models/User";
 import mediaModel from "../models/Media";
+import playlistModel from "../models/Playlist";
 
 // @route      /api/user/
 // @desc       test protected route
@@ -163,7 +164,6 @@ export const viewAllDevices: RequestHandler = async (req, res, next) => {
     }
     const user = await userModel.findById(userID).populate("device_id");
 
-
     if (!user) {
       return res.status(400).json({ msg: "User Not found", status: "0" });
     }
@@ -194,11 +194,6 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
     if (!media) {
       return res.status(404).json({ msg: "media not found", status: "0" });
     }
-
-    user = await userModel.findByIdAndUpdate(
-      { _id: res.locals.user._id },
-      { $pull: { media_id: media._id } }
-    );
 
     await mediaModel.findByIdAndDelete(id);
     res.status(200).json({ msg: "Media is deleted", status: "1" });

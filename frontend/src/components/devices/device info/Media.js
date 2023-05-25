@@ -14,6 +14,7 @@ const Media = (props) => {
   const [userMedia, setUserMedia] = useState([]);
 
   useEffect(() => {
+    // console.log(props.media);
     setUserMedia(props.media);
   });
 

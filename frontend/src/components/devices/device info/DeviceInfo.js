@@ -25,10 +25,12 @@ const DeviceInfo = () => {
   useEffect(() => {
     loadDeviceInfo(localStorage.getItem("device")).then((res) => {
       if (res.device.media) {
-        console.log(res.device.media);
+        console.log(res);
         setUserMedia(res.device.media);
       }
-    });
+    }).catch((error)=>{
+      console.log(error);
+    })
   }, []);
   return (
     <div className="w-full ">

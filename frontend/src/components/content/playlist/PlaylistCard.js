@@ -23,10 +23,9 @@ export default function PlaylistCard(props) {
 
     deletePlaylist(id)
       .then((res) => {
-   
-    dispatch(isloading({ type: "false" }));
+        dispatch(isloading({ type: "false" }));
         successToast("Playlist deleted sucessfully");
-        window.location.reload(false)
+        window.location.reload(false);
         console.log(res);
       })
       .catch((err) => {
@@ -41,6 +40,11 @@ export default function PlaylistCard(props) {
       key={playlist._id}
     >
       <img
+        onClick={() => {
+          localStorage.setItem("playlist", playlist._id);
+          navigate(`/playlist/preview/${playlist._id}`);
+          dispatch(setPlaylist_id(playlist._id));
+        }}
         src="https://res.cloudinary.com/dsfhocvcs/image/upload/v1684936388/media/qz402v1xlzccv3k9uvko.jpg"
         className="w-full scale-125 h-36 object-cover brightness-90 hover:brightness-100  overflow-hidden"
         alt=""

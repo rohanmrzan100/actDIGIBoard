@@ -41,7 +41,7 @@ const Preview = () => {
   }, []);
 
   const handleDelete = (mid, pid) => {
-    //   dispatch(isloading({ type: "true" }));
+      dispatch(isloading({ type: "true" }));
     deleteMediaFromPlaylist(mid, pid)
       .then((res) => {
         dispatch(isloading({ type: "false" }));

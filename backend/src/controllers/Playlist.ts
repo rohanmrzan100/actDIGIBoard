@@ -36,7 +36,7 @@ export const createPlaylist: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ msg: "Playlist is created.", status: "1", playlist });
+      .json({ msg: "Playlist is created.", status: "1" });
   } catch (error) {
     next();
   }

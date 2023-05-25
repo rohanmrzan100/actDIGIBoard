@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
-import Playlist from "./playlist/Playlist";
+import Empty from "../utils/Empty";
 import PlaylistCard from "./playlist/PlaylistCard";
 
 const Media = () => {
@@ -46,7 +46,7 @@ const Media = () => {
         <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
         <div className="grid grid-cols-1 lg:grid-cols-5  md:grid-col-3 m-auto sm:grid-cols-2  gap-x-4 gap-y-4 ">
           {playlist.length <= 0 ? (
-            <h1>You have not creted any playlist.</h1>
+            <Empty text="You have not added any playlist." />
           ) : (
             playlist.map((playlist) => (
               <PlaylistCard playlist={playlist} key={playlist._id} />
@@ -58,7 +58,10 @@ const Media = () => {
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
-        {userMedia &&
+        {userMedia.length <= 0 ? (
+          <Empty text="You have not added any Media." />
+        ) : (
+          userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
               return (
@@ -172,7 +175,8 @@ const Media = () => {
                 </div>
               );
             }
-          })}
+          })
+        )}
       </div>
     </div>
   );
