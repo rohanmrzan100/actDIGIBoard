@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { User } from "../models/User";
 import mediaModel from "../models/Media";
 import playlistModel from "../models/Playlist";
+import deviceModel from "../models/Device";
 
 // @route      /api/user/
 // @desc       test protected route
@@ -194,7 +195,22 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
     if (!media) {
       return res.status(404).json({ msg: "media not found", status: "0" });
     }
+   if(media.device_id){
+     media.device_id.forEach(async(device_id)=>{
+      
+     let device =  await deviceModel.findByIdAndUpdate(
+      { _id: device_id },
+      { $pull: { media: id } }
 
+    ) 
+     device = await deviceModel.findById(device_id)
+     if(!device){
+      return res.status(200).json({msg:"Device not found",status:"0"})
+     }
+    device.change = true
+       await device?.save()
+   
+    })}
     await mediaModel.findByIdAndDelete(id);
     res.status(200).json({ msg: "Media is deleted", status: "1" });
   } catch (error) {

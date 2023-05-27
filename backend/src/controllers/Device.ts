@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
 import uidModel from "../models/UniqueID";
 import playlistModel from "../models/Playlist";
+import mediaModel from "../models/Media";
 
 interface addDevice {
   name: string;
@@ -83,6 +84,13 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
     if (!device) {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
+
+    device.media.forEach(async(media)=>{
+         const foundMedia = await mediaModel.findByIdAndUpdate(
+      { _id: media },
+      { $pull: { device_id: device_id } }
+    );
+    })
     const owner = await userModel.findByIdAndUpdate(
       { _id: device.owner_id },
       { $pull: { device_id: device_id } }
@@ -116,7 +124,17 @@ export const addMedia: RequestHandler = async (req, res, next) => {
     if (!device) {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
-    array.map((item: string) => device.media.push(item));
+    array.map(async(item: string) => {
+       if (!mongoose.isValidObjectId(item)) {
+      return res.status(400).json({ msg: "Invalid media ID", status: "0" });
+    }
+      device.media.push(item);
+      const media = await mediaModel.findById(item)
+      media?.device_id.push(device._id)
+      console.log(media);
+      await  media?.save()
+      
+    });
     device.change = true;
     const doc = await device.save();
     res.status(200).json({ msg: "Media added to device", status: "1" });
@@ -144,6 +162,11 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
     await deviceModel.findByIdAndUpdate(
       { _id: device_id },
       { $pull: { media: media_id } }
+
+    )
+    await mediaModel.findByIdAndUpdate(
+      { _id: media_id },
+      { $pull: { device_id: device_id } }
     );
     device.change = true;
     await device.save();

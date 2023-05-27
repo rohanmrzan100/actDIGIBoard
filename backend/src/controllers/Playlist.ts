@@ -120,11 +120,19 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
 
-   await playlistModel.findByIdAndUpdate(
+    await playlistModel.findByIdAndUpdate(
        { _id: playlist_id },
        { $pull: { media: media_id } }
      );
-  
+     const deletePlaylist = await  playlistModel.findById(playlist_id);
+      if (!deletePlaylist) {
+      return res.status(400).json({ msg: "Playlist not found", status: "0" });
+    }
+ if(deletePlaylist.media.length<=0){
+    await playlistModel.findByIdAndDelete(playlist_id)
+   return   res.status(200).json({ msg: "Playlist is deleted as it is empty", status: "1" });
+ }
+ 
     res.status(200).json({ msg: "Media deleted from playlist Successfully", status: "1" });
   } catch (error) {
     next(error);

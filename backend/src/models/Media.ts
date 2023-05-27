@@ -5,7 +5,8 @@ interface Media {
   media: string;
   thumbnail: string;
   type: string;
-  name:string
+  name:string;
+  device_id:[string]
 }
 
 const mediaSchema = new mongoose.Schema(
@@ -26,6 +27,7 @@ const mediaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    device_id: [{ type: mongoose.Types.ObjectId, ref: "device" }],
   },
   {
     timestamps: true,

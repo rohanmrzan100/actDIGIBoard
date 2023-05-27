@@ -29,7 +29,7 @@ const App = () => {
   }
 
   const device_id = _id || localStorage.getItem("device");
-const playlist_id = p_id || localStorage.getItem("playlist")
+  const playlist_id = p_id || localStorage.getItem("playlist");
   return (
     <div>
       <BrowserRouter>
@@ -56,7 +56,10 @@ const playlist_id = p_id || localStorage.getItem("playlist")
                 <Route path="/devices" element={<Devices />}></Route>
                 <Route path="/add_device" element={<Add />}></Route>
                 <Route path="/create/playlist" element={<Playlist />}></Route>
-                <Route path="/device/playlist/add" element={<AddPlaylist />}></Route>
+                <Route
+                  path="/device/playlist/add"
+                  element={<AddPlaylist />}
+                ></Route>
                 <Route
                   path={`/playlist/preview/${playlist_id}`}
                   element={<Preview />}
