@@ -281,9 +281,8 @@ export const resyncDevice: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
 
-    console.log(device);
 
-    device.change = false;
+    device.change = true;
     await device.save();
 
     res.status(200).json({ msg: "Device is resynced", status: "1" });
