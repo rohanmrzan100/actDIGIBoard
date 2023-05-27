@@ -93,7 +93,7 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
       { _id: res.locals.user._id },
       { $pull: { playlist: id } }
     );
-
+    
     res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
     next();

@@ -25,7 +25,7 @@ router.get("/get/:id", getDevice);
 router.get("/generate/uid", generateUid);
 router.get("/check_change/:id", checkChange);
 
-router.patch("/add_playlist/:did/:pid",authMiddleware,addPlaylistToDevice)
+router.post("/add_playlist/:did/:pid",addPlaylistToDevice)
 
 
 

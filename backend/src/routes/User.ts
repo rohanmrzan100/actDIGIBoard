@@ -9,7 +9,6 @@ import {
   deleteMedia,
 } from "../controllers/User";
 import { uploadImage, uploadVideo } from "../controllers/Media";
-import { createPlaylist } from "../controllers/Playlist";
 
 const router = express.Router();
 

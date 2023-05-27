@@ -1,4 +1,5 @@
 import {
+  faCirclePlay,
   faImage,
   faRotate,
   faSignal,
@@ -34,6 +35,11 @@ const DevicesCard = (props) => {
     });
   };
 
+  const handlePlaylistClick = ()=>{
+    localStorage.setItem("device", props.device._id);
+    dispatch(setDevice(props.device._id))
+    window.location.href = "/device/playlist/add"
+  }
   const handleClick = () => {
     localStorage.setItem("device", props.device._id);
     dispatch(setDevice(props.device._id));
@@ -53,13 +59,13 @@ const DevicesCard = (props) => {
       </div>
 
       <div className="flex justify-between items-center space-x-12  ">
-        <div className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200">
+        {/* <div className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200">
           <FontAwesomeIcon
             icon={faSignal}
             className="scale-150 text-green-500"
           />
           <p className="text-lg">Status</p>
-        </div>
+        </div> */}
         <div
           onClick={handleSync}
           className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200"
@@ -70,6 +76,16 @@ const DevicesCard = (props) => {
           />
           <p className="text-lg">inSync</p>
         </div>
+        <button
+          onClick={handlePlaylistClick}
+          className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
+        >
+          <FontAwesomeIcon
+            icon={faCirclePlay}
+            className="scale-150 text-ornage-500"
+          />
+          <p className="text-lg">Use Playlist</p>
+        </button>
         <button
           onClick={handleClick}
           className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"

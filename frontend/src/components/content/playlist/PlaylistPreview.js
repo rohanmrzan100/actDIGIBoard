@@ -31,6 +31,7 @@ const Preview = () => {
       .then((res) => {
         if (res.foundPlaylist) {
           setPlaylist(res.foundPlaylist);
+          console.log(res.foundPlaylist);
           setMedia(res.foundPlaylist.media);
         }
       })
@@ -41,20 +42,20 @@ const Preview = () => {
   }, []);
 
   const handleDelete = (mid, pid) => {
-      dispatch(isloading({ type: "true" }));
-    deleteMediaFromPlaylist(mid, pid)
-      .then((res) => {
-        dispatch(isloading({ type: "false" }));
-        successToast("Media Removed from Playlist");
-        window.location.reload(false);
-        //reload page
-      })
-      .catch((err) => {
-        dispatch(isloading({ type: "false" }));
-        errorToast("Error removing media ");
-        //reload page
-        window.location.reload(false);
-      });
+  //     dispatch(isloading({ type: "true" }));
+  //   deleteMediaFromPlaylist(mid, pid)
+  //     .then((res) => {
+  //       dispatch(isloading({ type: "false" }));
+  //       successToast("Media Removed from Playlist");
+  //       window.location.reload(false);
+  //       //reload page
+  //     })
+  //     // .catch((err) => {
+  //     //   dispatch(isloading({ type: "false" }));
+  //     //   errorToast("Error removing media ");
+  //     //   //reload page
+  //     //   window.location.reload(false);
+  //     // });
   };
 
   return (

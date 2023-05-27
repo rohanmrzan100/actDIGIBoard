@@ -110,21 +110,24 @@ export const deleteMedia = async (did, mid) => {
   }
 };
 
-
-
-export const resyncDevice = async (id)=>{
+export const resyncDevice = async (id) => {
   try {
-       const response = await axios.get(
-         `api/device/sync_update/${id}`,
+    const response = await axios.get(
+      `api/device/sync_update/${id}`,
 
-         { headers: headers }
-       );
-       console.log(response.data);
-       successToast("Device is Synced");
-       return response.data;
+      { headers: headers }
+    );
+    console.log(response.data);
+    successToast("Device is Synced");
+    return response.data;
   } catch (error) {
-     console.log(error);
-     errorToast("Error in syncing device");
-     return error;
+    console.log(error);
+    errorToast("Error in syncing device");
+    return error;
   }
-}
+};
+
+export const addPlaylistToDevice = async (did, pid) => {
+  const response = await axios.post(`api/device/add_playlist/${did}/${pid}`);
+  return response.data;
+};
