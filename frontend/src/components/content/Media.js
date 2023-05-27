@@ -7,7 +7,7 @@ import {
   faImage,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
   Popover,
@@ -20,7 +20,6 @@ import PlaylistCard from "./playlist/PlaylistCard";
 const Media = () => {
   const [userMedia, setUserMedia] = useState([]);
   const [playlist, setPlaylist] = useState([]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

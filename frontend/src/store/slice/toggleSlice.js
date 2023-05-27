@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  navToggle:false
+  navToggle:false,
 };
 
 export const toggleSlice = createSlice({
@@ -14,7 +14,8 @@ export const toggleSlice = createSlice({
         ...state,
         navToggle: !state.navToggle
       }
-    }
+    },
+
    
   },
 });
