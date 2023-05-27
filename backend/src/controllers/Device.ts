@@ -240,21 +240,15 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
       };
       return res
         .status(400)
-        .json({ status: "0",device, msg: "Device not found" });
+        .json({ status: "0",device, msg: "Device not found" , token: " "});
     }
-    // if (!device.change) {
-    //   return res
-    //     .status(200)
-    //     .json({ msg: "Device media is not changed", status: "0" });
-    // } else {
-    //   device.change = false;
-    //   await device.save();
-    //    res
-    //     .status(200)
-    //     .json({ msg: "Device media is changed.", status: "1" });
-    // }
+    const token = jwt.sign({ _id: device.owner_id }, env.SECRET, {
+      expiresIn: "30d",
+    });
     res.status(200).json({
       status: "1",
+      device,
+      token: token,
       msg: "Device verified.",
     });
   } catch (error) {
@@ -353,7 +347,6 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
 
 await deviceModel.updateOne({_id:device_id},{$unset: {media: 1 }})
 
-console.log(playlist.media);
 playlist.media.forEach(media=>{
   device.media.push(media)
 })
