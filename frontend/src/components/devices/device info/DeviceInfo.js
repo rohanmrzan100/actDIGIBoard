@@ -50,8 +50,8 @@ const DeviceInfo = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
-      {userMedia.length>0? 
-        userMedia &&
+    { 
+        userMedia && userMedia.length >0?
         userMedia.map((media) => {
           if (media.type === "video") {
             return (
