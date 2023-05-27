@@ -10,6 +10,7 @@ import {
   generateUid,
   checkChange,
   resyncDevice,
+  addPlaylistToDevice,
 } from "../controllers/Device";
 const router = express.Router();
 
@@ -23,6 +24,8 @@ router.get("/sync/update", authMiddleware ,resyncDevice);
 router.get("/get/:id", getDevice);
 router.get("/generate/uid", generateUid);
 router.get("/check_change/:id", checkChange);
+
+router.patch("/add_playlist/:did/:pid",authMiddleware,addPlaylistToDevice)
 
 
 

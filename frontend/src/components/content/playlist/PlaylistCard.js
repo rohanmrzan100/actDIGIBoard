@@ -1,6 +1,7 @@
 import {
   faCirclePlay,
   faEllipsisVertical,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -34,63 +35,54 @@ export default function PlaylistCard(props) {
         console.log(err);
       });
   };
+  const image =  "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
   return (
     <div
-      className="rounded overflow-hidden  w-56 bg-gray-100 border-2 shadow-lg"
-      key={playlist._id}
-    >
-      <img
-        onClick={() => {
-          localStorage.setItem("playlist", playlist._id);
-          navigate(`/playlist/preview/${playlist._id}`);
-          dispatch(setPlaylist_id(playlist._id));
-        }}
-        src="https://res.cloudinary.com/dsfhocvcs/image/upload/v1684936388/media/qz402v1xlzccv3k9uvko.jpg"
-        className="w-full scale-125 h-36 object-cover brightness-90 hover:brightness-100  overflow-hidden"
-        alt=""
-      />
+    className="rounded overflow-hidden shadow-lg"
+    key={playlist._id}
+  >
+    <img
+      className="w-full h-24 object-cover"
+      src={image}
+      loading="lazy"
+      alt={""}
+    />
 
-      <div className="p-6 flex justify-between items-start">
-        <div className="flex  flex-start items-center">
-          <FontAwesomeIcon icon={faCirclePlay} />
-          <div className="px-2">{playlist.name.substring(0, 15)}</div>
-        </div>
+    <div className="p-6 flex justify-between items-start">
+      <div className="flex items-center justify-start">
+        <FontAwesomeIcon icon={faImage} />
+        <div className="px-2">{playlist.name.substring(0, 15)}</div>
+      </div>
 
-        <Popover placement="right">
-          <PopoverHandler>
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              className="scale-150 cursor-pointer hover:text-gray-700"
-            />
-          </PopoverHandler>
-          <PopoverContent className=" border-2 border-black ">
-            <ul className="font-semibold space-y-2 text-md">
-              <li>
-                {" "}
-                <button
-                  className="hover:bg-red-600 hover:text-white w-full h-10 border-black rounded-md text-red-600  border-2"
-                  onClick={() => handleDelete(playlist._id)}
-                >
-                  Delete
-                </button>
-              </li>
+      <Popover placement="right">
+        <PopoverHandler>
+          <FontAwesomeIcon
+            icon={faEllipsisVertical}
+            className="scale-150 cursor-pointer hover:text-gray-700"
+          />
+        </PopoverHandler>
+        <PopoverContent className="bg-gray-200 border-2 border-black ">
+          <ul className="font-semibold space-y-2 text-md">
+            <li>
+              {" "}
+              <button
+                className="hover:bg-red-600 hover:text-white w-full h-10 border-black rounded-md text-red-600  border-2"
+                onClick={() => handleDelete(playlist._id)}
+              >
+                Delete
+              </button>
+            </li>
 
-              <li>
-                <button
-                  onClick={() => {
-                    localStorage.setItem("playlist", playlist._id);
-                    navigate(`/playlist/preview/${playlist._id}`);
-                    dispatch(setPlaylist_id(playlist._id));
-                  }}
-                  className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md"
-                >
+            <li>
+            
+                <button className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md">
                   Preview
                 </button>
-              </li>
-            </ul>
-          </PopoverContent>
-        </Popover>
-      </div>
+            </li>
+          </ul>
+        </PopoverContent>
+      </Popover>
     </div>
+  </div>
   );
 }

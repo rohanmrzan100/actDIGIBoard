@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
 import uidModel from "../models/UniqueID";
+import playlistModel from "../models/Playlist";
 
 interface addDevice {
   name: string;
@@ -256,6 +257,42 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
   }
 };
 
+
+
+// @route      /api/device/update_sync/:id
+// @desc       resync device from website
+// @auth       private
+
+export const resyncDevice: RequestHandler = async (req, res, next) => {
+  try {
+
+    const device_id = req.params.id;
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
+    }
+
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+
+    console.log(device);
+
+    device.change = false;
+    await device.save();
+
+    res.status(200).json({ msg: "Device is resynced", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
+
+
+
 // @route      /api/device/check_change/:id
 // @desc       check for change in device media
 // @auth       public
@@ -286,29 +323,47 @@ export const checkChange: RequestHandler = async (req, res, next) => {
   }
 };
 
-// @route      /api/device/update_sync/:id
+// @route      /api/device/add_playlist/:did/:pid
 // @desc       resync device from website
 // @auth       private
 
-export const resyncDevice: RequestHandler = async (req, res, next) => {
+export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
   try {
-    const device_id = req.params.id;
-    if (!mongoose.isValidObjectId(device_id)) {
-      return res.status(400).json({ msg: "Invalid device ID", status: "0" });
-    }
+   const device_id = req.params.did
+   const playlist_id = req.params.pid
 
-    const device = await deviceModel.findById(device_id);
-    if (!device) {
-      return res.status(400).json({ msg: "Device not found", status: "0" });
-    }
+   if (!mongoose.isValidObjectId(device_id) || !mongoose.isValidObjectId(playlist_id) )  {
+    return res
+      .status(400)
+      .json({ msg: "Invalid  ID", status: "0" });
+  }
 
-    console.log(device);
+  const device = await deviceModel.findById(device_id)
+  if(!device){
+    return res.status(400).json({msg:"Device not found",status:"0"})
+  }
+  const playlist = await playlistModel.findById(playlist_id)
+  if(!playlist){
+    return res.status(400).json({msg:"Playlist not found",status:"0"})
+  }
 
-    device.change = false;
-    await device.save();
+await deviceModel.updateOne({_id:device_id},{$unset: {media: 1 }})
 
-    res.status(200).json({ msg: "Device is resynced", status: "1" });
+console.log(playlist.media);
+playlist.media.forEach(media=>{
+  device.media.push(media)
+})
+device.change = true
+await device.save()
+
+res.status(200).json({msg:"Playlist added to device",status:"1"})
+
+
+
+
   } catch (error) {
     next(error);
   }
 };
+
+

@@ -34,7 +34,7 @@ const playlist_id = p_id || localStorage.getItem("playlist")
       <BrowserRouter>
         <Navbar />
         {navToggle && <SideNav />}
-        <div className="md:w-[80%]  w-full m-auto  h-full p-6">
+        <div className="md:w-[80%]   w-full m-auto  h-full p-6">
           <Routes>
             {!isAuth && (
               <>
