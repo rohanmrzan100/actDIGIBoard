@@ -5,6 +5,7 @@ import { deleteMedia, loadDeviceInfo } from "../../../API/Device";
 import { useDispatch } from "react-redux";
 import GoBack from "../../utils/GoBack";
 import { isloading } from "../../../store/slice/utilsSlice";
+import Empty from "../../utils/Empty";
 const DeviceInfo = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,68 +50,70 @@ const DeviceInfo = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
-        {userMedia &&
-          userMedia.map((media) => {
-            if (media.type === "video") {
-              return (
-                <div
-                  className="rounded  overflow-hidden shadow-lg"
-                  key={media._id}
+      {userMedia.length>0? 
+        userMedia &&
+        userMedia.map((media) => {
+          if (media.type === "video") {
+            return (
+              <div
+                className="rounded  overflow-hidden shadow-lg"
+                key={media._id}
+              >
+                <video
+                  poster={media.thumbnail}
+                  controls
+                  className="w-full h-48 object-cover brightness-90 hover:brightness-100"
                 >
-                  <video
-                    poster={media.thumbnail}
-                    controls
-                    className="w-full h-48 object-cover brightness-90 hover:brightness-100"
-                  >
-                    <source src={media.media} type="video/mp4" />
-                  </video>
+                  <source src={media.media} type="video/mp4" />
+                </video>
 
-                  <div className=" p-6 flex justify-between items-start">
-                    <div className="flex  flex-start items-center">
-                      <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
-                    </div>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="scale-125 text-red-500 hover:text-red-800"
-                      onClick={() =>
-                        handleDelete(localStorage.getItem("device"), media._id)
-                      }
-                    />
+                <div className=" p-6 flex justify-between items-start">
+                  <div className="flex  flex-start items-center">
+                    <FontAwesomeIcon icon={faVideo} />
+                    <div className="px-2">{media.name.substring(0, 15)}</div>
                   </div>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  className="rounded overflow-hidden shadow-lg"
-                  key={media._id}
-                >
-                  <img
-                    className="w-full h-48 object-cover"
-                    src={media.media}
-                    loading="lazy"
-                    alt={""}
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="scale-125 text-red-500 hover:text-red-800"
+                    onClick={() =>
+                      handleDelete(localStorage.getItem("device"), media._id)
+                    }
                   />
-
-                  <div className="p-6 flex justify-between items-start">
-                    <div className="flex items-center justify-start">
-                      <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
-                    </div>
-
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="scale-125 text-red-500 hover:text-red-800"
-                      onClick={() =>
-                        handleDelete(localStorage.getItem("device"), media._id)
-                      }
-                    />
-                  </div>
                 </div>
-              );
-            }
-          })}
+              </div>
+            );
+          } else {
+            return (
+              <div
+                className="rounded overflow-hidden shadow-lg"
+                key={media._id}
+              >
+                <img
+                  className="w-full h-48 object-cover"
+                  src={media.media}
+                  loading="lazy"
+                  alt={""}
+                />
+
+                <div className="p-6 flex justify-between items-start">
+                  <div className="flex items-center justify-start">
+                    <FontAwesomeIcon icon={faImage} />
+                    <div className="px-2">{media.name.substring(0, 15)}</div>
+                  </div>
+
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="scale-125 text-red-500 hover:text-red-800"
+                    onClick={() =>
+                      handleDelete(localStorage.getItem("device"), media._id)
+                    }
+                  />
+                </div>
+              </div>
+            );
+          }
+        }) 
+      :<Empty text="There is no Media Present in this device."/>}
       </div>
     </div>
   );

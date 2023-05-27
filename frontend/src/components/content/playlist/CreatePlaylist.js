@@ -9,6 +9,7 @@ import { addArray, removeArray } from "../../../store/slice/arraySlice";
 import { Input } from "@material-tailwind/react";
 import { createPlaylist } from "../../../API/Playlist";
 import { useNavigate } from "react-router-dom";
+import Empty from "../../utils/Empty";
 const Media = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -70,7 +71,9 @@ const Media = (props) => {
 
       <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4  ">
-        {userMedia &&
+
+
+        {userMedia.length>0?  userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
               return (
@@ -132,7 +135,8 @@ const Media = (props) => {
                 </div>
               );
             }
-          })}
+          })  :<Empty text="You have not uploaded any media"/>}
+        
       </div>
     </div>
   );
