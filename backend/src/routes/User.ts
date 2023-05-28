@@ -8,7 +8,7 @@ import {
   viewAllDevices,
   deleteMedia,
 } from "../controllers/User";
-import { uploadImage, uploadVideo } from "../controllers/Media";
+import { getMediaById, uploadImage, uploadVideo } from "../controllers/Media";
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ router.get("/all", getAllUser);
 router.get("/content", authMiddleware, getUserData);
 router.get("/view_devices", authMiddleware, viewAllDevices);
 router.delete("/delete_media/:id", authMiddleware, deleteMedia);
+router.get("/media/:id", getMediaById);
 
 
 

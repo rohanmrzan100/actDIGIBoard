@@ -2,6 +2,27 @@ import cloudinary from "../utils/cloudinary";
 import mediaModel, { Media } from "../models/Media";
 import { RequestHandler } from "express";
 import userModel from "../models/User";
+import sharp from "sharp"
+
+
+
+export const getMediaById:RequestHandler = async( req,res,next)=>{
+  try {
+    const id = req.params.id
+    const media = await mediaModel.findById(id)
+    if (!media)
+      return res
+        .status(400)
+        .json({ msg: "Media is not found", status: "0" });
+    res.status(200).json(media)
+
+  } catch (error) {
+    next(error)
+  }
+} 
+
+
+
 
 export const uploadImage: RequestHandler = async (req, res, next) => {
   try {
