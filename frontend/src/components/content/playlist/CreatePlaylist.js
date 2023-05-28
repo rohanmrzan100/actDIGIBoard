@@ -135,7 +135,7 @@ const Media = (props) => {
             }
           })}
 
-        {!userMedia.length > 0 && (
+        {userMedia && !userMedia.length > 0 && (
           <Empty text="You have not uploaded any media" />
         )}
       </div>

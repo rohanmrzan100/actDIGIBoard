@@ -367,7 +367,7 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
   if(!playlist){
     return res.status(400).json({msg:"Playlist not found",status:"0"})
   }
-
+playlist.device.push(device_id)
 await deviceModel.updateOne({_id:device_id},{$unset: {media: 1 }})
 
 playlist.media.forEach(media=>{
@@ -375,12 +375,9 @@ playlist.media.forEach(media=>{
 })
 device.change = true
 await device.save()
+await playlist.save()
 
 res.status(200).json({msg:"Playlist added to device",status:"1"})
-
-
-
-
   } catch (error) {
     next(error);
   }

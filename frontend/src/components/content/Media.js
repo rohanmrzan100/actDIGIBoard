@@ -125,13 +125,14 @@ const Media = () => {
                   key={media._id}
                 >
                   <img
+                  alt=""
                     src={media.media}
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   />
 
                   <div className="p-4 text-sm flex justify-between items-start">
                     <div className="flex  flex-start items-center">
-                      <FontAwesomeIcon icon={faVideo} />
+                      <FontAwesomeIcon icon={faImage} />
                       <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
 

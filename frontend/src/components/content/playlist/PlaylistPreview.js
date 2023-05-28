@@ -40,13 +40,13 @@ const Preview = () => {
       .then((res) => {
         dispatch(isloading({ type: "false" }));
         successToast("Media Removed from Playlist");
-        // window.location.reload(false);
+        window.location.reload(false);
         //reload page
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));
         console.log(err);
-        // window.location.reload(false);
+        window.location.reload(false);
       });
   };
   const handleClick = () => {

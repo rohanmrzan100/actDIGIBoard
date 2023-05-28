@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface Playlist {
   _id: string;
   media: [string];
+  device: [string];
   name: string;
 }
 
@@ -11,6 +12,8 @@ const playlistSchema = new mongoose.Schema(
     name: { type: String, required: true },
 
     media: [{ type: mongoose.Types.ObjectId, ref: "media" }],
+    
+    device: [{ type: mongoose.Types.ObjectId, ref: "device" }],
   },
 
   {

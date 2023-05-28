@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import userModel from "../models/User";
 import playlistModel, { Playlist } from "../models/Playlist";
 import mediaModel from "../models/Media";
+import deviceModel from "../models/Device";
 
 export const createPlaylist: RequestHandler = async (req, res, next) => {
   try {
@@ -53,6 +54,7 @@ export const getPlaylistById: RequestHandler = async (req, res, next) => {
       _id: "",
       name: "",
       media: [""],
+      device: [""],
     };
     const id = req.params.id;
 
@@ -90,10 +92,30 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found" });
     }
+   playlist.device.forEach(async(device_id)=>{
+      const device = await deviceModel.findById(device_id)
+      if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+      device.change = true
+      await device?.save()
+       await deviceModel.findByIdAndUpdate(
+       { _id: device._id },
+       { $pull: { playlist: id } }
+     );
+    })
+   
+   
+
     await userModel.findByIdAndUpdate(
       { _id: res.locals.user._id },
       { $pull: { playlist: id } }
     );
+
+    // await mediaModel.findByIdAndUpdate(
+    //   { _id: res.locals.user._id },
+    //   { $pull: { playlist: id } }
+    // );
     
     res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
@@ -121,12 +143,22 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
-    const media = await mediaModel.findById(media_id);
+
+
+    console.log(playlist);
     
+    const media = await mediaModel.findById(media_id);
     if (!media) {
       return res.status(400).json({ msg: "Media not found", status: "0" });
     }
-
+    playlist.device.forEach(async(device_id)=>{
+      const device = await deviceModel.findById(device_id)
+      if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+      device.change = true
+      await device?.save()
+    })
     await playlistModel.findByIdAndUpdate(
        { _id: playlist_id },
        { $pull: { media: media_id } }
