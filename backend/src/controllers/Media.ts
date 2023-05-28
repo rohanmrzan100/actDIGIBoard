@@ -2,7 +2,6 @@ import cloudinary from "../utils/cloudinary";
 import mediaModel, { Media } from "../models/Media";
 import { RequestHandler } from "express";
 import userModel from "../models/User";
-import sharp from "sharp"
 
 
 
@@ -20,9 +19,6 @@ export const getMediaById:RequestHandler = async( req,res,next)=>{
     next(error)
   }
 } 
-
-
-
 
 export const uploadImage: RequestHandler = async (req, res, next) => {
   try {
@@ -92,12 +88,20 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
         .json({ msg: "User is not found", status: "0", media: media });
 
     const video = req.body.video;
+// Specify the video public ID
+
+const transformationParams = {
+  resource_type: 'video',
+  eager: [
+    { width: 640, height: 480, quality: 'auto:low' } // Adjust the transformation parameters as needed
+  ]
+};
 
     // Upload video to Cloudinary
     await cloudinary.v2.uploader
 
       .upload(video, {
-        resource_type: "video",
+        resource_type: "video", transformation: transformationParams ,
         folder: "media",
       })
       .then(async (result) => {
