@@ -17,6 +17,7 @@ import ErrorPage from "./components/utils/ErrorPage";
 import Playlist from "./components/content/playlist/Playlist";
 import Preview from "./components/content/playlist/PlaylistPreview";
 import AddPlaylist from "./components/devices/device info/addPlaylist";
+import AddMedia from "./components/content/playlist/AddMedia";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -71,6 +72,11 @@ const App = () => {
                 <Route
                   path={`/device/${device_id}/add`}
                   element={<DeviceAddMedia />}
+                ></Route>
+
+                <Route
+                  path={`/playlist/${localStorage.getItem("playlist")}/add`}
+                  element={<AddMedia />}
                 ></Route>
               </>
             )}

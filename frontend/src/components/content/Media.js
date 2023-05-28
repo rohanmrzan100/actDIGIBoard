@@ -23,13 +23,12 @@ const Media = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(isloading({type:"true"}))
+    dispatch(isloading({ type: "true" }));
     getUserData().then((res) => {
       if (res.doc) {
-
         setUserMedia(res.doc.media_id.reverse());
         setPlaylist(res.doc.playlist);
-        dispatch(isloading({type:"false"}))
+        dispatch(isloading({ type: "false" }));
       }
     });
   }, []);
@@ -46,22 +45,22 @@ const Media = () => {
     <div className="w-full mt-8 ">
       <div className="mb-8">
         <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
-        {playlist.length > 0 ?  (
-          <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
-            {playlist.map((playlist) => (
-              <PlaylistCard playlist={playlist} key={playlist._id} />
-            ))}
-          </div>
-        ):(
+        {playlist && !playlist.length > 0 && (
           <Empty text="You have not added any playlist." />
         )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
+          {playlist &&
+            playlist.map((playlist) => (
+              <PlaylistCard playlist={playlist} key={playlist._id} />
+            ))}
+        </div>
       </div>
 
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2  gap-x-4 gap-y-4 ">
-        {userMedia.length>0 ? (
-          userMedia &&
+        {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
               return (
@@ -173,10 +172,11 @@ const Media = () => {
                 </div>
               );
             }
-          })
-        ): (
+          })}
+
+        {userMedia && !userMedia.length > 0 && (
           <Empty text="You have not added any Media." />
-        ) }
+        )}
       </div>
     </div>
   );

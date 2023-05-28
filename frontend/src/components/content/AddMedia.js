@@ -46,7 +46,7 @@ const AddImage = () => {
       )}
       <form
         onSubmit={handleFormSubmit}
-        className="w-full bg-gray-200 mx-4 rounded-lg p-4 border-2 hover:bg-gray-100"
+        className="w-full bg-gray-200  rounded-lg p-4 border-2 hover:bg-gray-100"
       >
         <label className="block mb-2 text-lg font-medium text-black">
           Upload Video or Image

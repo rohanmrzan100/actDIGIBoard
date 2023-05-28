@@ -54,75 +54,72 @@ const Media = (props) => {
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
-        {userMedia.length > 0
-          ? userMedia &&
-            userMedia.map((media) => {
-              if (media.type === "video") {
-                return (
-                  <div
-                    className="rounded  overflow-hidden shadow-lg"
-                    key={media._id}
+        {userMedia && !userMedia.length > 0 && (
+          <Empty text="You have not uploaded any media." />
+        )}
+        {userMedia &&
+          userMedia.map((media) => {
+            if (media.type === "video") {
+              return (
+                <div
+                  className="rounded  overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <video
+                    poster={media.thumbnail}
+                    controls
+                    className="w-full h-48 object-cover brightness-90 hover:brightness-100"
                   >
-                    <video
-                      poster={media.thumbnail}
-                      controls
-                      className="w-full h-48 object-cover brightness-90 hover:brightness-100"
-                    >
-                      <source src={media.media} type="video/mp4" />
-                    </video>
+                    <source src={media.media} type="video/mp4" />
+                  </video>
 
-                    <div className=" p-6 flex justify-between items-start">
-                      <div className="flex  flex-start items-center">
-                        <FontAwesomeIcon icon={faVideo} />
-                        <div className="px-2">
-                          {media.name.substring(0, 15)}
-                        </div>
-                      </div>
-
-                      <input
-                        onChange={(e) => handleChange(e, media)}
-                        id="default-checkbox"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      ></input>
+                  <div className=" p-6 flex justify-between items-start">
+                    <div className="flex  flex-start items-center">
+                      <FontAwesomeIcon icon={faVideo} />
+                      <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
+
+                    <input
+                      onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
                   </div>
-                );
-              } else {
-                return (
-                  <div
-                    className="rounded overflow-hidden shadow-lg"
-                    key={media._id}
-                  >
-                    <img
-                      className="w-full h-48 object-cover"
-                      src={media.media}
-                      loading="lazy"
-                      alt={""}
-                    />
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  className="rounded overflow-hidden shadow-lg"
+                  key={media._id}
+                >
+                  <img
+                    className="w-full h-48 object-cover"
+                    src={media.media}
+                    loading="lazy"
+                    alt={""}
+                  />
 
-                    <div className="p-6 flex justify-between items-start">
-                      <div className="flex items-center justify-start">
-                        <FontAwesomeIcon icon={faImage} />
-                        <div className="px-2">
-                          {media.name.substring(0, 15)}
-                        </div>
-                      </div>
-
-                      <input
-                        onChange={(e) => handleChange(e, media)}
-                        id="default-checkbox"
-                        type="checkbox"
-                        value=""
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      ></input>
+                  <div className="p-6 flex justify-between items-start">
+                    <div className="flex items-center justify-start">
+                      <FontAwesomeIcon icon={faImage} />
+                      <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
+
+                    <input
+                      onChange={(e) => handleChange(e, media)}
+                      id="default-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    ></input>
                   </div>
-                );
-              }
-            })
-          : <Empty text="You have not uploaded any media."/>}
+                </div>
+              );
+            }
+          })}
       </div>
     </div>
   );

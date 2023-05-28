@@ -45,3 +45,17 @@ export const deleteMediaFromPlaylist = async (mid, pid) => {
   );
   return response.data;
 };
+
+
+
+
+export const addMediaToPlaylist = async (pid, array) => {
+  const response = await axios.post(
+    `/api/playlist/add_media/${pid}`,
+    { array: array },
+    {
+      headers: headers,
+    }
+  );
+  return response.data;
+};

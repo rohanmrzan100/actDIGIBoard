@@ -3,38 +3,35 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { errorToast, successToast } from "../../utils/Toast";
-import { isloading } from "../../../store/slice/utilsSlice";
 import { addArray, removeArray } from "../../../store/slice/arraySlice";
-import { Input } from "@material-tailwind/react";
-import { createPlaylist } from "../../../API/Playlist";
-import { useNavigate } from "react-router-dom";
+import { isloading } from "../../../store/slice/utilsSlice";
+import { errorToast } from "../../utils/Toast";
 import Empty from "../../utils/Empty";
+import { addMediaToPlaylist } from "../../../API/Playlist";
 const Media = (props) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const array = useSelector((state) => state.array);
   const [userMedia, setUserMedia] = useState([]);
 
   useEffect(() => {
+    // console.log(props.media);
     setUserMedia(props.media);
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target[0].value;
-    if(array.length<1 || !name){
-      return errorToast("Please Provide name and at least one media.")
+  const handleClick = () => {
+    if (array.length <= 0) {
+      return errorToast("Please Select Media before Adding");
     }
-    createPlaylist(name, array).then((res) => {
-      console.log(res);
-      successToast("Playlist Created Successfully")
-      navigate("/content");
-    }).catch((error)=>{
-      console.log(error);
-      errorToast("Creation of Playist Failed")
-    })
+    const id = localStorage.getItem("playlist");
+
+    console.log(array, id);
+    dispatch(isloading({ type: "true" }));
+
+    addMediaToPlaylist(id, array).then((res) => {
+      window.location.href = `/playlist/preview/${id}`;
+      dispatch(isloading({ type: "false" }));
+    });
   };
   const handleChange = (event, media) => {
     const id = media._id;
@@ -45,32 +42,23 @@ const Media = (props) => {
       dispatch(removeArray({ id, array }));
     }
   };
+
   return (
     <div className="w-full mt-8 ">
-      <form
-        onSubmit={handleSubmit}
-        className=" flex justify-between flex-col sm:flex-row items-center mb-8"
-      >
-        <div className="mb-2 w-5/12">
-          <label className="block text-sm font-semibold text-gray-800">
-            Enter Name of Playlist
-          </label>
-          <input
-            name="mname"
-            type="text"
-            className="block w-full  px-4 py-2 mt-2 text-black bg-white border border-black rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-          />
-        </div>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
         <button
+          onClick={handleClick}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Create Playlist
+          Add
         </button>
-      </form>
-
-      <h1 className="text-2xl mb-8 font-semibold"> Media You have Uploaded</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4  ">
+      </div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3  gap-x-4 gap-y-4 ">
+        {!userMedia.length > 0 && (
+          <Empty text="You have not uploaded any media." />
+        )}
         {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
@@ -134,10 +122,6 @@ const Media = (props) => {
               );
             }
           })}
-
-        {!userMedia.length > 0 && (
-          <Empty text="You have not uploaded any media" />
-        )}
       </div>
     </div>
   );

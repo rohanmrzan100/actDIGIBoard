@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faImage,
-  faTrash,
-  faVideo,
-} from "@fortawesome/free-solid-svg-icons";
+import { faImage, faTrash, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import {
-
-  Tooltip,
-} from "@material-tailwind/react";
+import { Tooltip } from "@material-tailwind/react";
 import { deleteMediaFromPlaylist, getPlaylist } from "../../../API/Playlist";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import GoBack from "../../utils/GoBack";
 import Empty from "../../utils/Empty";
+import { useNavigate } from "react-router-dom";
 
 const Preview = () => {
   const playlist_id = useSelector((state) => state.utils.playlist_id);
@@ -23,13 +17,13 @@ const Preview = () => {
   const [media, setMedia] = useState([]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const id = localStorage.getItem("playlist");
   useEffect(() => {
     getPlaylist(id)
       .then((res) => {
         if (res.foundPlaylist) {
           setPlaylist(res.foundPlaylist);
-          console.log(res.foundPlaylist);
           setMedia(res.foundPlaylist.media);
         }
       })
@@ -39,33 +33,45 @@ const Preview = () => {
       });
   }, []);
 
-  const handleDelete = (mid, pid) => {
-      dispatch(isloading({ type: "true" }));
+  const handleDelete = (mid) => {
+    dispatch(isloading({ type: "true" }));
+    const pid = localStorage.getItem("playlist");
     deleteMediaFromPlaylist(mid, pid)
       .then((res) => {
         dispatch(isloading({ type: "false" }));
         successToast("Media Removed from Playlist");
-        window.location.reload(false);
+        // window.location.reload(false);
         //reload page
       })
-      // .catch((err) => {
-      //   dispatch(isloading({ type: "false" }));
-      //   errorToast("Error removing media ");
-      //   //reload page
-      //   window.location.reload(false);
-      // });
+      .catch((err) => {
+        dispatch(isloading({ type: "false" }));
+        console.log(err);
+        // window.location.reload(false);
+      });
   };
-
+  const handleClick = () => {
+    window.location.href = `/playlist/${localStorage.getItem("playlist")}/add`;
+  };
   return (
     <div className="w-full mt-8 ">
-      <GoBack  goto={"/content"}/>
-      <h1 className="text-2xl mb-8 font-semibold">
-        {playlist && playlist.name}
-      </h1>
-      <p className="my-4">Media Present In this playlist</p>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4 ">
+      <GoBack goto={"/content"} />
 
-        {media.length>0?  media &&
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-semibold">{playlist && playlist.name}</h1>
+        <button
+          onClick={handleClick}
+          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Add More
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-x-4 gap-y-4 ">
+        {media && !media.length > 0 && (
+          <Empty text="No Media Added in this Playlist" />
+        )}
+        {media &&
           media.map((media) => {
             if (media.type === "video") {
               return (
@@ -89,7 +95,7 @@ const Preview = () => {
                     <Tooltip content="Remove Media from Playlist">
                       <button
                         className="hover:text-red-700 hover:scale-110   text-red-600  "
-                        onClick={() => handleDelete(media._id, playlist._id)}
+                        onClick={() => handleDelete(media._id)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
@@ -118,7 +124,7 @@ const Preview = () => {
                     <Tooltip content="Remove Media from Playlist">
                       <button
                         className="hover:text-red-700 hover:scale-110   text-red-600  "
-                        onClick={() => handleDelete(media._id, playlist_id)}
+                        onClick={() => handleDelete(media._id)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
@@ -127,8 +133,7 @@ const Preview = () => {
                 </div>
               );
             }
-          }) :<Empty text="No Media Added in this Playlist"/>}
-        
+          })}
       </div>
     </div>
   );

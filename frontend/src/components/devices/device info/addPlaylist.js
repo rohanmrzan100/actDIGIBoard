@@ -51,7 +51,7 @@ const AddPlaylist = () => {
     "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
   return (
     <div>
-        <GoBack goto="/devices"/>
+      <GoBack goto="/devices" />
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold"> Your Playlist</h1>
         <button
@@ -62,11 +62,13 @@ const AddPlaylist = () => {
           Select
         </button>
       </div>
-      {playlist.length <= 0 ? (
+      {playlist && playlist.length <= 0 && (
         <Empty text="You have not added any playlist." />
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
-          {playlist.map((playlist) => (
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
+        {playlist &&
+          playlist.map((playlist) => (
             <div
               className="rounded overflow-hidden shadow-lg"
               key={playlist._id}
@@ -93,8 +95,7 @@ const AddPlaylist = () => {
               </div>
             </div>
           ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 };
