@@ -80,13 +80,24 @@ const DevicesCard = (props) => {
           onClick={handlePlaylistClick}
           className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
         >
+          <p></p>
+          <FontAwesomeIcon
+            icon={faCirclePlay}
+            className="scale-150 text-ornage-500"
+          />
+          <p className="text-lg">Now Playing</p>
+        </button>
+        <button
+          onClick={handlePlaylistClick}
+          className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
+        >
           <FontAwesomeIcon
             icon={faCirclePlay}
             className="scale-150 text-ornage-500"
           />
           <p className="text-lg">Use Playlist</p>
         </button>
-        <button
+        {/* <button
           onClick={handleClick}
           className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
         >
@@ -95,7 +106,7 @@ const DevicesCard = (props) => {
             className="scale-150 text-ornage-500"
           />
           <p className="text-lg">Media Details</p>
-        </button>
+        </button> */}
         <button
           onClick={handleDelete}
           className="flex flex-col items-center space-y-4 hover:text-red-700 p-4 rounded-md hover:bg-gray-200"
