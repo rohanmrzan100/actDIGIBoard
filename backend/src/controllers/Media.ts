@@ -89,18 +89,14 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
     const video = req.body.video;
 // Specify the video public ID
 
-const transformationParams = {
-  resource_type: 'video',
-  eager: [
-    { width: 640, height: 480, quality: 'auto:low' } // Adjust the transformation parameters as needed
-  ]
-};
+
 
     // Upload video to Cloudinary
     await cloudinary.v2.uploader
 
-      .upload(video, {
-        resource_type: "video", transformation: transformationParams ,
+      .upload(video, {  transformation:
+        {quality:40,height: 360, width: 480},timeout:120000,
+        resource_type: "video",
         folder: "media",
       })
       .then(async (result) => {
@@ -125,6 +121,7 @@ const transformationParams = {
         res.status(201).json({ msg: "Video Added", status: "1", newMedia });
       })
       .catch((err) => {
+        console.log(err);
         return res.status(400).json({
           msg: "Video adding Unsuccessful",
           status: "0",

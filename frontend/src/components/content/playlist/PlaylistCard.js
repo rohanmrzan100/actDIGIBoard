@@ -48,7 +48,7 @@ export default function PlaylistCard(props) {
         navigate(`/playlist/preview/${playlist._id}`);
         dispatch(setPlaylist_id(playlist._id));
       }}
-        className="w-full h-24 object-cover"
+        className="w-full h-32 object-cover"
         src={image}
         loading="lazy"
         alt={""}

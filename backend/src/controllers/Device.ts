@@ -192,7 +192,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
         .json({ msg: "Invalid device ID", device, status: "0" });
     }
     return res
-        .status(400)
+        .status(200)
         .json({ msg: "Device Found", device, status: "1" });
 
   } catch (error) {

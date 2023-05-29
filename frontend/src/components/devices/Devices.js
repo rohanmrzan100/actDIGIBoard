@@ -42,6 +42,7 @@ const Devices = () => {
         <h1 className="text-2xl font-semibold">Devices</h1>
 
         <div>
+          {!devices && <p>You have not added any devices.</p>}
           {devices &&
             devices.map((device) => (
               <DevicesCard device={device} key={device._id} />

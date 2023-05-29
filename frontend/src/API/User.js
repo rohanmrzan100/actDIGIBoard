@@ -100,7 +100,7 @@ export const uploadMedia = async (data) => {
       return response.data;
     } catch (error) {
       errorToast("Image Upload Failed");
-
+      console.log(error);
       return error;
     }
   } else if (file_type === "video") {
@@ -118,7 +118,7 @@ export const uploadMedia = async (data) => {
       return response.data;
     } catch (error) {
       errorToast("Video Upload Failed");
-
+      console.log(error);
       return error;
     }
   } else {

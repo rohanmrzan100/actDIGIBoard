@@ -79,7 +79,7 @@ const Media = () => {
                   <div className="p-4 text-sm flex  justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <div className="px-2">{media.name.substring(0, 10)}</div>
                     </div>
 
                     <Popover placement="right">
@@ -133,7 +133,7 @@ const Media = () => {
                   <div className="p-4 text-sm flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <div className="px-2">{media.name.substring(0, 10)}</div>
                     </div>
 
                     <Popover placement="right">
