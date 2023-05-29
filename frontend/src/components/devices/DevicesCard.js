@@ -21,12 +21,14 @@ const DevicesCard = (props) => {
   const [playlist, setPlaylist] = useState();
 
   useEffect(() => {
-    getPlaylist(props.device.playlist).then((res) => {
-      console.log(res);
-      if (res.playlist) {
-        setPlaylist(res.playlist);
-      }
-    });
+    if (props.device.playlist) {
+      getPlaylist(props.device.playlist).then((res) => {
+        console.log(res);
+        if (res.playlist) {
+          setPlaylist(res.playlist);
+        }
+      });
+    }
   }, []);
   const handleDelete = () => {
     dispatch(isloading({ type: "true" }));
@@ -67,7 +69,9 @@ const DevicesCard = (props) => {
         </p>
 
         <p className="text-xs text-gray-500">Added On : {date}</p>
-        {playlist && <p className="text-sm text-gray-00">Now Playing : {playlist.name}</p>}
+        {playlist && (
+          <p className="text-sm text-gray-00">Now Playing : {playlist.name}</p>
+        )}
       </div>
 
       <div className="flex justify-between items-center space-x-12  ">

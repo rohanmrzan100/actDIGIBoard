@@ -17,22 +17,22 @@ const Preview = () => {
   const [media, setMedia] = useState([]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const id = localStorage.getItem("playlist");
+  const id = localStorage.getItem("playlist") || playlist_id;
   useEffect(() => {
-    console.log(id);
-    getPlaylist(id)
-      .then((res) => {
-        console.log(res);
-        if (res.playlist) {
-          setPlaylist(res.playlist);
-          setMedia(res.playlist.media);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        errorToast("Error Loading Playlist");
-      });
+    if (id) {
+      getPlaylist(id)
+        .then((res) => {
+          console.log(res);
+          if (res.playlist) {
+            setPlaylist(res.playlist);
+            setMedia(res.playlist.media);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          errorToast("Error Loading Playlist");
+        });
+    }
   }, []);
 
   const handleDelete = (mid) => {
