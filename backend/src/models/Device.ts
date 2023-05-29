@@ -18,6 +18,7 @@ const deviceSchema = new mongoose.Schema(
     uid: {
       type: String,
       required: true,
+    
     },
     change: {
       type: Boolean,
@@ -29,6 +30,7 @@ const deviceSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    
   }
 );
 

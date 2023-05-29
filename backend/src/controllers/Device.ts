@@ -7,7 +7,6 @@ import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
 import uidModel from "../models/UniqueID";
 import playlistModel from "../models/Playlist";
-import mediaModel from "../models/Media";
 
 interface addDevice {
   name: string;
@@ -50,19 +49,16 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       name: name,
       uid: uid.toLocaleLowerCase(),
       owner_id: owner?._id,
+      playlist:null
+   
     });
-
+ const doc = await addedDevice.save();
     owner.device_id.push(addedDevice._id);
     await owner?.save();
 
-    const doc = await addedDevice.save();
-
-    device = <Device>await deviceModel.findById(doc._id);
-
-    // .populate("owner_id");
     res
       .status(200)
-      .json({ device, status: "1", msg: "Device added sucessfully." });
+      .json({ device:doc, status: "1", msg: "Device added sucessfully." });
   } catch (error) {
     next(error);
   }
@@ -170,31 +166,30 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
 // @desc      get devices
 // @auth      protected
 export const getDevice: RequestHandler = async (req, res, next) => {
-  let device: Device = {
+  let EmptyDevice = {
     _id: "",
     name: "",
-    uid: "",
-    owner_id: "",
     playlist: "",
-    change: false,
+  
   };
   try {
     const device_id = req.params.id;
     if (!mongoose.isValidObjectId(device_id)) {
       return res
         .status(400)
-        .json({ msg: "Invalid device ID", device, status: "0" });
+        .json({ msg: "Invalid device ID",device:EmptyDevice, status: "0" });
     }
-    device =<Device> await deviceModel.findById(device_id);
+    const device = await deviceModel.findById(device_id).select("playlist name _id");
     if(!device){
       return res
         .status(400)
-        .json({ msg: "Invalid device ID", device, status: "0" });
+        .json({ msg: "Invalid device ID",device:EmptyDevice, status: "0" });
     }
-    return res
-        .status(200)
-        .json({ msg: "Device Found", device, status: "1" });
+  
 
+    res.status(200).json({msg:"Device Found",device,status:"1"})
+
+  
   } catch (error) {
     next();
   }

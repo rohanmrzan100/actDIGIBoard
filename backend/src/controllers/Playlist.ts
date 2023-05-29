@@ -113,6 +113,12 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
     }
 
 
+    playlist.device.forEach(async(device_id)=>{
+    await deviceModel.updateOne({_id:device_id},{$set: {playlist: ""}})
+
+
+    })
+
     
     res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
