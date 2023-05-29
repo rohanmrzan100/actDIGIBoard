@@ -25,7 +25,9 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       name: "",
       uid: "",
       owner_id: "",
-      playlist: "",
+      c_playlist: "",
+      sfd_playlist: "",
+      a_playlist: [""],
       change: false,
     };
     const owner = await userModel.findById(res.locals.user._id);
@@ -49,7 +51,8 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       name: name,
       uid: uid.toLocaleLowerCase(),
       owner_id: owner?._id,
-      playlist:null
+      c_playlist:"",
+      sfd_playlist:"",
    
     });
  const doc = await addedDevice.save();
@@ -169,7 +172,9 @@ export const getDevice: RequestHandler = async (req, res, next) => {
   let EmptyDevice = {
     _id: "",
     name: "",
-    playlist: "",
+  c_playlist: "",
+      a_playlist: [""],
+
   
   };
   try {
@@ -179,7 +184,7 @@ export const getDevice: RequestHandler = async (req, res, next) => {
         .status(400)
         .json({ msg: "Invalid device ID",device:EmptyDevice, status: "0" });
     }
-    const device = await deviceModel.findById(device_id).select("playlist name _id");
+    const device = await deviceModel.findById(device_id).select("playlist name _id c_playlist a_playlist sfd_playlist");
     if(!device){
       return res
         .status(400)
@@ -242,7 +247,10 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         uid: "",
         owner_id: "",
         change: false,
-        playlist: "",
+      c_playlist: "",
+      sfd_playlist: "",
+      a_playlist: [""],
+
       };
       return res
         .status(400)
@@ -304,6 +312,7 @@ export const resyncDevice: RequestHandler = async (req, res, next) => {
 
 export const checkChange: RequestHandler = async (req, res, next) => {
   try {
+    let sfd = ""
     const device_id = req.params.id;
 
     const device = await deviceModel.findById(device_id);
@@ -311,16 +320,17 @@ export const checkChange: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
 
-    if (!device.change) {
+    if (!device.sfd_playlist) {
       return res
         .status(200)
-        .json({ msg: "Device media is not changed", status: "0" });
+        .json({ msg: "Device media is not changed", sfd_playlist:sfd,status: "0" });
     } else {
-      device.change = false;
+      sfd = device.sfd_playlist;
+      device.sfd_playlist = ""
       await device.save();
       return res
         .status(200)
-        .json({ msg: "Device media is changed.", status: "1" });
+        .json({ msg: "Device media is changed.",sfd_playlist:sfd, status: "1" });
     }
   } catch (error) {
     next();
@@ -351,8 +361,8 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
     return res.status(400).json({msg:"Playlist not found",status:"0"})
   }
   playlist.device.push(device_id)
-  device.playlist = playlist_id
-
+  device.a_playlist.push(playlist_id)
+  device.sfd_playlist = playlist_id
   await playlist.save()
   await device.save()
 
@@ -361,5 +371,6 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
 
 

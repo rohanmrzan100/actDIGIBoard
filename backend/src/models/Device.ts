@@ -5,7 +5,9 @@ interface Device {
   name: string;
   uid: string;
   owner_id: string;
-  playlist: string;
+  c_playlist: string;
+  sfd_playlist: string;
+  a_playlist: [string];
   change: boolean;
 }
 
@@ -26,7 +28,14 @@ const deviceSchema = new mongoose.Schema(
     },
 
     owner_id: { type: mongoose.Types.ObjectId, ref: "user" },
-    playlist: { type: mongoose.Types.ObjectId, ref: "playlist" },
+    //current playing playlist
+   c_playlist: { type: String },
+
+   ///send for download
+   sfd_playlist: { type: String },
+
+   //assigned playist
+   a_playlist: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
   },
   {
     timestamps: true,
