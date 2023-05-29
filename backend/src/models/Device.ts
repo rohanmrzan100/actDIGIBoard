@@ -5,6 +5,7 @@ interface Device {
   name: string;
   uid: string;
   owner_id: string;
+  action: string;
   c_playlist: string;
   sfd_playlist: string;
   a_playlist: [string];
@@ -36,6 +37,7 @@ const deviceSchema = new mongoose.Schema(
 
    //assigned playist
    a_playlist: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
+   action:{type:String}
   },
   {
     timestamps: true,
