@@ -28,7 +28,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
       type: "",
       thumbnail: "",
       name: " ",
-      playlist_id:['']
+      playlist:['']
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -78,7 +78,7 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
       thumbnail: "",
       name: "",
 
-      playlist_id:['']
+      playlist:['']
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)

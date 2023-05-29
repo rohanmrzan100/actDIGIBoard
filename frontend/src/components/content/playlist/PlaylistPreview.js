@@ -20,11 +20,13 @@ const Preview = () => {
   const navigate = useNavigate();
   const id = localStorage.getItem("playlist");
   useEffect(() => {
+    console.log(id);
     getPlaylist(id)
       .then((res) => {
-        if (res.foundPlaylist) {
-          setPlaylist(res.foundPlaylist);
-          setMedia(res.foundPlaylist.media);
+        console.log(res);
+        if (res.playlist) {
+          setPlaylist(res.playlist);
+          setMedia(res.playlist.media);
         }
       })
       .catch((err) => {

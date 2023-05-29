@@ -6,17 +6,28 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { removeDevice, resyncDevice } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDevice } from "../../store/slice/deviceSlice";
+import { getPlaylist } from "../../API/Playlist";
 const DevicesCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [playlist, setPlaylist] = useState();
+
+  useEffect(() => {
+    getPlaylist(props.device.playlist).then((res) => {
+      console.log(res);
+      if (res.playlist) {
+        setPlaylist(res.playlist);
+      }
+    });
+  }, []);
   const handleDelete = () => {
     dispatch(isloading({ type: "true" }));
     removeDevice(props.device._id).then((res) => {
@@ -31,21 +42,21 @@ const DevicesCard = (props) => {
     resyncDevice(props.device._id).then((res) => {
       console.log(res);
       // window.location.href = "/devices";
-      navigate("/devices")
+      navigate("/devices");
     });
   };
 
-  const handlePlaylistClick = ()=>{
-    localStorage.setItem("device", props.device._id);
-    dispatch(setDevice(props.device._id))
-    window.location.href = "/device/playlist/add"
-  }
-  const handleClick = () => {
+  const handlePlaylistClick = () => {
     localStorage.setItem("device", props.device._id);
     dispatch(setDevice(props.device._id));
-    // console.log(props.device._id);
-    navigate(`/device/${props.device._id}/info`);
+    window.location.href = "/device/playlist/add";
   };
+  // const handleClick = () => {
+  //   localStorage.setItem("device", props.device._id);
+  //   dispatch(setDevice(props.device._id));
+  //   // console.log(props.device._id);
+  //   navigate(`/device/${props.device._id}/info`);
+  // };
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
     <div className="my-4 px-6 py-8 md:py-12  rounded-xl md:flex-row flex flex-col  bg-gray-300 justify-between items-center  ">
@@ -56,6 +67,7 @@ const DevicesCard = (props) => {
         </p>
 
         <p className="text-xs text-gray-500">Added On : {date}</p>
+        {playlist && <p className="text-sm text-gray-00">Now Playing : {playlist.name}</p>}
       </div>
 
       <div className="flex justify-between items-center space-x-12  ">
@@ -76,17 +88,7 @@ const DevicesCard = (props) => {
           />
           <p className="text-lg">inSync</p>
         </div>
-        <button
-          onClick={handlePlaylistClick}
-          className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
-        >
-          <p></p>
-          <FontAwesomeIcon
-            icon={faCirclePlay}
-            className="scale-150 text-ornage-500"
-          />
-          <p className="text-lg">Now Playing</p>
-        </button>
+
         <button
           onClick={handlePlaylistClick}
           className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
@@ -95,7 +97,7 @@ const DevicesCard = (props) => {
             icon={faCirclePlay}
             className="scale-150 text-ornage-500"
           />
-          <p className="text-lg">Use Playlist</p>
+          <p className="text-lg">Add Playlist</p>
         </button>
         {/* <button
           onClick={handleClick}

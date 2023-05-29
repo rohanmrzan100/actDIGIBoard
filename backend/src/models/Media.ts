@@ -6,7 +6,7 @@ interface Media {
   thumbnail: string;
   type: string;
   name:string;
-  playlist_id:[string];
+  playlist:[string];
 }
 
 const mediaSchema = new mongoose.Schema(
@@ -27,7 +27,7 @@ const mediaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    playlist_id: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
+    playlist: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
   },
   {
     timestamps: true,

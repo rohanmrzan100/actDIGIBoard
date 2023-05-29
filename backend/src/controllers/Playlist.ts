@@ -46,7 +46,7 @@ export const createPlaylist: RequestHandler = async (req, res, next) => {
     playlist.media.forEach(async(media_id)=>{
       const media = await mediaModel.findById(media_id)
       if(media){
-      media.playlist_id.push(playlist._id)
+      media.playlist.push(playlist._id)
       await media.save()
     }
     })
@@ -99,27 +99,31 @@ export const getPlaylistById: RequestHandler = async (req, res, next) => {
 // @route      /api/playlist/delete/:id
 // @desc       check for change in device media
 // @auth       public
-
+///////////////API OK////////////////////////////
 export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id;
-
+    const user_id = res.locals.user._id
     if (!mongoose.isValidObjectId(id)) {
       return res.status(400).json({ msg: "Invalid playlist id", status: "0" });
     }
      const playlist = await playlistModel.findByIdAndDelete(id);
       if (!playlist) {
-      return res.status(400).json({ msg: "Playlist not found" });
+      return res.status(400).json({ msg: "Playlist not found",status: "0"  });
     }
 
 
     playlist.device.forEach(async(device_id)=>{
-    await deviceModel.updateOne({_id:device_id},{$set: {playlist: ""}})
+    await deviceModel.updateOne({_id:device_id},{$set: {playlist: null}})
 
 
     })
+    playlist.media.forEach(async(media_id)=>{
+    await mediaModel.updateOne({_id:media_id},{$pull: {playlist: playlist._id}})
+    })
 
-    
+    await userModel.updateOne({_id:user_id},{$pull: {playlist: playlist._id}})
+///////////////////////////////check change////////////////////////////////////
     res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
     next();
@@ -151,12 +155,17 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Media not found", status: "0" });
     }
    
-   await playlistModel.findByIdAndUpdate(
+   await playlistModel.updateOne(
        { _id: playlist_id },
        { $pull: { media: media_id } }
      );
    
-
+   await mediaModel.updateOne(
+       { _id: media_id },
+       { $pull: { playlist: playlist_id } }
+     );
+   
+////checkchange???????????????
 
 
  
@@ -182,27 +191,22 @@ export const addMedia: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
     array.forEach(async(media_id :string) => {
-      playlist.media.push(media_id)
+    playlist.media.push(media_id)
+
       const media = await mediaModel.findById(media_id)
        if (!media) {
       return console.log("Media not found");
       
     }
-    media.playlist_id.push(playlist._id);
+    media.playlist.push(playlist_id);
     await media.save()
+    
     });
     await playlist.save()
- 
-playlist.device.forEach(async(device_id)=>{
-  const device = await deviceModel.findById(device_id)
-  await deviceModel.updateOne({_id:device_id},{$unset: {media: 1 }})
-
-})
-
-    console.log(playlist);
+///////////////////////check change/////////////////////////////////////////
     
 
-    res.status(200).json({ msg: "Media added to playlist Successfully", status: "1" });
+    res.status(200).json({ msg: "Media added to playlist Successfully",playlist, status: "1" });
   } catch (error) {
     next(error);
   }
