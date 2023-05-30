@@ -20,7 +20,6 @@ const Devices = () => {
       }
     });
   }, []);
-
   return (
     <div className=" w-full px-4 py-2  ">
       <div className="flex justify-center item-center">
@@ -42,7 +41,12 @@ const Devices = () => {
         <h1 className="text-2xl font-semibold">Devices</h1>
 
         <div>
-          {!devices && <p>You have not added any devices.</p>}
+          {!devices.length > 0 && (
+            <p className="text-black text-xl my-8">
+              You have not added any devices.
+            </p>
+          )}
+
           {devices &&
             devices.map((device) => (
               <DevicesCard device={device} key={device._id} />

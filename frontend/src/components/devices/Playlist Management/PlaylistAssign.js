@@ -70,6 +70,11 @@ const PlaylistAssign = (props) => {
     "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
   return (
     <div>
+      {props.device && (
+        <p className="text-sm text-gray-00">
+          Now Playing : {props.device.c_playlist}
+        </p>
+      )}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold">
           Playlist Assigned To This Device

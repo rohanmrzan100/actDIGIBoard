@@ -49,7 +49,7 @@ const Media = () => {
           <Empty text="You have not added any playlist." />
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
+        <div className="grid  grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
           {playlist &&
             playlist.map((playlist) => (
               <PlaylistCard playlist={playlist} key={playlist._id} />
@@ -59,7 +59,7 @@ const Media = () => {
 
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2  gap-x-4 gap-y-4 ">
+      <div className="grid  grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
         {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
@@ -125,7 +125,7 @@ const Media = () => {
                   key={media._id}
                 >
                   <img
-                  alt=""
+                    alt=""
                     src={media.media}
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   />

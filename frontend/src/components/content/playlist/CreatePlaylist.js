@@ -34,6 +34,8 @@ const Media = (props) => {
     }).catch((error)=>{
       console.log(error);
       errorToast("Creation of Playist Failed")
+      if(error.response){
+      errorToast(error.response.data.msg)}
     })
   };
   const handleChange = (event, media) => {

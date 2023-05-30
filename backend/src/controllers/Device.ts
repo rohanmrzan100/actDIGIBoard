@@ -89,6 +89,13 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
       { _id: device.owner_id },
       { $pull: { device_id: device_id } }
     );
+      
+    //   device.a_playlist.forEach(async(playlist_id)=>{
+    //     await playlistModel.findByIdAndUpdate(
+    //   { _id: playlist_id },
+    //   { $pull: { device: device_id } }
+    // );
+    //   })
 
     await deviceModel.findByIdAndDelete(device_id);
     res.status(200).json({ msg: "Device is removed", status: "1" });
