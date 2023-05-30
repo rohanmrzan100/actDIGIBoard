@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../API/User";
 import { useDispatch, useSelector } from "react-redux";
 import { isloading, unsetError } from "../../store/slice/utilsSlice";
-import { redirect } from "react-router-dom";
-import { logout } from "../../store/slice/authSlice";
+
 const Signin = () => {
   const errorMsg = useSelector((state) => state.utils.errorMsg);
   const error = useSelector((state) => state.utils.error);

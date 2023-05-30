@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   token: null,
   isAuth: false,
-  userId:null
+  userId: null,
 };
 
 export const authSlice = createSlice({
@@ -20,6 +20,8 @@ export const authSlice = createSlice({
     },
     loginError: (state, action) => {
       localStorage.removeItem("token");
+      localStorage.removeItem("device");
+      localStorage.removeItem("playlist");
       return {
         ...state,
         token: null,
@@ -28,6 +30,8 @@ export const authSlice = createSlice({
     },
     logout: (state, action) => {
       localStorage.removeItem("token");
+      localStorage.removeItem("device");
+      localStorage.removeItem("playlist");
       return {
         ...state,
         token: null,
@@ -39,7 +43,6 @@ export const authSlice = createSlice({
         ...state,
         isAuth: true,
         token: action.payload,
-        
       };
     },
   },

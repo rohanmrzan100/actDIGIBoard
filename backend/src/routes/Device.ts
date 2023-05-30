@@ -12,6 +12,7 @@ import {
   resyncDevice,
   addPlaylistToDevice,
   removePlaylistFromDevice,
+  playPlaylist,
 } from "../controllers/Device";
 const router = express.Router();
 
@@ -25,8 +26,9 @@ router.get("/get/:id", getDevice);
 router.get("/generate/uid", generateUid);
 router.get("/check_change/:id", checkChange);
 
-router.post("/add_playlist/:did/:pid",authMiddleware,addPlaylistToDevice)
-router.delete("/remove_playlist/:did/:pid",authMiddleware,removePlaylistFromDevice)
+router.post("/play_playlist/:did/:pid",playPlaylist)
+router.post("/add_playlist/:did/:pid",addPlaylistToDevice)
+router.delete("/remove_playlist/:did/:pid",removePlaylistFromDevice)
 
 
 

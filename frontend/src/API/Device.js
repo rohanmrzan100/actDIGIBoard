@@ -5,7 +5,6 @@ import { errorToast, successToast } from "../components/utils/Toast";
 
 axios.defaults.baseURL = "http://localhost:3001/";
 axios.defaults.headers.post["Content-Type"] = "application/json";
-
 const headers = {
   Authorization: localStorage.getItem("token"),
 };
@@ -128,6 +127,31 @@ export const resyncDevice = async (id) => {
 };
 
 export const addPlaylistToDevice = async (did, pid) => {
-  const response = await axios.post(`api/device/add_playlist/${did}/${pid}`);
+  const response = await axios.post(
+    `http://localhost:3001/api/device/add_playlist/${did}/${pid}`,
+
+    { headers: headers }
+  );
+  console.log(response.data);
   return response.data;
+};
+export const removePlaylistFromDevice = async (did, pid) => {
+  const response = await axios.delete(
+    `http://localhost:3001/api/device/remove_playlist/${did}/${pid}`,
+
+    { headers: headers }
+  );
+  // const response = await axios.delete(
+  //   ` http://localhost:3001/api/device/remove_playlist/64745709618f1f335b4f3d3b/64755411135fc01d14e0da71`
+  // );
+  console.log(response.data);
+  return response.data;
+};
+
+export const playPlaylist = async (did, pid) => {
+  const response = await axios.post(`/api/device/play_playlist/${did}/${pid}`, {
+    headers: headers,
+  });
+
+  return response.data
 };

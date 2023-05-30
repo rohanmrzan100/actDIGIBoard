@@ -27,6 +27,7 @@ export const login = async (data) => {
   try {
     const response = await axios.post("/api/user/login", data);
     successToast("Login Successful");
+    console.log(response.data.token);
     store.dispatch(loginSuccess(response.data.token));
     window.location.href = "/content";
     return response.data;

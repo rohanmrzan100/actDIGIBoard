@@ -11,13 +11,11 @@ import { loadUser } from "./store/slice/authSlice";
 import Content from "./components/content/Content";
 import Devices from "./components/devices/Devices";
 import Add from "./components/devices/AddDevicePage";
-import DeviceInfo from "./components/devices/device info/DeviceInfo";
-import DeviceAddMedia from "./components/devices/device info/DeviceAddMedia";
 import ErrorPage from "./components/utils/ErrorPage";
 import Playlist from "./components/content/playlist/Playlist";
 import Preview from "./components/content/playlist/PlaylistPreview";
-import AddPlaylist from "./components/devices/device info/addPlaylist";
 import AddMedia from "./components/content/playlist/AddMedia";
+import Main from "./components/devices/Playlist Management/Main";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -57,21 +55,10 @@ const App = () => {
                 <Route path="/devices" element={<Devices />}></Route>
                 <Route path="/add_device" element={<Add />}></Route>
                 <Route path="/create/playlist" element={<Playlist />}></Route>
-                <Route
-                  path="/device/playlist/add"
-                  element={<AddPlaylist />}
-                ></Route>
+                <Route path="/device/playlist/add" element={<Main />}></Route>
                 <Route
                   path={`/playlist/preview/${playlist_id}`}
                   element={<Preview />}
-                ></Route>
-                <Route
-                  path={`/device/${device_id}/info`}
-                  element={<DeviceInfo />}
-                ></Route>
-                <Route
-                  path={`/device/${device_id}/add`}
-                  element={<DeviceAddMedia />}
                 ></Route>
 
                 <Route

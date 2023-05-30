@@ -5,17 +5,17 @@ import { getUserData } from "../../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { Radio } from "@material-tailwind/react";
-import { addPlaylistToDevice } from "../../../API/Device";
 import { useNavigate } from "react-router-dom";
-import { errorToast, successToast } from "../../utils/Toast";
-import GoBack from "../../utils/GoBack";
-import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
+import { addPlaylistToDevice } from "../../../API/Device";
+import { errorToast, successToast } from "../../utils/Toast";
+import { isloading } from "../../../store/slice/utilsSlice";
+
 const AddPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
   const [pid, setPid] = useState();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const did = localStorage.getItem("device");
   useEffect(() => {
     getUserData().then((res) => {
@@ -25,25 +25,24 @@ const AddPlaylist = () => {
     });
   }, []);
   const handleClick = (pid) => {
-
     dispatch(isloading({ type: "true" }));
     addPlaylistToDevice(did, pid)
       .then((res) => {
-        navigate("/devices");
-        successToast("Playlist is added to device");
-        
-        dispatch(isloading({ type: "false" }));
+        successToast("Playlist added Successfully");
+        navigate("/device/playlist/add");
+        setInterval(() => {
+          window.location.reload(false);
+          dispatch(isloading({ type: "false" }));
+        }, 2000);
       })
       .catch((err) => {
-        errorToast("Error while addidng playlist");
-        
         dispatch(isloading({ type: "false" }));
         console.log(err);
+        errorToast("Adding playlist to device unsuccessful");
       });
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setPid(e.target.value);
   };
 
@@ -51,9 +50,8 @@ const AddPlaylist = () => {
     "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
   return (
     <div>
-      <GoBack goto="/devices" />
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold"> Your Playlist</h1>
+        <h1 className="text-2xl font-semibold">All Playlist Created By You</h1>
         <button
           onClick={() => handleClick(pid)}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
@@ -66,7 +64,7 @@ const AddPlaylist = () => {
         <Empty text="You have not added any playlist." />
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-8  md:grid-col-6 m-auto sm:grid-cols-4  gap-x-4 gap-y-4 ">
+      <div className="grid grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
         {playlist &&
           playlist.map((playlist) => (
             <div
