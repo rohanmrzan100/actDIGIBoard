@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import userModel from "../models/User";
 import playlistModel, { Playlist } from "../models/Playlist";
 import mediaModel from "../models/Media";
-import deviceModel from "../models/Device";
+import deviceModel, { Device } from "../models/Device";
 
 
 
@@ -117,15 +117,24 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
 
 
     playlist.device.forEach(async(device_id)=>{
+      const device = await deviceModel.findById(device_id);
+       if (!device) {
+      return res.status(400).json({ msg: "Device not found",status: "0"  });
+    } 
+    if(device.c_playlist === id){
+      return res.status(400).json({msg:"cannot delete playlist as it is playing currently in one of the devices.",status:'0 '})
+    }
+    device.SFR_playlist.push(id)
+    await device.save()
     await deviceModel.updateOne({_id:device_id},{$set: {playlist: null}})
 
 
     })
     playlist.media.forEach(async(media_id)=>{
-    await mediaModel.updateOne({_id:media_id},{$pull: {playlist: playlist._id}})
+    await mediaModel.updateOne({_id:media_id},{$pull: {playlist: id}})
     })
 
-    await userModel.updateOne({_id:user_id},{$pull: {playlist: playlist._id}})
+    await userModel.updateOne({_id:user_id},{$pull: {playlist: id}})
 ///////////////////////////////check change////////////////////////////////////
     res.status(200).json({ msg: "Playlist Deleted.", status: "1" });
   } catch (error) {
