@@ -3,22 +3,17 @@ import mediaModel, { Media } from "../models/Media";
 import { RequestHandler } from "express";
 import userModel from "../models/User";
 
-
-
-export const getMediaById:RequestHandler = async( req,res,next)=>{
+export const getMediaById: RequestHandler = async (req, res, next) => {
   try {
-    const id = req.params.id
-    const media = await mediaModel.findById(id)
+    const id = req.params.id;
+    const media = await mediaModel.findById(id);
     if (!media)
-      return res
-        .status(400)
-        .json({ msg: "Media is not found", status: "0" });
-    res.status(200).json(media)
-
+      return res.status(400).json({ msg: "Media is not found", status: "0" });
+    res.status(200).json(media);
   } catch (error) {
-    next(error)
+    next(error);
   }
-} 
+};
 
 export const uploadImage: RequestHandler = async (req, res, next) => {
   try {
@@ -28,7 +23,7 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
       type: "",
       thumbnail: "",
       name: " ",
-      playlist:['']
+      playlist: [""],
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -78,7 +73,7 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
       thumbnail: "",
       name: "",
 
-      playlist:['']
+      playlist: [""],
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -87,15 +82,14 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
         .json({ msg: "User is not found", status: "0", media: media });
 
     const video = req.body.video;
-// Specify the video public ID
-
-
+    // Specify the video public ID
 
     // Upload video to Cloudinary
     await cloudinary.v2.uploader
 
-      .upload(video, {  transformation:
-        {quality:40,height: 360, width: 480},timeout:120000,
+      .upload(video, {
+        transformation: { quality: 40, height: 360, width: 480 },
+        timeout: 120000,
         resource_type: "video",
         folder: "media",
       })
@@ -132,3 +126,4 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+

@@ -291,8 +291,8 @@ export const checkChange: RequestHandler = async (req, res, next) => {
       await deviceModel.updateOne({_id: device_id}, {$unset: {SFR_playlist: 1 }});
       await deviceModel.updateOne({_id: device_id}, {$unset: {playlistChange: 1 }});
       let temp = SFD_playlist
-    SFD_playlist = SFD_playlist.filter((val:string) => !SFR_playlist.includes(val));
-    SFR_playlist = SFR_playlist.filter((val:string) => !temp.includes(val));
+      SFD_playlist = SFD_playlist.filter((val:string) => !SFR_playlist.includes(val));
+       SFR_playlist = SFR_playlist.filter((val:string) => !temp.includes(val));
 
 
       return res.status(200).json({msg:"Device Changed",SFD_playlist,SFR_playlist,playlistChange,status:"1"})

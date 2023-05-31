@@ -1,42 +1,39 @@
 import React, { useState } from "react";
-import { uploadMedia } from "../../API/User";
-import { isloading } from "../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
-
-const AddImage = () => {
-
-  const [uploadImage, setUploadImage] = useState("");
-  const [image, setImage] = useState();
-  const [empty, setEmpty] = useState(false);
+import { isloading } from "../../store/slice/utilsSlice";
+import axios from "axios";
+import { errorToast, successToast } from "../utils/Toast";
+const AddMedia = () => {
   const dispatch = useDispatch();
-  const handleFormSubmit = (e) => {
-    if (!image) {
-      setEmpty(true);
-      return;
-    }
+  const [empty, setEmpty] = useState(false);
+  const [file, setFile] = useState();
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      media: uploadImage,
-      name: image.name,
-    };
-
+    const formdata = new FormData();
     dispatch(isloading({ type: "true" }));
-    uploadMedia(data).then((res) => dispatch(isloading({ type: "false" })));
-  };
-  const handleChange = (e) => {
-    setEmpty(false);
-    e.preventDefault();
-    const image = e.target.files[0];
+    formdata.append("media", file);
+    console.log(formdata);
+    if(!FormData){
+      setEmpty(true)
+    }
+    try {
+      dispatch(isloading({ type: "false" }));
+      await axios.post("http://localhost:3001/api/media/upload", formdata, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
+        }
+      });
 
-    setImage(image);
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onloadend = () => {
-      const uploadImage = reader.result;
-      setUploadImage(uploadImage);
-    };
+      successToast("File Added Successfully ");
+      window.location.reload(false)
+    } catch (error) {
+      if(error.response){
+        errorToast(error.response.data.msg)
+      }
+      console.log(error);
+    }
   };
-
   return (
     <div>
       {empty && (
@@ -45,6 +42,7 @@ const AddImage = () => {
         </p>
       )}
       <form
+        // encType="multipart/form-data"
         onSubmit={handleFormSubmit}
         className="w-full bg-gray-200  rounded-lg p-4 border-2 hover:bg-gray-100"
       >
@@ -52,14 +50,14 @@ const AddImage = () => {
           Upload Video or Image
         </label>
         <input
-          onChange={handleChange}
+          onChange={(e) => setFile(e.target.files[0])}
+          type="file"
+          name="media"
           className="block w-full  text-lg text-gray-900 border border-gray-300 rounded-sm cursor-pointer bg-gray-200 focus:outline-none"
           id="file_input"
-          type="file"
         />
 
         <button
-          onChange={handleChange}
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800  active:scale-105 font-medium rounded-lg text-sm px-5 py-2.5 mr-2  mt-4 mb-2 "
         >
@@ -70,4 +68,4 @@ const AddImage = () => {
   );
 };
 
-export default AddImage;
+export default AddMedia;

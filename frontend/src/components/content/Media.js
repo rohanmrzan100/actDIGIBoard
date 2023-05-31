@@ -27,6 +27,7 @@ const Media = () => {
     getUserData().then((res) => {
       if (res.doc) {
         setUserMedia(res.doc.media_id.reverse());
+        console.log(res.doc);
         setPlaylist(res.doc.playlist);
         // dispatch(isloading({ type: "false" }));
       }
@@ -69,7 +70,7 @@ const Media = () => {
                   key={media._id}
                 >
                   <video
-                    poster={media.thumbnail}
+                    poster={""}
                     controls
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   >

@@ -215,3 +215,6 @@ export const getAllUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+

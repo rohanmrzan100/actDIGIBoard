@@ -21,7 +21,7 @@ const mediaSchema = new mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      required: true,
+      // required: true,
     },
     name: {
       type: String,

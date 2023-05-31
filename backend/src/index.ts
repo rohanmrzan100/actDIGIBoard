@@ -4,19 +4,25 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import env from "./env";
-
+const path = require("path");
 import userRouter from "./routes/User";
 import deviceRouter from "./routes/Device";
-import playlistRouter from "./routes/Playlist"
+import playlistRouter from "./routes/Playlist";
+import router from "./routes/Uploads";
 const app = express();
-
+// app.use(express.static("../public/assets"));
+app.use(express.static(path.join(__dirname, "../public/assets")));
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.send("hello world")
+});
 app.use("/api/user", userRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/playlist", playlistRouter);
+app.use("/api/media", router);
 
 app.use((req: any, res: any, next: NextFunction) => {
   next(Error("Endpoint not found"));
