@@ -75,7 +75,7 @@ const AddPlaylist = () => {
             >
               <img
                 className="w-full h-24 object-cover"
-                src={cdcdimage}
+                src={image}
                 loading="lazy"
                 alt={""}
               />
