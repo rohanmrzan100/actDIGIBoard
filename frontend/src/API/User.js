@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "../store/store";
-import { setError } from "../store/slice/utilsSlice";
+import { isloading, setError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
 import { loginError, loginSuccess } from "../store/slice/authSlice";
 
@@ -29,7 +29,10 @@ export const login = async (data) => {
     successToast("Login Successful");
     console.log(response.data.token);
     store.dispatch(loginSuccess(response.data.token));
-    window.location.href = "/content";
+    setInterval(() => {
+      window.location.href = "/content";
+      store.dispatch(isloading({ type: "false" }));
+    }, 2000);
     return response.data;
   } catch (error) {
     store.dispatch(setError(error.response.data.msg));

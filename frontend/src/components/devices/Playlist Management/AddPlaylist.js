@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { addPlaylistToDevice } from "../../../API/Device";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
+import { BASE_URL } from "../../../Config";
 
 const AddPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
@@ -74,7 +75,7 @@ const AddPlaylist = () => {
             >
               <img
                 className="w-full h-24 object-cover"
-                src={image}
+                src={cdcdimage}
                 loading="lazy"
                 alt={""}
               />

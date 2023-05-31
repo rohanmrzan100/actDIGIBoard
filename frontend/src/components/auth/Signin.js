@@ -19,11 +19,7 @@ const Signin = () => {
       password: e.target[1].value,
     };
     dispatch(isloading({ type: "true" }));
-    login(data).then((res) => {
-
-    
-    dispatch(isloading({ type: "false" }));
-    })
+    login(data);
   };
 
   return (
