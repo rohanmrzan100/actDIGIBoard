@@ -59,3 +59,12 @@ export const addMediaToPlaylist = async (pid, array) => {
   );
   return response.data;
 };
+export const getNotAssignedPlaylist = async (did) => {
+  const response = await axios.get(
+    `/api/playlist/not_assigned/${did}`,
+    {
+      headers: headers,
+    }
+  );
+  return response.data;
+};

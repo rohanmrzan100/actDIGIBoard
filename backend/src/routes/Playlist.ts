@@ -5,6 +5,7 @@ import {
   deleteMedia,
   deletePlaylistByID,
   getPlaylistById,
+  playlistNotAssigned,
 } from "../controllers/Playlist";
 import authMiddleware from "../middleware/isAuth";
 const router = Router();
@@ -14,5 +15,6 @@ router.get("/get/:id", authMiddleware, getPlaylistById);
 router.delete("/delete/:id", authMiddleware, deletePlaylistByID);
 router.delete("/media_delete/:pid/:mid", authMiddleware, deleteMedia);
 router.post("/add_media/:pid", authMiddleware, addMedia);
+router.get("/not_assigned/:did", authMiddleware, playlistNotAssigned);
 
 export default router;

@@ -227,3 +227,40 @@ export const addMedia: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+// @route      /api/playlist/notassigned/:did
+// @desc      get playlist that are not assigned to device
+// @auth       public
+
+export const playlistNotAssigned: RequestHandler = async (req, res, next) => {
+  try {
+    const device_id = req.params.did;
+    const user_id = res.locals.user._id;
+    if (
+      !mongoose.isValidObjectId(device_id) ||
+      !mongoose.isValidObjectId(user_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  id", status: "0" });
+    }
+
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+
+    const user = await userModel.findById(user_id);
+    if (!user) {
+      return res.status(400).json({ msg: "User not found", status: "0" });
+    }
+    const allPlaylist = user.playlist;
+    const assigned = device.a_playlist;
+
+    const notassigned = allPlaylist.filter(
+      (val: string) => !assigned.includes(val)
+    );
+   
+    res.status(200).json({ msg: "Ok", status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};

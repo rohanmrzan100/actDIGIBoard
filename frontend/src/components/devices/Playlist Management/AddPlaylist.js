@@ -11,6 +11,7 @@ import { addPlaylistToDevice } from "../../../API/Device";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import { BASE_URL } from "../../../Config";
+import { getNotAssignedPlaylist } from "../../../API/Playlist";
 
 const AddPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
@@ -19,11 +20,16 @@ const AddPlaylist = () => {
   const dispatch = useDispatch();
   const did = localStorage.getItem("device");
   useEffect(() => {
-    getUserData().then((res) => {
-      if (res.doc) {
-        setPlaylist(res.doc.playlist);
-      }
-    });
+    getNotAssignedPlaylist(did)
+      .then((res) => {
+        console.log(res);
+        if (res.doc) {
+          setPlaylist(res.doc.notassigned);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   const handleClick = (pid) => {
     dispatch(isloading({ type: "true" }));

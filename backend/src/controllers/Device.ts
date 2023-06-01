@@ -500,7 +500,11 @@ export const checkInteractive: RequestHandler = async (req, res, next) => {
     if (!device) {
       return res
         .status(400)
-        .json({ msg: "Device not found", interactive, status: "0" });
+        .json({
+          msg: "Device not found",
+          interactive: interactive,
+          status: "0",
+        });
     }
 
     if (device.interactive) {
@@ -516,7 +520,7 @@ export const checkInteractive: RequestHandler = async (req, res, next) => {
       res.status(200).json({
         msg: "No interactive added",
         status: "0",
-        interactive: device.interactive,
+        interactive: interactive,
       });
     }
   } catch (error) {
