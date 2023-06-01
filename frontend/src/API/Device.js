@@ -153,5 +153,11 @@ export const playPlaylist = async (did, pid) => {
     headers: headers,
   });
 
-  return response.data
+  return response.data;
+};
+
+export const addInteractive = async (did, mid) => {
+  const response = await axios.post(`/api/device/interactive/${did}/${mid}`);
+
+  return response.data;
 };

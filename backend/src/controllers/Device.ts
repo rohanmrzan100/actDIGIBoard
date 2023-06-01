@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import userModel, { User } from "../models/User";
 import uidModel from "../models/UniqueID";
 import playlistModel from "../models/Playlist";
+import mediaModel from "../models/Media";
 
 interface addDevice {
   name: string;
@@ -28,13 +29,13 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       c_playlist: "",
       a_playlist: [""],
       change: false,
-      SFD_playlist:[""],
-      SFR_playlist :[""],
-      playlistChange:{
-        name:"",
-        added:[""],
-        remove:[""]
-      }
+      SFD_playlist: [""],
+      SFR_playlist: [""],
+      playlistChange: {
+        name: "",
+        added: [""],
+        remove: [""],
+      },
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -57,17 +58,16 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       name: name,
       uid: uid.toLocaleLowerCase(),
       owner_id: owner?._id,
-      c_playlist:"",
-      sfd_playlist:"",
-   
+      c_playlist: "",
+      sfd_playlist: "",
     });
- const doc = await addedDevice.save();
+    const doc = await addedDevice.save();
     owner.device_id.push(addedDevice._id);
     await owner?.save();
 
     res
       .status(200)
-      .json({ device:doc, status: "1", msg: "Device added sucessfully." });
+      .json({ device: doc, status: "1", msg: "Device added sucessfully." });
   } catch (error) {
     next(error);
   }
@@ -79,7 +79,7 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
 
 export const deleteDevices: RequestHandler = async (req, res, next) => {
   try {
-    const owner_id = res.locals.user._id
+    const owner_id = res.locals.user._id;
     const device_id = req.params.id;
     if (!mongoose.isValidObjectId(device_id)) {
       return res.status(400).json({ msg: "Invalid device ID", status: "0" });
@@ -89,12 +89,11 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
 
-
     const owner = await userModel.findByIdAndUpdate(
       { _id: device.owner_id },
       { $pull: { device_id: device_id } }
     );
-      
+
     //   device.a_playlist.forEach(async(playlist_id)=>{
     //     await playlistModel.findByIdAndUpdate(
     //   { _id: playlist_id },
@@ -109,7 +108,6 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
   }
 };
 
-
 // @route     /api/device/:id
 // @desc      get devices
 // @auth      protected
@@ -117,32 +115,28 @@ export const getDevice: RequestHandler = async (req, res, next) => {
   let EmptyDevice = {
     _id: "",
     name: "",
-  c_playlist: "",
-  action: "",
-      a_playlist: [""],
-
-  
+    c_playlist: "",
+    action: "",
+    a_playlist: [""],
   };
   try {
     const device_id = req.params.id;
     if (!mongoose.isValidObjectId(device_id)) {
       return res
         .status(400)
-        .json({ msg: "Invalid device ID",device:EmptyDevice, status: "0" });
+        .json({ msg: "Invalid device ID", device: EmptyDevice, status: "0" });
     }
-    const device = await deviceModel.findById(device_id)
-    .select("playlist name _id c_playlist a_playlist sfd_playlist")
-    .populate("a_playlist");
-    if(!device){
+    const device = await deviceModel
+      .findById(device_id)
+      .select("playlist name _id c_playlist a_playlist sfd_playlist")
+      .populate("a_playlist");
+    if (!device) {
       return res
         .status(400)
-        .json({ msg: "Invalid device ID",device:EmptyDevice, status: "0" });
+        .json({ msg: "Invalid device ID", device: EmptyDevice, status: "0" });
     }
-  
 
-    res.status(200).json({msg:"Device Found",device,status:"1"})
-
-  
+    res.status(200).json({ msg: "Device Found", device, status: "1" });
   } catch (error) {
     next();
   }
@@ -195,20 +189,19 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         uid: "",
         owner_id: "",
         change: false,
-      c_playlist: "",
-      a_playlist: [""],
-        SFD_playlist:[""],
-      SFR_playlist :[""],
-      playlistChange:{
-        name:"",
-        added:[""],
-        remove:[""]
-      }
-
+        c_playlist: "",
+        a_playlist: [""],
+        SFD_playlist: [""],
+        SFR_playlist: [""],
+        playlistChange: {
+          name: "",
+          added: [""],
+          remove: [""],
+        },
       };
       return res
         .status(400)
-        .json({ status: "0",device, msg: "Device not found" , token: " "});
+        .json({ status: "0", device, msg: "Device not found", token: " " });
     }
     const token = jwt.sign({ _id: device.owner_id }, env.SECRET, {
       expiresIn: "30d",
@@ -224,15 +217,12 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-
 // @route      /api/device/update_sync/:id
 // @desc       resync device from website
 // @auth       private
 
 export const resyncDevice: RequestHandler = async (req, res, next) => {
   try {
-
     const device_id = req.params.id;
     if (!mongoose.isValidObjectId(device_id)) {
       return res.status(400).json({ msg: "Invalid device ID", status: "0" });
@@ -243,7 +233,6 @@ export const resyncDevice: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ msg: "Device not found", status: "0" });
     }
 
-
     device.change = true;
     await device.save();
 
@@ -253,59 +242,72 @@ export const resyncDevice: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-
-
-
-
-
 // @route      /api/device/check_change/:id
 // @desc       check for change in device media
 // @auth       public
 // player
 
 export const checkChange: RequestHandler = async (req, res, next) => {
- 
   try {
-   let SFD_playlist:any = [];
-  let SFR_playlist:any = [];
-  let playlistChange :any = {
-    name:"",
-    added:[],
-    remove:[]
-  }
+    let SFD_playlist: any = [];
+    let SFR_playlist: any = [];
+    let playlistChange: any = {
+      name: "",
+      added: [],
+      remove: [],
+    };
     const device_id = req.params.id;
-    const device = await deviceModel.findById(device_id)
-    .select("SFD_playlist SFR_playlist playlistChange name");
-    
+    const device = await deviceModel
+      .findById(device_id)
+      .select("SFD_playlist SFR_playlist playlistChange name");
+
     if (!device) {
-      return res.status(400).json({ msg: "Device not found",status: "0" });
+      return res.status(400).json({ msg: "Device not found", status: "0" });
     }
-  
-    
-    if(device.SFD_playlist.length || device.SFR_playlist.length ||device.playlistChange.added.length || device.playlistChange.remove.length ){
-      SFD_playlist = device.SFD_playlist
-      SFR_playlist = device.SFR_playlist
-      playlistChange = device.playlistChange
-      await deviceModel.updateOne({_id: device_id}, {$unset: {SFD_playlist: 1 }});
-      await deviceModel.updateOne({_id: device_id}, {$unset: {SFR_playlist: 1 }});
-      await deviceModel.updateOne({_id: device_id}, {$unset: {playlistChange: 1 }});
-      let temp = SFD_playlist
-      SFD_playlist = SFD_playlist.filter((val:string) => !SFR_playlist.includes(val));
-       SFR_playlist = SFR_playlist.filter((val:string) => !temp.includes(val));
 
+    if (
+      device.SFD_playlist.length ||
+      device.SFR_playlist.length ||
+      device.playlistChange.added.length ||
+      device.playlistChange.remove.length
+    ) {
+      SFD_playlist = device.SFD_playlist;
+      SFR_playlist = device.SFR_playlist;
+      playlistChange = device.playlistChange;
+      await deviceModel.updateOne(
+        { _id: device_id },
+        { $unset: { SFD_playlist: 1 } }
+      );
+      await deviceModel.updateOne(
+        { _id: device_id },
+        { $unset: { SFR_playlist: 1 } }
+      );
+      await deviceModel.updateOne(
+        { _id: device_id },
+        { $unset: { playlistChange: 1 } }
+      );
+      let temp = SFD_playlist;
+      SFD_playlist = SFD_playlist.filter(
+        (val: string) => !SFR_playlist.includes(val)
+      );
+      SFR_playlist = SFR_playlist.filter((val: string) => !temp.includes(val));
 
-      return res.status(200).json({msg:"Device Changed",SFD_playlist,SFR_playlist,playlistChange,status:"1"})
+      return res.status(200).json({
+        msg: "Device Changed",
+        SFD_playlist,
+        SFR_playlist,
+        playlistChange,
+        status: "1",
+      });
     }
-       
-      res.status(200).json({msg:"Device  Not Changed",SFD_playlist,SFR_playlist,playlistChange,status:"1"})
- 
-    
 
-
- 
-    
-   
+    res.status(200).json({
+      msg: "Device  Not Changed",
+      SFD_playlist,
+      SFR_playlist,
+      playlistChange,
+      status: "1",
+    });
   } catch (error) {
     next();
   }
@@ -317,128 +319,207 @@ export const checkChange: RequestHandler = async (req, res, next) => {
 
 export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
   try {
-   const device_id = req.params.did
-   const playlist_id = req.params.pid
+    const device_id = req.params.did;
+    const playlist_id = req.params.pid;
 
-   if (!mongoose.isValidObjectId(device_id) || !mongoose.isValidObjectId(playlist_id) )  {
-    return res
-      .status(400)
-      .json({ msg: "Invalid  ID", status: "0" });
-  }
+    if (
+      !mongoose.isValidObjectId(device_id) ||
+      !mongoose.isValidObjectId(playlist_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
 
-  const device = await deviceModel.findById(device_id)
-  if(!device){
-    return res.status(400).json({msg:"Device not found",status:"0"})
-  }
-  const playlist = await playlistModel.findById(playlist_id)
-  if(!playlist){
-    return res.status(400).json({msg:"Playlist not found",status:"0"})
-  }
-  playlist.device.push(device_id)
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+    const playlist = await playlistModel.findById(playlist_id);
+    if (!playlist) {
+      return res.status(400).json({ msg: "Playlist not found", status: "0" });
+    }
+    playlist.device.push(device_id);
 
-  device.SFD_playlist.push(playlist_id)
+    device.SFD_playlist.push(playlist_id);
 
+    device.a_playlist.push(playlist_id);
+    await playlist.save();
+    await device.save();
 
-  device.a_playlist.push(playlist_id)
-  await playlist.save()
-  await device.save()
-
-  res.status(200).json({msg:"Playlist added to device",status:"1"})
+    res.status(200).json({ msg: "Playlist added to device", status: "1" });
   } catch (error) {
     next(error);
   }
 };
 
-
-
 // @route      /api/device/remove_playlist/:did/:pid
 // @desc       resync device from website
 // @auth       private
 
-export const removePlaylistFromDevice: RequestHandler = async (req, res, next) => {
+export const removePlaylistFromDevice: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
-   const device_id = req.params.did
-   const playlist_id = req.params.pid
+    const device_id = req.params.did;
+    const playlist_id = req.params.pid;
 
-   if (!mongoose.isValidObjectId(device_id) || !mongoose.isValidObjectId(playlist_id) )  {
-    return res
-      .status(400)
-      .json({ msg: "Invalid  ID", status: "0" });
-  }
+    if (
+      !mongoose.isValidObjectId(device_id) ||
+      !mongoose.isValidObjectId(playlist_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
 
-  const device = await deviceModel.findById(device_id)
-  if(!device){
-    return res.status(400).json({msg:"Device not found",status:"0"})
-  }
-  const playlist = await playlistModel.findById(playlist_id)
-  if(!playlist){
-    return res.status(400).json({msg:"Playlist not found",status:"0"})
-  }
-
-
-
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res.status(400).json({ msg: "Device not found", status: "0" });
+    }
+    const playlist = await playlistModel.findById(playlist_id);
+    if (!playlist) {
+      return res.status(400).json({ msg: "Playlist not found", status: "0" });
+    }
 
     await playlistModel.findByIdAndUpdate(
       { _id: playlist_id },
       { $pull: { device: device_id } }
     );
 
-
     await deviceModel.findByIdAndUpdate(
       { _id: device_id },
       { $pull: { a_playlist: playlist_id } }
     );
 
-    device.SFR_playlist.push(playlist_id)
+    device.SFR_playlist.push(playlist_id);
 
-  await playlist.save()
-  await device.save()
+    await playlist.save();
+    await device.save();
 
-  res.status(200).json({msg:"Playlist removed from device",status:"1"})
+    res.status(200).json({ msg: "Playlist removed from device", status: "1" });
   } catch (error) {
     next(error);
   }
 };
 
-
 // @route      /api/device/play_playlist/:did/:pid
 // @desc       resync device from website
 // @auth       private
 
-export const playPlaylist : RequestHandler = async (req,res,next)=>{
-
+export const playPlaylist: RequestHandler = async (req, res, next) => {
   let playlist = {
     name: "",
-    media:[""],
-    device:[""]
-
-  }
+    media: [""],
+    device: [""],
+  };
   try {
-    const device_id = req.params.did
-    const playlist_id = req.params.pid
+    const device_id = req.params.did;
+    const playlist_id = req.params.pid;
 
+    if (
+      !mongoose.isValidObjectId(device_id) ||
+      !mongoose.isValidObjectId(playlist_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
 
-   if (!mongoose.isValidObjectId(device_id) || !mongoose.isValidObjectId(playlist_id) )  {
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", playlist, status: "0" });
+    }
+    const foundPlaylist = await playlistModel.findById(playlist_id);
+    if (!foundPlaylist) {
+      return res
+        .status(400)
+        .json({ msg: "Playlist not found", playlist, status: "0" });
+    }
+
+    device.c_playlist = foundPlaylist.name;
+    await device.save();
     return res
-      .status(400)
-      .json({ msg: "Invalid  ID", status: "0" });
-  }
-
-  const device = await deviceModel.findById(device_id)
-  if(!device){
-    return res.status(400).json({msg:"Device not found",playlist,status:"0"})
-  }
-  const foundPlaylist = await playlistModel.findById(playlist_id)
-  if(!foundPlaylist){
-    return res.status(400).json({msg:"Playlist not found",playlist,status:"0"})
-  }
-
-
-  device.c_playlist = foundPlaylist.name
-  await device.save()
-  return res.status(200).json({msg:"Playlist added for playing",foundPlaylist,status:1})
-
+      .status(200)
+      .json({ msg: "Playlist added for playing", foundPlaylist, status: 1 });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+// @route      /api/device/interactive/:did/:mid
+// @desc       add media for interactive play
+// @auth       private
+export const interactive: RequestHandler = async (req, res, next) => {
+  let interactive: string = "";
+  try {
+    const device_id = req.params.did;
+    const media_id = req.params.mid;
+
+    if (
+      !mongoose.isValidObjectId(device_id) ||
+      !mongoose.isValidObjectId(media_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", interactive, status: "0" });
+    }
+    const media = await mediaModel.findById(media_id);
+    if (!media) {
+      return res
+        .status(400)
+        .json({ msg: "Playlist not found", interactive, status: "0" });
+    }
+
+    device.interactive = media.media;
+    await device.save();
+    res.status(200).json({
+      msg: "Interactive media added to device",
+      status: "1",
+      interactive: device.interactive,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/device/check_interactive/:did/
+// @desc       add media for interactive play
+// @auth       private
+export const checkInteractive: RequestHandler = async (req, res, next) => {
+  let interactive: string = "";
+  try {
+    const device_id = req.params.did;
+
+    if (!mongoose.isValidObjectId(device_id)) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
+    const device = await deviceModel.findById(device_id);
+    if (!device) {
+      return res
+        .status(400)
+        .json({ msg: "Device not found", interactive, status: "0" });
+    }
+
+    if (device.interactive) {
+      const media: string = device.interactive;
+      device.interactive = "";
+      await device.save();
+      res.status(200).json({
+        msg: "Interactive media added to device",
+        status: "1",
+        interactive: media,
+      });
+    } else {
+      res.status(200).json({
+        msg: "No interactive added",
+        status: "0",
+        interactive: device.interactive,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

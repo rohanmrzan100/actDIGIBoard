@@ -1,11 +1,9 @@
 import { RequestHandler } from "express";
-import uploadModel from "../models/Uploads";
 import mediaModel from "../models/Media";
 import userModel from "../models/User";
 
 class userController {
   static fileUpload: RequestHandler = async (req, res, next) => {
-    //    console.log(req.file?.originalname);
     console.log(req.file);
 
     try {

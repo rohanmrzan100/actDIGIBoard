@@ -52,6 +52,10 @@ const DevicesCard = (props) => {
     dispatch(setDevice(props.device._id));
     window.location.href = "/device/playlist/add";
   };
+  const handleInteractiveClick = ()=>{
+     localStorage.setItem("device", props.device._id);
+      window.location.href = "/device/interactive";
+  }
 
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
@@ -96,6 +100,16 @@ const DevicesCard = (props) => {
             className="scale-150 text-ornage-500"
           />
           <p className="text-lg">Add Playlist</p>
+        </button>
+        <button
+          onClick={handleInteractiveClick}
+          className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
+        >
+          <FontAwesomeIcon
+            icon={faCirclePlay}
+            className="scale-150 text-ornage-500"
+          />
+          <p className="text-lg">Play Interactive</p>
         </button>
     
         <button

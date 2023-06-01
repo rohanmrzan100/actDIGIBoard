@@ -93,6 +93,7 @@ export const getPlaylistById: RequestHandler = async (req, res, next) => {
 ///////////////API OK////////////////////////////
 export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
   try {
+    let flag: boolean = false;
     const id = req.params.id;
     const user_id = res.locals.user._id;
     if (!mongoose.isValidObjectId(id)) {
@@ -108,11 +109,15 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
         return res.status(400).json({ msg: "Device not found", status: "0" });
       }
       if (device.c_playlist === playlist.name) {
+        flag = true;
+        console.log("Inside " + flag);
+
         return res.status(400).json({
-          msg: "cannot delete playlist as it is playing currently in one of the devices.",
-          status: "0 ",
+          msg: "Cannot delete playlist as it is playing currently in one of the devices.",
+          status: "0",
         });
       }
+
       device.SFR_playlist.push(id);
       await device.save();
       await deviceModel.updateOne(
@@ -120,6 +125,11 @@ export const deletePlaylistByID: RequestHandler = async (req, res, next) => {
         { $set: { playlist: null } }
       );
     });
+
+    if (!flag) {
+      return;
+    }
+
     playlist.media.forEach(async (media_id) => {
       await mediaModel.updateOne(
         { _id: media_id },

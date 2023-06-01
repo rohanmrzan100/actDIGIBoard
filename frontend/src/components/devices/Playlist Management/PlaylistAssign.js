@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Empty from "../../utils/Empty";
 
-import { getUserData } from "../../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlay,
@@ -10,7 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Radio, Tooltip } from "@material-tailwind/react";
 import {
-  addPlaylistToDevice,
   playPlaylist,
   removePlaylistFromDevice,
 } from "../../../API/Device";
@@ -18,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
-import { getPlaylist } from "../../../API/Playlist";
 
 const PlaylistAssign = (props) => {
   const playlist = props.playlist;

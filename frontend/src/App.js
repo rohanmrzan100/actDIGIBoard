@@ -16,6 +16,7 @@ import Playlist from "./components/content/playlist/Playlist";
 import Preview from "./components/content/playlist/PlaylistPreview";
 import AddMedia from "./components/content/playlist/AddMedia";
 import Main from "./components/devices/Playlist Management/Main";
+import PlayInteractive from "./components/devices/PlayInteractive";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -64,6 +65,10 @@ const App = () => {
                 <Route
                   path={`/playlist/${localStorage.getItem("playlist")}/add`}
                   element={<AddMedia />}
+                ></Route>
+                <Route
+                  path={"device/interactive"}
+                  element={<PlayInteractive />}
                 ></Route>
               </>
             )}

@@ -25,19 +25,24 @@ const Media = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = e.target[0].value;
-    if(array.length<1 || !name){
-      return errorToast("Please Provide name and at least one media.")
+    if (array.length < 1 || !name) {
+      return errorToast("Please Provide name and at least one media.");
     }
-    createPlaylist(name, array).then((res) => {
-      console.log(res);
-      successToast("Playlist Created Successfully")
-      navigate("/content");
-    }).catch((error)=>{
-      console.log(error);
-      errorToast("Creation of Playist Failed")
-      if(error.response){
-      errorToast(error.response.data.msg)}
-    })
+    createPlaylist(name, array)
+      .then((res) => {
+        console.log(res);
+        successToast("Playlist Created Successfully");
+        navigate("/content");
+      })
+      .catch((error) => {
+        console.log(error);
+
+        if (error.response) {
+          errorToast(error.response.data.msg);
+        } else {
+          errorToast("Creation of Playist Failed");
+        }
+      });
   };
   const handleChange = (event, media) => {
     const id = media._id;
@@ -87,7 +92,7 @@ const Media = (props) => {
                     controls
                     className="w-full h-48 object-cover brightness-90 hover:brightness-100"
                   >
-                    <source src={BASE_URL+media.media} type="video/mp4" />
+                    <source src={BASE_URL + media.media} type="video/mp4" />
                   </video>
 
                   <div className=" p-6 flex justify-between items-start">
@@ -114,7 +119,7 @@ const Media = (props) => {
                 >
                   <img
                     className="w-full h-48 object-cover"
-                    src={BASE_URL+media.media}
+                    src={BASE_URL + media.media}
                     loading="lazy"
                     alt={""}
                   />

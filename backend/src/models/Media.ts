@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 interface Media {
   _id: string;
   media: string;
-  thumbnail: string;
   type: string;
   name:string;
   playlist:[string];
@@ -19,10 +18,7 @@ const mediaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    thumbnail: {
-      type: String,
-      // required: true,
-    },
+ 
     name: {
       type: String,
       required: true,
