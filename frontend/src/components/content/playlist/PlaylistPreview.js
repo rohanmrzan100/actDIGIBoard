@@ -56,7 +56,7 @@ const Preview = () => {
     window.location.href = `/playlist/${localStorage.getItem("playlist")}/add`;
   };
   return (
-    <div className="w-full mt-8 ">
+    <div className="w-full ">
       <GoBack goto={"/content"} />
 
       <div className="flex justify-between items-center mb-8">

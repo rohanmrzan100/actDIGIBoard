@@ -16,6 +16,7 @@ import {
 } from "@material-tailwind/react";
 import Empty from "../utils/Empty";
 import PlaylistCard from "./playlist/PlaylistCard";
+import { BASE_URL } from "../../Config";
 
 const Media = () => {
   const [userMedia, setUserMedia] = useState([]);
@@ -105,7 +106,7 @@ const Media = () => {
 
                           <li>
                             <a
-                              href={media.media}
+                              href={BASE_URL + media.media}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
@@ -159,7 +160,7 @@ const Media = () => {
 
                           <li>
                             <a
-                              href={media.media}
+                              href={BASE_URL + media.media}
                               target="_blank"
                               rel="noopener noreferrer"
                             >

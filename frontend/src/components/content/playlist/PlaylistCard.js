@@ -29,7 +29,11 @@ export default function PlaylistCard(props) {
         console.log(res);
       })
       .catch((err) => {
-        errorToast("Deletion Failed.");
+        if (err.response.data) {
+          errorToast(err.response.data.msg);
+        } else {
+          errorToast("Deletion Failed.");
+        }
         dispatch(isloading({ type: "false" }));
         console.log(err);
       });
@@ -37,17 +41,13 @@ export default function PlaylistCard(props) {
   const image =
     "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=";
   return (
-    <div
-     
-      className="rounded overflow-hidden shadow-lg"
-      key={playlist._id}
-    >
+    <div className="rounded overflow-hidden shadow-lg" key={playlist._id}>
       <img
-       onClick={() => {
-        localStorage.setItem("playlist", playlist._id);
-        navigate(`/playlist/preview/${playlist._id}`);
-        dispatch(setPlaylist_id(playlist._id));
-      }}
+        onClick={() => {
+          localStorage.setItem("playlist", playlist._id);
+          navigate(`/playlist/preview/${playlist._id}`);
+          dispatch(setPlaylist_id(playlist._id));
+        }}
         className="w-full h-32 object-cover"
         src={image}
         loading="lazy"
@@ -80,13 +80,14 @@ export default function PlaylistCard(props) {
               </li>
 
               <li>
-                <button 
-                onClick={() => {
-                  localStorage.setItem("playlist", playlist._id);
-                  navigate(`/playlist/preview/${playlist._id}`);
-                  dispatch(setPlaylist_id(playlist._id));
-                }}
-                className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md">
+                <button
+                  onClick={() => {
+                    localStorage.setItem("playlist", playlist._id);
+                    navigate(`/playlist/preview/${playlist._id}`);
+                    dispatch(setPlaylist_id(playlist._id));
+                  }}
+                  className="hover:bg-green-600 border-2 h-10  border-black text-green-600 hover:text-white w-24 rounded-md"
+                >
                   Preview
                 </button>
               </li>
