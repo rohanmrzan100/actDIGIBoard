@@ -60,8 +60,18 @@ const deviceSchema = new mongoose.Schema(
     //change in playlist media
     playlistChange: {
       name: String,
-      added: [String],
-      remove: [String],
+      added: [
+        {
+          name: String,
+          media: String,
+        },
+      ],
+      remove: [
+        {
+          name: String,
+          media: String,
+        },
+      ],
     },
   },
   {

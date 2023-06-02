@@ -93,13 +93,12 @@ export const deleteDevices: RequestHandler = async (req, res, next) => {
       { _id: device.owner_id },
       { $pull: { device_id: device_id } }
     );
-
-    //   device.a_playlist.forEach(async(playlist_id)=>{
-    //     await playlistModel.findByIdAndUpdate(
-    //   { _id: playlist_id },
-    //   { $pull: { device: device_id } }
-    // );
-    //   })
+    for (const playlist_id of device.a_playlist) {
+      const playlist = await playlistModel.findByIdAndUpdate(
+        { _id: playlist_id },
+        { $pull: { device: device_id } }
+      );
+    }
 
     await deviceModel.findByIdAndDelete(device_id);
     res.status(200).json({ msg: "Device is removed", status: "1" });
@@ -379,7 +378,9 @@ export const removePlaylistFromDevice: RequestHandler = async (
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
-
+    if (device.c_playlist == playlist.name) {
+      device.c_playlist = "";
+    }
     await playlistModel.findByIdAndUpdate(
       { _id: playlist_id },
       { $pull: { device: device_id } }
