@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Empty from "../../utils/Empty";
 
-import { getUserData } from "../../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { Radio } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addPlaylistToDevice } from "../../../API/Device";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
-import { BASE_URL } from "../../../Config";
 import { getNotAssignedPlaylist } from "../../../API/Playlist";
 
 const AddPlaylist = () => {
@@ -22,9 +20,9 @@ const AddPlaylist = () => {
   useEffect(() => {
     getNotAssignedPlaylist(did)
       .then((res) => {
-        console.log(res);
-        if (res.doc) {
-          setPlaylist(res.doc.notassigned);
+        if (res.notassigned) {
+          console.log(res.notassigned);
+          setPlaylist(res.notassigned);
         }
       })
       .catch((err) => {
@@ -64,6 +62,7 @@ const AddPlaylist = () => {
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
           type="submit"
         >
+          <FontAwesomeIcon icon={faCheck}/>
           Select
         </button>
       </div>

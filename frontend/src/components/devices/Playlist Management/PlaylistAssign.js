@@ -4,6 +4,7 @@ import Empty from "../../utils/Empty";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlay,
+  faClose,
   faPlay,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -105,7 +106,7 @@ const PlaylistAssign = (props) => {
                     handleDelete(playlist._id);
                   }}
                 >
-                  <FontAwesomeIcon icon={faTrash} />
+                  <FontAwesomeIcon icon={faClose} className="p-.5 border-2 border-red-600" />
                 </button>
               </Tooltip>
               <img

@@ -195,8 +195,17 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       return res.status(404).json({ msg: "media not found", status: "0" });
     }
 
-   
+    if (media.playlist.length > 0) {
+      return res.status(400).json({ msg: "This media is present in one of the playlist so it cannot be deleted.", status: "0" });
+    }
+
     await mediaModel.findByIdAndDelete(id);
+    // for (const playlist_id in media.playlist) {
+    //   await playlistModel.updateOne(
+    //     { _id: playlist_id },
+    //     { $pull: { media: id } }
+    //   );
+    // }
     res.status(200).json({ msg: "Media is deleted", status: "1" });
   } catch (error) {
     next(error);
@@ -215,6 +224,3 @@ export const getAllUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
-
-

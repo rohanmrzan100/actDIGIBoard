@@ -33,8 +33,8 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       SFR_playlist: [""],
       playlistChange: {
         name: "",
-        added: [""],
-        remove: [""],
+        added: [{ media: "", name: "" }],
+        remove: [{ media: "", name: "" }],
       },
     };
     const owner = await userModel.findById(res.locals.user._id);
@@ -195,8 +195,8 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         SFR_playlist: [""],
         playlistChange: {
           name: "",
-          added: [""],
-          remove: [""],
+          added: [{ media: "", name: "" }],
+          remove: [{ media: "", name: "" }],
         },
       };
       return res
@@ -498,13 +498,11 @@ export const checkInteractive: RequestHandler = async (req, res, next) => {
     }
     const device = await deviceModel.findById(device_id);
     if (!device) {
-      return res
-        .status(400)
-        .json({
-          msg: "Device not found",
-          interactive: interactive,
-          status: "0",
-        });
+      return res.status(400).json({
+        msg: "Device not found",
+        interactive: interactive,
+        status: "0",
+      });
     }
 
     if (device.interactive) {

@@ -13,8 +13,18 @@ interface Device {
   SFR_playlist: [string];
   playlistChange: {
     name: string;
-    added: [string];
-    remove: [string];
+    added: [
+      {
+        name: string;
+        media: string;
+      }
+    ];
+    remove: [
+      {
+        name: string;
+        media: string;
+      }
+    ];
   };
 }
 

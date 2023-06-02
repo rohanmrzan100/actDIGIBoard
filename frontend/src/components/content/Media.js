@@ -28,7 +28,7 @@ const Media = () => {
     getUserData().then((res) => {
       if (res.doc) {
         setUserMedia(res.doc.media_id.reverse());
-        
+
         console.log(res.doc.media_id);
         setPlaylist(res.doc.playlist);
         // dispatch(isloading({ type: "false" }));
@@ -39,8 +39,10 @@ const Media = () => {
   const handleDelete = (id) => {
     dispatch(isloading({ type: "true" }));
     deleteMedia(id).then(() => {
-      window.location.reload(true);
-      dispatch(isloading({ type: "false" }));
+      setInterval(() => {
+        window.location.reload(true);
+        dispatch(isloading({ type: "false" }));
+      }, 2000);
     });
   };
 

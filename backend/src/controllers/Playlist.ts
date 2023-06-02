@@ -169,7 +169,18 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
     if (!media) {
       return res.status(400).json({ msg: "Media not found", status: "0" });
     }
-
+    for (const device_id in playlist.device) {
+      const device = await deviceModel.findById(device_id);
+      if (!device) {
+        return res.status(400).json({ msg: "Device not found", status: "0" });
+      }
+      device.playlistChange.name = playlist.name;
+      device.playlistChange.remove.push({
+        media: media.media,
+        name: media.name,
+      });
+      device.save();
+    }
     await playlistModel.updateOne(
       { _id: playlist_id },
       { $pull: { media: media_id } }
@@ -205,6 +216,7 @@ export const addMedia: RequestHandler = async (req, res, next) => {
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
+
     array.forEach(async (media_id: string) => {
       playlist.media.push(media_id);
 
@@ -212,11 +224,23 @@ export const addMedia: RequestHandler = async (req, res, next) => {
       if (!media) {
         return console.log("Media not found");
       }
+      for (const device_id in playlist.device) {
+        const device = await deviceModel.findById(device_id);
+        if (!device) {
+          return res.status(400).json({ msg: "Device not found", status: "0" });
+        }
+        device.playlistChange.name = playlist.name;
+        device.playlistChange.added.push({
+          media: media.media,
+          name: media.name,
+        });
+        device.save();
+      }
+
       media.playlist.push(playlist_id);
       await media.save();
     });
     await playlist.save();
-    ///////////////////////check change/////////////////////////////////////////
 
     res.status(200).json({
       msg: "Media added to playlist Successfully",
@@ -234,6 +258,7 @@ export const addMedia: RequestHandler = async (req, res, next) => {
 
 export const playlistNotAssigned: RequestHandler = async (req, res, next) => {
   try {
+    let array: Playlist[] = [];
     const device_id = req.params.did;
     const user_id = res.locals.user._id;
     if (
@@ -258,8 +283,15 @@ export const playlistNotAssigned: RequestHandler = async (req, res, next) => {
     const notassigned = allPlaylist.filter(
       (val: string) => !assigned.includes(val)
     );
-   
-    res.status(200).json({ msg: "Ok", status: "1" });
+
+    for (const playlist_id of notassigned) {
+      const playlist = await playlistModel.findById(playlist_id);
+      if (!playlist) {
+        return res.status(400).json({ msg: "Playlist not found", status: "0" });
+      }
+      array = [...array, playlist];
+    }
+    res.status(200).json({ msg: "Ok", notassigned: array, status: "1" });
   } catch (error) {
     next(error);
   }
