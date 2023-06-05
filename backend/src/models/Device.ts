@@ -11,21 +11,20 @@ interface Device {
   change: boolean;
   SFD_playlist: [string];
   SFR_playlist: [string];
-  playlistChange: {
-    name: string;
-    added: [
-      {
+  playlistChange: [
+    {
+      name: string;
+      added?: {
         name: string;
         media: string;
-      }
-    ];
-    remove: [
-      {
+      };
+
+      remove?: {
         name: string;
         media: string;
-      }
-    ];
-  };
+      };
+    }
+  ];
 }
 
 const deviceSchema = new mongoose.Schema(
@@ -58,21 +57,20 @@ const deviceSchema = new mongoose.Schema(
     //playlist sent for removal from device
     SFR_playlist: [String],
     //change in playlist media
-    playlistChange: {
-      name: String,
-      added: [
-        {
+    playlistChange: [
+      {
+        name: String,
+        added: {
           name: String,
           media: String,
         },
-      ],
-      remove: [
-        {
+
+        remove: {
           name: String,
           media: String,
         },
-      ],
-    },
+      },
+    ],
   },
   {
     timestamps: true,

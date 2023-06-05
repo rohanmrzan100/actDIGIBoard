@@ -31,11 +31,13 @@ export const addDevice: RequestHandler<unknown, unknown, addDevice> = async (
       change: false,
       SFD_playlist: [""],
       SFR_playlist: [""],
-      playlistChange: {
-        name: "",
-        added: [{ media: "", name: "" }],
-        remove: [{ media: "", name: "" }],
-      },
+      playlistChange: [
+        {
+          name: "",
+          added: { media: "", name: "" },
+          remove: { media: "", name: "" },
+        },
+      ],
     };
     const owner = await userModel.findById(res.locals.user._id);
     if (!owner)
@@ -192,11 +194,11 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         a_playlist: [""],
         SFD_playlist: [""],
         SFR_playlist: [""],
-        playlistChange: {
+        playlistChange:[ {
           name: "",
-          added: [{ media: "", name: "" }],
-          remove: [{ media: "", name: "" }],
-        },
+          added: { media: "", name: "" },
+          remove: { media: "", name: "" },
+        }]
       };
       return res
         .status(400)
@@ -250,11 +252,11 @@ export const checkChange: RequestHandler = async (req, res, next) => {
   try {
     let SFD_playlist: any = [];
     let SFR_playlist: any = [];
-    let playlistChange: any = {
+    let playlistChange: any = [{
       name: "",
       added: [],
       remove: [],
-    };
+    }]
     const device_id = req.params.id;
     const device = await deviceModel
       .findById(device_id)
@@ -267,8 +269,7 @@ export const checkChange: RequestHandler = async (req, res, next) => {
     if (
       device.SFD_playlist.length ||
       device.SFR_playlist.length ||
-      device.playlistChange.added.length ||
-      device.playlistChange.remove.length
+      device.playlistChange.length
     ) {
       SFD_playlist = device.SFD_playlist;
       SFR_playlist = device.SFR_playlist;

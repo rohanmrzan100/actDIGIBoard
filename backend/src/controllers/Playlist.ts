@@ -165,12 +165,18 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
       if (!device) {
         return res.status(400).json({ msg: "Device not found", status: "0" });
       }
-      device.playlistChange.name = playlist.name;
-      device.playlistChange.remove.push({
-        media: media.media,
-        name: media.name,
+      device.playlistChange.push({
+        name: playlist.name,
+        remove: {
+          name: media.name,
+          media: media.media,
+        },
+        added: {
+          name: "",
+          media: "",
+        },
       });
-      device.save();
+      await device.save();
     }
     await playlistModel.updateOne(
       { _id: playlist_id },
@@ -219,24 +225,29 @@ export const addMedia: RequestHandler = async (req, res, next) => {
         if (!device) {
           return res.status(400).json({ msg: "Device not found", status: "0" });
         }
-        device.playlistChange.name = playlist.name;
-
-        device.playlistChange.added.push({
-          media: media.media,
-          name: media.name,
+        device.playlistChange.push({
+          name: playlist.name,
+          added: {
+            name: media.name,
+            media: media.media,
+          },
+          remove: {
+            name:"",
+            media: "",
+          },
         });
-       await device.save();
+        await device.save();
+        media.playlist.push(playlist_id);
+        await media.save();
+        await playlist.save();
       }
-      media.playlist.push(playlist_id);
-      await media.save();
-      await playlist.save();
-    }
 
-    res.status(200).json({
-      msg: "Media added to playlist Successfully",
-      playlist,
-      status: "1",
-    });
+      res.status(200).json({
+        msg: "Media added to playlist Successfully",
+        playlist,
+        status: "1",
+      });
+    }
   } catch (error) {
     next(error);
   }
