@@ -194,11 +194,13 @@ export const syncDevice: RequestHandler = async (req, res, next) => {
         a_playlist: [""],
         SFD_playlist: [""],
         SFR_playlist: [""],
-        playlistChange:[ {
-          name: "",
-          added: { media: "", name: "" },
-          remove: { media: "", name: "" },
-        }]
+        playlistChange: [
+          {
+            name: "",
+            added: { media: "", name: "" },
+            remove: { media: "", name: "" },
+          },
+        ],
       };
       return res
         .status(400)
@@ -252,11 +254,13 @@ export const checkChange: RequestHandler = async (req, res, next) => {
   try {
     let SFD_playlist: any = [];
     let SFR_playlist: any = [];
-    let playlistChange: any = [{
-      name: "",
-      added: [],
-      remove: [],
-    }]
+    let playlistChange: any = [
+      {
+        name: "",
+        added: [],
+        remove: [],
+      },
+    ];
     const device_id = req.params.id;
     const device = await deviceModel
       .findById(device_id)
@@ -305,7 +309,13 @@ export const checkChange: RequestHandler = async (req, res, next) => {
       msg: "Device  Not Changed",
       SFD_playlist,
       SFR_playlist,
-      playlistChange,
+      playlistChange: [
+        {
+          name: "",
+          added: { media: "", name: "" },
+          remove: { media: "", name: "" },
+        },
+      ],
       status: "1",
     });
   } catch (error) {
