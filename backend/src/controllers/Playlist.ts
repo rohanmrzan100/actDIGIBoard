@@ -219,31 +219,36 @@ export const addMedia: RequestHandler = async (req, res, next) => {
       }
 
       playlist.media.push(media_id);
+      media.playlist.push(playlist_id);
+      await media.save();
+      await playlist.save();
+      // console.log(playlist);
 
-      for (const device_id of playlist.device) {
-        const device = await deviceModel.findById(device_id);
-        if (!device) {
-          return res.status(400).json({ msg: "Device not found", status: "0" });
+      if (playlist.device.length > 0) {
+        for (const device_id of playlist.device) {
+          const device = await deviceModel.findById(device_id);
+          if (!device) {
+            return res
+              .status(400)
+              .json({ msg: "Device not found", status: "0" });
+          }
+          device.playlistChange.push({
+            name: playlist.name,
+            added: {
+              name: media.name,
+              media: media.media,
+            },
+            remove: {
+              name: "",
+              media: "",
+            },
+          });
+          await device.save();
         }
-        device.playlistChange.push({
-          name: playlist.name,
-          added: {
-            name: media.name,
-            media: media.media,
-          },
-          remove: {
-            name:"",
-            media: "",
-          },
-        });
-        await device.save();
-        media.playlist.push(playlist_id);
-        await media.save();
-        await playlist.save();
       }
 
       res.status(200).json({
-        msg: "Media added to playlist Successfully",
+        msg: "Media added to playlist Succcccccccccccccccessfully",
         playlist,
         status: "1",
       });
