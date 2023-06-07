@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { navToggle } from "../../store/slice/toggleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  faCalendarDays,
   faPhotoFilm,
   faSquarePollVertical,
   faTableColumns,
@@ -61,6 +62,16 @@ const SideNav = () => {
               >
                 <FontAwesomeIcon icon={faTablet} />
                 <span className="ml-3">Devices</span>
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/devices")}
+                type="button"
+                className="w-full  nav-btn"
+              >
+                <FontAwesomeIcon icon={faCalendarDays} />
+                <span className="ml-3">Scheduling</span>
               </button>
             </li>
             <li>

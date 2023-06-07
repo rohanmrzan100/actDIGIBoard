@@ -1,6 +1,7 @@
 import React from "react";
 import {
   faBars,
+  faCalendarDays,
   faPhotoFilm,
   faSquarePollVertical,
   faTableColumns,
@@ -62,6 +63,16 @@ const Navbar = () => {
                     >
                       <FontAwesomeIcon icon={faTablet} />
                       <span className="ml-3">Devices</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/devices")}
+                      type="button"
+                      className="w-full  nav-btn"
+                    >
+                      <FontAwesomeIcon icon={faCalendarDays} />
+                      <span className="ml-3">Scheduling</span>
                     </button>
                   </li>
                   <li>

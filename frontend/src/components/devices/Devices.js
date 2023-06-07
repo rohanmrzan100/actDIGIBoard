@@ -36,6 +36,17 @@ const Devices = () => {
             Add Device
           </button>
         </div>
+        <div>
+          <button
+            onClick={() => {
+              window.location.href = "/add_device";
+            }}
+            className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Group Device
+          </button>
+        </div>
       </div>
       <div className=" my-8">
         <h1 className="text-2xl font-semibold">Devices</h1>
