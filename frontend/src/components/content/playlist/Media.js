@@ -47,7 +47,7 @@ const Media = (props) => {
   return (
     <div className="w-full mt-8 ">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold"> Media You have Uploaded</h1>
+        <h1 className="text-2xl font-semibold"> Media Not in this Playlist</h1>
         <button
           onClick={handleClick}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"

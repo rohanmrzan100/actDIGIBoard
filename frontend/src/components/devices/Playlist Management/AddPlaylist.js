@@ -43,7 +43,11 @@ const AddPlaylist = () => {
       .catch((err) => {
         dispatch(isloading({ type: "false" }));
         console.log(err);
-        errorToast("Adding playlist to device unsuccessful");
+        if (err.response.data) {
+          errorToast(err.response.data.msg);
+        } else {
+          errorToast("Adding playlist to device unsuccessful");
+        }
       });
   };
 
@@ -56,7 +60,7 @@ const AddPlaylist = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold">All Playlist Created By You</h1>
+        <h1 className="text-2xl font-semibold">Playlist Not Assigned To This Device</h1>
         <button
           onClick={() => handleClick(pid)}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"

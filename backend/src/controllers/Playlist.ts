@@ -6,7 +6,7 @@ import { RequestHandler } from "express";
 import mongoose from "mongoose";
 import userModel from "../models/User";
 import playlistModel, { Playlist } from "../models/Playlist";
-import mediaModel from "../models/Media";
+import mediaModel, { Media } from "../models/Media";
 import deviceModel, { Device } from "../models/Device";
 
 ////////API OK///////////////////////////
@@ -248,7 +248,7 @@ export const addMedia: RequestHandler = async (req, res, next) => {
       }
 
       res.status(200).json({
-        msg: "Media added to playlist Succcccccccccccccccessfully",
+        msg: "Media added to playlist Successfully",
         playlist,
         status: "1",
       });
@@ -298,6 +298,53 @@ export const playlistNotAssigned: RequestHandler = async (req, res, next) => {
       array = [...array, playlist];
     }
     res.status(200).json({ msg: "Ok", notassigned: array, status: "1" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/playlist/notassigned/media/:pid
+// @desc      get playlist that are not assigned to device
+// @auth       public
+
+export const mediaNotAssignedToPlaylist: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    let notassigned: Media[] = [];
+    const playlist_id = req.params.pid;
+    const user_id = res.locals.user._id;
+    if (
+      !mongoose.isValidObjectId(playlist_id) ||
+      !mongoose.isValidObjectId(user_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  id", status: "0" });
+    }
+
+    const playlist = await playlistModel.findById(playlist_id);
+    if (!playlist) {
+      return res.status(400).json({ msg: "Playlist not found", status: "0" });
+    }
+    const p_media = playlist.media;
+
+    const user = await userModel.findById(user_id);
+    if (!user) {
+      return res.status(400).json({ msg: "User not found", status: "0" });
+    }
+    const allmedia = user.media_id;
+
+    const array = allmedia.filter((val) => !p_media.includes(val));
+
+    for (const media_id of array) {
+      const media = await mediaModel.findById(media_id);
+      if (!media) {
+        return res.status(400).json({ msg: "Media not found", status: "0" });
+      }
+      notassigned = [...notassigned, media];
+    }
+    res.json({ msg: "OK", array: notassigned, status: "1" });
   } catch (error) {
     next(error);
   }

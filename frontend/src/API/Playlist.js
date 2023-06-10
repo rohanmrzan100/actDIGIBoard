@@ -68,3 +68,12 @@ export const getNotAssignedPlaylist = async (did) => {
   );
   return response.data;
 };
+export const getNotAssignedMedia = async (pid) => {
+  const response = await axios.get(
+    `http://localhost:3001/api/playlist/notassigned/media/${pid}`,
+    {
+      headers: headers,
+    }
+  );
+  return response.data;
+};

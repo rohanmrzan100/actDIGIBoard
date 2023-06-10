@@ -24,14 +24,15 @@ const Media = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(isloading({ type: "true" }));
+    dispatch(isloading({ type: "true" }));
     getUserData().then((res) => {
+        dispatch(isloading({ type: "false" }));
       if (res.doc) {
         setUserMedia(res.doc.media_id.reverse());
 
         console.log(res.doc.media_id);
         setPlaylist(res.doc.playlist);
-        // dispatch(isloading({ type: "false" }));
+      
       }
     });
   }, []);

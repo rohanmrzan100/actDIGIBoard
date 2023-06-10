@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { getUserData } from "../../../API/User";
 
 import MediaCard from "./Media";
 import GoBack from "../../utils/GoBack";
-
+import { getNotAssignedMedia } from "../../../API/Playlist";
+import { errorToast } from "../../utils/Toast";
+import { useDispatch } from "react-redux";
+import { isloading } from "../../../store/slice/utilsSlice";
 const AddMedia = () => {
   const [userMedia, setUserMedia] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    getUserData()
+    dispatch(isloading({ type: "true" }));
+    getNotAssignedMedia(localStorage.getItem("playlist"))
       .then((res) => {
-        if (res.doc) {
-          setUserMedia(res.doc.media_id);
-          console.log("all", res.doc.media_id);
+        dispatch(isloading({ type: "false" }));
+        if (res.array) {
+          setUserMedia(res.array);
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        dispatch(isloading({ type: "false" }));
+        errorToast("Something Went Wrong.");
       });
   }, []);
 

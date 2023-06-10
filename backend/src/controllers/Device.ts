@@ -347,6 +347,9 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
+    if(playlist.media.length<=0){
+       return res.status(400).json({ msg: "Playlist is empty.Choose another.", status: "0" });
+    }
     playlist.device.push(device_id);
 
     device.SFD_playlist.push(playlist_id);
