@@ -10,7 +10,7 @@ import { Input } from "@material-tailwind/react";
 import { createPlaylist } from "../../../API/Playlist";
 import { useNavigate } from "react-router-dom";
 import Empty from "../../utils/Empty";
-import { BASE_URL } from "../../../Config";
+import { baseURL } from "../../../Constants";
 const Media = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -92,7 +92,7 @@ const Media = (props) => {
                     controls
                     className="w-full h-48 object-cover brightness-90 hover:brightness-100"
                   >
-                    <source src={BASE_URL + media.media} type="video/mp4" />
+                    <source src={baseURL + media.media} type="video/mp4" />
                   </video>
 
                   <div className=" p-6 flex justify-between items-start">
@@ -119,7 +119,7 @@ const Media = (props) => {
                 >
                   <img
                     className="w-full h-48 object-cover"
-                    src={BASE_URL + media.media}
+                    src={baseURL + media.media}
                     loading="lazy"
                     alt={""}
                   />

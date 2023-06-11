@@ -10,9 +10,8 @@ import { isloading } from "../../../store/slice/utilsSlice";
 import GoBack from "../../utils/GoBack";
 import Empty from "../../utils/Empty";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../Config";
+import { baseURL } from "../../../Constants";
 const Preview = () => {
-  
   const playlist_id = useSelector((state) => state.utils.playlist_id);
   const [playlist, setPlaylist] = useState();
   const [media, setMedia] = useState([]);
@@ -87,7 +86,7 @@ const Preview = () => {
                     controls
                     className="w-full h-48 object-cover brightness-90 hover:brightness-100"
                   >
-                    <source src={BASE_URL+media.media} type="video/mp4" />
+                    <source src={baseURL + media.media} type="video/mp4" />
                   </video>
 
                   <div className="p-6 flex justify-between items-start">
@@ -114,7 +113,7 @@ const Preview = () => {
                 >
                   <img
                     className="w-full h-48 object-cover"
-                    src={BASE_URL + media.media}
+                    src={baseURL + media.media}
                     loading="lazy"
                     alt={""}
                   />

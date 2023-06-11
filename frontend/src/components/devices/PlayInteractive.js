@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { getUserData } from "../../API/User";
 import Empty from "../utils/Empty";
-import { BASE_URL } from "../../Config";
 import { Radio } from "@material-tailwind/react";
 import { addInteractive } from "../../API/Device";
 import { errorToast, successToast } from "../utils/Toast";
 import { isloading } from "../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
+import { baseURL } from "../../Constants";
 const PlayInteractive = () => {
   const dispatch = useDispatch();
   const [userMedia, setUserMedia] = useState([]);
@@ -77,7 +77,7 @@ const PlayInteractive = () => {
                       controls
                       className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                     >
-                      <source src={BASE_URL + media.media} type="video/mp4" />
+                      <source src={baseURL + media.media} type="video/mp4" />
                     </video>
 
                     <div className="px-4 flex justify-between items-center">
@@ -105,7 +105,7 @@ const PlayInteractive = () => {
                   >
                     <img
                       alt=""
-                      src={BASE_URL + media.media}
+                      src={baseURL + media.media}
                       className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                     />
 

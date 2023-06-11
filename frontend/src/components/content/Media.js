@@ -16,7 +16,7 @@ import {
 } from "@material-tailwind/react";
 import Empty from "../utils/Empty";
 import PlaylistCard from "./playlist/PlaylistCard";
-import { BASE_URL } from "../../Config";
+import { baseURL } from "../../Constants";
 
 const Media = () => {
   const [userMedia, setUserMedia] = useState([]);
@@ -26,13 +26,12 @@ const Media = () => {
   useEffect(() => {
     dispatch(isloading({ type: "true" }));
     getUserData().then((res) => {
-        dispatch(isloading({ type: "false" }));
+      dispatch(isloading({ type: "false" }));
       if (res.doc) {
         setUserMedia(res.doc.media_id.reverse());
 
         console.log(res.doc.media_id);
         setPlaylist(res.doc.playlist);
-      
       }
     });
   }, []);
@@ -109,7 +108,7 @@ const Media = () => {
 
                           <li>
                             <a
-                              href={BASE_URL + media.media}
+                              href={baseURL + media.media}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
@@ -163,7 +162,7 @@ const Media = () => {
 
                           <li>
                             <a
-                              href={BASE_URL + media.media}
+                              href={baseURL + media.media}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
