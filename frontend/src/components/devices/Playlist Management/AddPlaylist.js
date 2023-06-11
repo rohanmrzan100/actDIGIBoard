@@ -34,11 +34,9 @@ const AddPlaylist = () => {
     addPlaylistToDevice(did, pid)
       .then((res) => {
         successToast("Playlist added Successfully");
-        navigate("/device/playlist/add");
-        setInterval(() => {
-          window.location.reload(false);
-          dispatch(isloading({ type: "false" }));
-        }, 2000);
+
+        window.location.reload(false);
+        dispatch(isloading({ type: "false" }));
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));
@@ -60,7 +58,9 @@ const AddPlaylist = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold">Playlist Not Assigned To This Device</h1>
+        <h1 className="text-2xl font-semibold">
+          Playlist Not Assigned To This Device
+        </h1>
         <button
           onClick={() => handleClick(pid)}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
@@ -70,9 +70,7 @@ const AddPlaylist = () => {
           Select
         </button>
       </div>
-      {playlist && playlist.length <= 0 && (
-        <Empty text="You have not added any playlist." />
-      )}
+      {playlist && playlist.length <= 0 && <Empty text="No Playlist to add." />}
 
       <div className="grid grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
         {playlist &&

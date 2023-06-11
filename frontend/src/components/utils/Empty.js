@@ -1,5 +1,3 @@
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 const Empty = (props) => {
@@ -11,7 +9,7 @@ const Empty = (props) => {
     //     <h1 className="text-xl">Add Now</h1>
     //   </span>
     // </div>
-    <h1 className="text-xl ">You have not added anything.</h1>
+    <h1 className="text-xl ">{props.text}</h1>
   );
 };
 

@@ -24,22 +24,9 @@ export const register = async (data) => {
 };
 
 export const login = async (data) => {
-  try {
-    const response = await axios.post("/api/user/login", data);
-    successToast("Login Successful");
-    console.log(response.data.token);
-    store.dispatch(loginSuccess(response.data.token));
-    setInterval(() => {
-      window.location.href = "/content";
-      store.dispatch(isloading({ type: "false" }));
-    }, 2000);
-    return response.data;
-  } catch (error) {
-    store.dispatch(setError(error.response.data.msg));
-    store.dispatch(loginError());
-    errorToast("Login Failed");
-    return error;
-  }
+  const response = await axios.post("/api/user/login", data);
+
+  return response.data;
 };
 
 export const getUserData = async () => {
@@ -63,4 +50,3 @@ export const deleteMedia = async (id) => {
     return error;
   }
 };
-

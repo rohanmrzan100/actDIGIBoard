@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { login } from "../../API/User";
 import { useDispatch, useSelector } from "react-redux";
 import { isloading, unsetError } from "../../store/slice/utilsSlice";
+import { errorToast, successToast } from "../utils/Toast";
+import { loginError, loginSuccess } from "../../store/slice/authSlice";
 
 const Signin = () => {
-  const errorMsg = useSelector((state) => state.utils.errorMsg);
-  const error = useSelector((state) => state.utils.error);
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
@@ -19,9 +21,26 @@ const Signin = () => {
       password: e.target[1].value,
     };
     dispatch(isloading({ type: "true" }));
-    login(data);
-  };
+    login(data)
+      .then((res) => {
+        successToast("Login Successful");
+        
+        dispatch(loginSuccess(res.token));
+        setTimeout(() => (window.location.href = "/content"), 2000);
+      })
+      .catch((err) => {
+        setError(true);
+        dispatch(loginError());
+        dispatch(isloading({ type: "false" }));
 
+        if (err.response.data) {
+          errorToast(err.response.data.msg);
+          setErrorMsg(err.response.data.msg);
+        } else {
+          errorToast("Registration Failed");
+        }
+      });
+  };
   return (
     <>
       <div className="w-10/12 p-6 m-auto bg-white border border-gray-600 rounded-md shadow-md md:max-w-md lg:max-w-lg absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2">
