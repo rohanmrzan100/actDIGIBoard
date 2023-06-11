@@ -27,12 +27,18 @@ export const createPlaylist: RequestHandler = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ msg: "Cannot find user", status: "0" });
     }
-    const foundPlaylist = await playlistModel.findOne({ name: name });
-    if (foundPlaylist) {
-      return res
-        .status(400)
-        .json({ msg: "Playlist name already taken", status: "0" });
+    for (const item of user.playlist) {
+      const playlist = await playlistModel.findById(item);
+      if (!playlist) {
+        return res.status(400).json({ msg: "Playlist not found", status: "0" });
+      }
+      if (playlist.name.trim() === name.trim()) {
+        return res
+          .status(400)
+          .json({ msg: "Playlist name alredy Taken", status: "0" });
+      }
     }
+
     const playlist = new playlistModel({
       name: name,
       media: array,

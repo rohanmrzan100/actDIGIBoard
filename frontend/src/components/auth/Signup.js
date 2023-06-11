@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../API/User";
 import { useDispatch, useSelector } from "react-redux";
-import { isloading, unsetError } from "../../store/slice/utilsSlice";
-import { logout } from "../../store/slice/authSlice";
+import { isloading, setError, unsetError } from "../../store/slice/utilsSlice";
+import { errorToast, successToast } from "../utils/Toast";
 
 const Signup = () => {
   const errorMsg = useSelector((state) => state.utils.errorMsg);
@@ -22,12 +22,27 @@ const Signup = () => {
       email: e.target[1].value,
       password: e.target[2].value,
     };
-    // console.log(data);
     dispatch(isloading({ type: "true" }));
 
-    register(data).then((res) => {
-      dispatch(isloading({ type: "false" }));
-    });
+    register(data)
+      .then((res) => {
+        console.log(res);
+        successToast("Registration Successful");
+
+        setInterval(() => {
+          window.location.href = "/signin";
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(isloading({ type: "false" }));
+        if (err.response.data) {
+          dispatch(setError(err.response.data.msg));
+          errorToast(err.response.data.msg);
+        } else {
+          errorToast("Registrationnn Failed");
+        }
+      });
   };
 
   return (

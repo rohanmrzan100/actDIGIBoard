@@ -1,5 +1,7 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3001/";
+import { baseURL } from "../Constants";
+
+axios.defaults.baseURL = baseURL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const headers = {
@@ -38,7 +40,7 @@ export const deletePlaylist = async (id) => {
 
 export const deleteMediaFromPlaylist = async (mid, pid) => {
   const response = await axios.delete(
-    `http://localhost:3001/api/playlist//media_delete/${pid}/${mid}`,
+    `api/playlist//media_delete/${pid}/${mid}`,
     {
       headers: headers,
     }
@@ -70,7 +72,7 @@ export const getNotAssignedPlaylist = async (did) => {
 };
 export const getNotAssignedMedia = async (pid) => {
   const response = await axios.get(
-    `http://localhost:3001/api/playlist/notassigned/media/${pid}`,
+    `/api/playlist/notassigned/media/${pid}`,
     {
       headers: headers,
     }

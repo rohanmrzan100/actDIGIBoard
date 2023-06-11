@@ -2,8 +2,10 @@ import axios from "axios";
 import { store } from "../store/store";
 import { setError, unsetError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
+import { baseURL } from "../Constants";
 
-axios.defaults.baseURL = "http://localhost:3001/";
+
+axios.defaults.baseURL = baseURL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const headers = {
   Authorization: localStorage.getItem("token"),
@@ -12,7 +14,7 @@ const headers = {
 export const addDevice = async (data) => {
   try {
     const response = await axios.post(
-      "http://localhost:3001/api/device/add",
+      "api/device/add",
       data,
       { headers: headers }
     );
@@ -31,7 +33,7 @@ export const addDevice = async (data) => {
 export const getDevices = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:3001/api/user/view_devices",
+      "api/user/view_devices",
 
       { headers: headers }
     );
@@ -47,7 +49,7 @@ export const getDevices = async () => {
 export const removeDevice = async (id) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3001/api/device/delete/${id}`,
+      `api/device/delete/${id}`,
 
       { headers: headers }
     );
@@ -66,7 +68,7 @@ export const add_media = async (id, array) => {
     let media = [];
     array.map((item) => media.push(item));
     const response = await axios.post(
-      `http://localhost:3001/api/device/add_media/${id}`,
+      `api/device/add_media/${id}`,
       { array: media },
       { headers: headers }
     );
@@ -80,7 +82,7 @@ export const add_media = async (id, array) => {
 export const loadDeviceInfo = async (id) => {
   try {
     const response = await axios.get(
-      `http://localhost:3001/api/device/get/${id}`,
+      `api/device/get/${id}`,
 
       { headers: headers }
     );
@@ -128,7 +130,7 @@ export const resyncDevice = async (id) => {
 
 export const addPlaylistToDevice = async (did, pid) => {
   const response = await axios.post(
-    `http://localhost:3001/api/device/add_playlist/${did}/${pid}`,
+    `api/device/add_playlist/${did}/${pid}`,
 
     { headers: headers }
   );
@@ -137,7 +139,7 @@ export const addPlaylistToDevice = async (did, pid) => {
 };
 export const removePlaylistFromDevice = async (did, pid) => {
   const response = await axios.delete(
-    `http://localhost:3001/api/device/remove_playlist/${did}/${pid}`,
+    `api/device/remove_playlist/${did}/${pid}`,
 
     { headers: headers }
   );

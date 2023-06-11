@@ -1,26 +1,15 @@
 import axios from "axios";
-import { store } from "../store/store";
-import { isloading, setError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
-import { loginError, loginSuccess } from "../store/slice/authSlice";
+import { baseURL } from "../Constants";
 
-axios.defaults.baseURL = "http://localhost:3001/";
+axios.defaults.baseURL = baseURL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const headers = {
   Authorization: localStorage.getItem("token"),
 };
 export const register = async (data) => {
-  try {
-    const response = await axios.post("/api/user/register", data);
-    successToast(response.data.msg);
-    window.location.href = "/signin";
-    return response.data;
-  } catch (error) {
-    store.dispatch(setError("Registration Failed"));
-    errorToast("Registration Failed");
-
-    return error;
-  }
+  const response = await axios.post("/api/user/register", data);
+  return response.data;
 };
 
 export const login = async (data) => {
@@ -43,7 +32,7 @@ export const deleteMedia = async (id) => {
     const response = await axios.delete(`api/user/delete_media/${id}`, {
       headers: headers,
     });
-    successToast("Medua deleted successfully");
+    successToast("Media deleted successfully");
     return response.data;
   } catch (error) {
     errorToast(error.response.data.msg);

@@ -14,6 +14,9 @@ const Signin = () => {
   const [errorMsg, setErrorMsg] = useState();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(isloading({ type: "false" }));
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -24,7 +27,7 @@ const Signin = () => {
     login(data)
       .then((res) => {
         successToast("Login Successful");
-        
+
         dispatch(loginSuccess(res.token));
         setTimeout(() => (window.location.href = "/content"), 2000);
       })
