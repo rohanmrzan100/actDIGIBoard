@@ -19,6 +19,7 @@ const AddMedia = () => {
         }
       })
       .catch((err) => {
+        console.log(err);
         dispatch(isloading({ type: "false" }));
         errorToast("Something Went Wrong.");
       });

@@ -340,8 +340,10 @@ export const mediaNotAssignedToPlaylist: RequestHandler = async (
       return res.status(400).json({ msg: "User not found", status: "0" });
     }
     const allmedia = user.media_id;
+    console.log(allmedia);
 
     const array = allmedia.filter((val) => !p_media.includes(val));
+    // console.log(array);
 
     for (const media_id of array) {
       const media = await mediaModel.findById(media_id);
