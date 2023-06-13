@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PlaylistAssign from "./PlaylistAssign";
+import PlaylistAssign from "./PlaylistAssigned";
 import AddPlaylist from "./AddPlaylist";
 import { loadDeviceInfo } from "../../../API/Device";
 
