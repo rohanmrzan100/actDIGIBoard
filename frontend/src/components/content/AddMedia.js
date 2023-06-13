@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import axios from "axios";
 import { errorToast, successToast } from "../utils/Toast";
+import { baseURL } from "../../Constants";
 const AddMedia = () => {
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState(false);
@@ -13,23 +14,23 @@ const AddMedia = () => {
     dispatch(isloading({ type: "true" }));
     formdata.append("media", file);
     console.log(formdata);
-    if(!FormData){
-      setEmpty(true)
+    if (!FormData) {
+      setEmpty(true);
     }
     try {
       dispatch(isloading({ type: "false" }));
-      await axios.post("http://localhost:3001/api/media/upload", formdata, {
+      await axios.post(baseURL + "/api/media/upload", formdata, {
         headers: {
           Authorization: localStorage.getItem("token"),
           "Content-Type": "multipart/form-data",
-        }
+        },
       });
 
       successToast("File Added Successfully ");
-      window.location.reload(false)
+      window.location.reload(false);
     } catch (error) {
-      if(error.response){
-        errorToast(error.response.data.msg)
+      if (error.response) {
+        errorToast(error.response.data.msg);
       }
       console.log(error);
     }

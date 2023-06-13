@@ -143,9 +143,7 @@ export const removePlaylistFromDevice = async (did, pid) => {
 
     { headers: headers }
   );
-  // const response = await axios.delete(
-  //   ` http://localhost:3001/api/device/remove_playlist/64745709618f1f335b4f3d3b/64755411135fc01d14e0da71`
-  // );
+ 
   console.log(response.data);
   return response.data;
 };
