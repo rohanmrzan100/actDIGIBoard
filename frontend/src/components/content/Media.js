@@ -78,7 +78,7 @@ const Media = () => {
                     controls
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   >
-                    <source src={media.media} type="video/mp4" />
+                    <source src={baseURL+media.media} type="video/mp4" />
                   </video>
 
                   <div className="p-4 text-sm flex  justify-between items-start">
@@ -131,7 +131,7 @@ const Media = () => {
                 >
                   <img
                     alt=""
-                    src={media.media}
+                    src={baseURL+media.media}
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   />
 
