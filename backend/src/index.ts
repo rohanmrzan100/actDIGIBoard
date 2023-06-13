@@ -15,9 +15,16 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.send("hello world")
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
+
+app.get("/", function (req, res) {
+  res.sendFile(
+    path.resolve(__dirname, "../../", "frontend", "build", "index.html")
+  );
 });
+
+
+
 app.use("/api/user", userRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/playlist", playlistRouter);
