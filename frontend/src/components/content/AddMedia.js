@@ -19,7 +19,7 @@ const AddMedia = () => {
     }
     try {
       dispatch(isloading({ type: "false" }));
-      await axios.post(baseURL + "/api/media/upload", formdata, {
+      await axios.post(baseURL + "api/media/upload", formdata, {
         headers: {
           Authorization: localStorage.getItem("token"),
           "Content-Type": "multipart/form-data",
