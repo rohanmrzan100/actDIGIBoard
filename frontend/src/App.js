@@ -43,7 +43,7 @@ const App = () => {
 
                 <Route path="/signup" element={<Signup />}></Route>
 
-                <Route path="/*" element={<ErrorPage />}></Route>
+                {/* <Route path="/*" element={<ErrorPage />}></Route> */}
               </>
             )}
             {isAuth && (
@@ -71,7 +71,7 @@ const App = () => {
                   element={<PlayInteractive />}
                 ></Route>
 
-                <Route path="/*" element={<ErrorPage />}></Route>
+                {/* <Route path="/*" element={<ErrorPage />}></Route> */}
               </>
             )}
           </Routes>
