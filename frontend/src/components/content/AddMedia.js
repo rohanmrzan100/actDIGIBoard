@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
-import axios from "axios";
 import { errorToast, successToast } from "../utils/Toast";
-import { baseURL } from "../../Constants";
+import { uploadMedia } from "../../API/User";
 const AddMedia = () => {
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState(false);
@@ -11,29 +10,25 @@ const AddMedia = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    dispatch(isloading({ type: "true" }));
     formdata.append("media", file);
     console.log(formdata);
     if (!FormData) {
       setEmpty(true);
     }
-    try {
-      dispatch(isloading({ type: "false" }));
-      await axios.post(baseURL + "api/media/upload", formdata, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "multipart/form-data",
-        },
+    dispatch(isloading({ type: "true" }));
+    uploadMedia(formdata)
+      .then((res) => {
+        dispatch(isloading({ type: "false" }));
+        successToast("File Added Successfully ");
+        window.location.reload(false);
+      })
+      .catch((error) => {
+        dispatch(isloading({ type: "false" }));
+        if (error.response) {
+          errorToast(error.response.data.msg);
+        }
+        console.log(error);
       });
-
-      successToast("File Added Successfully ");
-      window.location.reload(false);
-    } catch (error) {
-      if (error.response) {
-        errorToast(error.response.data.msg);
-      }
-      console.log(error);
-    }
   };
   return (
     <div>

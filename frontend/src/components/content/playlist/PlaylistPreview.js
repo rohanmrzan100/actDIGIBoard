@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faTrash, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +8,6 @@ import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import GoBack from "../../utils/GoBack";
 import Empty from "../../utils/Empty";
-import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../../Constants";
 const Preview = () => {
   const playlist_id = useSelector((state) => state.utils.playlist_id);
@@ -92,7 +90,11 @@ const Preview = () => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
                     <Tooltip content="Remove Media from Playlist">
                       <button
@@ -121,7 +123,11 @@ const Preview = () => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
                     <Tooltip content="Remove Media from Playlist">
                       <button

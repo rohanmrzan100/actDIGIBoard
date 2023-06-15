@@ -7,12 +7,13 @@ import {
   faImage,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
   Popover,
   PopoverContent,
   PopoverHandler,
+  Tooltip,
 } from "@material-tailwind/react";
 import Empty from "../utils/Empty";
 import PlaylistCard from "./playlist/PlaylistCard";
@@ -78,13 +79,17 @@ const Media = () => {
                     controls
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   >
-                    <source src={baseURL+media.media} type="video/mp4" />
+                    <source src={baseURL + media.media} type="video/mp4" />
                   </video>
 
                   <div className="p-4 text-sm flex  justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0, 10)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
 
                     <Popover placement="right">
@@ -131,14 +136,18 @@ const Media = () => {
                 >
                   <img
                     alt=""
-                    src={baseURL+media.media}
+                    src={baseURL + media.media}
                     className="w-full h-32 object-cover brightness-90 hover:brightness-100"
                   />
 
                   <div className="p-4 text-sm flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0, 10)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
 
                     <Popover placement="right">

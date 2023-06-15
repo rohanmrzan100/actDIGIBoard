@@ -39,3 +39,13 @@ export const deleteMedia = async (id) => {
     return error;
   }
 };
+
+
+export const uploadMedia = async (formdata) => {
+  await axios.post(baseURL + "api/media/upload", formdata, {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

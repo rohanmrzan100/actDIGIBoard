@@ -1,10 +1,8 @@
 import React from "react";
 import { addDevice } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 const Add = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     dispatch(isloading({ type: "true" }));

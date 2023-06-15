@@ -22,30 +22,32 @@ const Devices = () => {
   }, []);
   return (
     <div className=" w-full px-4 py-2  ">
-      <div className="flex justify-center item-center">
+      <div className="sm:flex justify-center item-center ">
         <SearchBar />
-        <Filter />
-        <div>
-          <button
-            onClick={() => {
-              window.location.href = "/add_device";
-            }}
-            className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
-          >
-            <FontAwesomeIcon icon={faPlus} className="mr-2" />
-            Add Device
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              window.location.href = "/add_device";
-            }}
-            className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
-          >
-            <FontAwesomeIcon icon={faPlus} className="mr-2" />
-            Group Device
-          </button>
+        <div className="flex justify-start items-center my-4">
+          <Filter />
+          <div>
+            <button
+              onClick={() => {
+                window.location.href = "/add_device";
+              }}
+              className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
+            >
+              <FontAwesomeIcon icon={faPlus} className="mr-2" />
+              Add Device
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                window.location.href = "/add_device";
+              }}
+              className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
+            >
+              <FontAwesomeIcon icon={faPlus} className="mr-2" />
+              Group Device
+            </button>
+          </div>
         </div>
       </div>
       <div className=" my-8">

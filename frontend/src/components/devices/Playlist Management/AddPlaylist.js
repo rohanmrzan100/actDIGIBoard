@@ -3,8 +3,7 @@ import Empty from "../../utils/Empty";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCirclePlay } from "@fortawesome/free-solid-svg-icons";
-import { Radio } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+import { Radio, Tooltip } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import { addPlaylistToDevice } from "../../../API/Device";
 import { errorToast, successToast } from "../../utils/Toast";
@@ -14,7 +13,6 @@ import { getNotAssignedPlaylist } from "../../../API/Playlist";
 const AddPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
   const [pid, setPid] = useState();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const did = localStorage.getItem("device");
   useEffect(() => {
@@ -90,7 +88,9 @@ const AddPlaylist = () => {
               <div className="px-4 flex justify-between items-center">
                 <div className="flex items-center justify-start text-sm">
                   <FontAwesomeIcon icon={faCirclePlay} />
-                  <div className="px-2">{playlist.name.substring(0, 15)}</div>
+                  <Tooltip content={playlist.name}>
+                    <div className="px-2">{playlist.name.substring(0, 15)}</div>
+                  </Tooltip>
                 </div>
                 <Radio
                   id="blue"

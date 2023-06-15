@@ -22,13 +22,11 @@ const App = () => {
   const navToggle = useSelector((state) => state.toggle.navToggle);
   const isloading = useSelector((state) => state.utils.isloading);
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const _id = useSelector((state) => state.device.device_id);
   const p_id = useSelector((state) => state.utils.playlist_id);
   if (localStorage.getItem("token")) {
     dispatch(loadUser(localStorage.getItem("token")));
   }
 
-  const device_id = _id || localStorage.getItem("device");
   const playlist_id = p_id || localStorage.getItem("playlist");
   return (
     <div>
@@ -44,6 +42,8 @@ const App = () => {
                 ))}
 
                 <Route path="/signup" element={<Signup />}></Route>
+
+                <Route path="*" element={<ErrorPage />}></Route>
               </>
             )}
             {isAuth && (
@@ -70,9 +70,10 @@ const App = () => {
                   path={"device/interactive"}
                   element={<PlayInteractive />}
                 ></Route>
+
+                <Route path="*" element={<ErrorPage />}></Route>
               </>
             )}
-            <Route path="/*" element={<ErrorPage />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

@@ -9,6 +9,7 @@ import { errorToast } from "../../utils/Toast";
 import Empty from "../../utils/Empty";
 import { addMediaToPlaylist } from "../../../API/Playlist";
 import { baseURL } from "../../../Constants";
+import { Tooltip } from "@material-tailwind/react";
 const Media = (props) => {
   const dispatch = useDispatch();
 
@@ -79,7 +80,11 @@ const Media = (props) => {
                   <div className=" p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
 
                     <input
@@ -108,7 +113,11 @@ const Media = (props) => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <div className="px-2">{media.name.substring(0, 15)}</div>
+                      <Tooltip content={media.name}>
+                        <div className="px-2">
+                          {media.name.substring(0, 15)}
+                        </div>
+                      </Tooltip>
                     </div>
 
                     <input

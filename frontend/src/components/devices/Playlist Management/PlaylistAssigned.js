@@ -6,7 +6,6 @@ import {
   faCirclePlay,
   faClose,
   faPlay,
-  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Radio, Tooltip } from "@material-tailwind/react";
 import {
@@ -106,7 +105,10 @@ const PlaylistAssign = (props) => {
                     handleDelete(playlist._id);
                   }}
                 >
-                  <FontAwesomeIcon icon={faClose} className="p-.5 border-2 border-red-600" />
+                  <FontAwesomeIcon
+                    icon={faClose}
+                    className="p-.5 border-2 border-red-600"
+                  />
                 </button>
               </Tooltip>
               <img
@@ -118,7 +120,9 @@ const PlaylistAssign = (props) => {
               <div className="px-4 flex justify-between items-center">
                 <div className="flex items-center justify-start text-sm">
                   <FontAwesomeIcon icon={faCirclePlay} />
-                  <div className="px-2">{playlist.name.substring(0, 15)}</div>
+                  <Tooltip content={playlist.name}>
+                    <div className="px-2">{playlist.name.substring(0, 15)}</div>
+                  </Tooltip>
                 </div>
                 <Radio
                   id="blue"

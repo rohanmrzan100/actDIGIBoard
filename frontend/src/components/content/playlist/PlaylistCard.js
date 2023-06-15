@@ -7,6 +7,7 @@ import {
   Popover,
   PopoverContent,
   PopoverHandler,
+  Tooltip,
 } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import { isloading, setPlaylist_id } from "../../../store/slice/utilsSlice";
@@ -57,7 +58,10 @@ export default function PlaylistCard(props) {
       <div className="p-4 flex justify-between items-start">
         <div className="flex items-center justify-start text-sm">
           <FontAwesomeIcon icon={faCirclePlay} />
-          <div className="px-2">{playlist.name.substring(0, 15)}</div>
+          <Tooltip content={playlist.name}>
+            <div className="px-2">{playlist.name.substring(0, 15)}</div>
+          </Tooltip>
+    
         </div>
 
         <Popover placement="right">

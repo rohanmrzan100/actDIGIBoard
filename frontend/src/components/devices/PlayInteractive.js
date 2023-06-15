@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { getUserData } from "../../API/User";
 import Empty from "../utils/Empty";
-import { Radio } from "@material-tailwind/react";
+import { Radio, Tooltip } from "@material-tailwind/react";
 import { addInteractive } from "../../API/Device";
 import { errorToast, successToast } from "../utils/Toast";
 import { isloading } from "../../store/slice/utilsSlice";
@@ -83,9 +83,11 @@ const PlayInteractive = () => {
                     <div className="px-4 flex justify-between items-center">
                       <div className="flex  flex-start items-center">
                         <FontAwesomeIcon icon={faVideo} />
-                        <div className="px-2 text-xs">
-                          {media.name.substring(0, 10)}
-                        </div>
+                        <Tooltip content={media.name}>
+                          <div className="px-2">
+                            {media.name.substring(0, 15)}
+                          </div>
+                        </Tooltip>
                       </div>
                       <Radio
                         id="blue"
@@ -112,9 +114,11 @@ const PlayInteractive = () => {
                     <div className="px-4 flex justify-between items-center">
                       <div className="flex  flex-start items-center">
                         <FontAwesomeIcon icon={faImage} />
-                        <div className="px-2 text-xs">
-                          {media.name.substring(0, 10)}
-                        </div>
+                        <Tooltip content={media.name}>
+                          <div className="px-2">
+                            {media.name.substring(0, 15)}
+                          </div>
+                        </Tooltip>
                       </div>
                       <Radio
                         id="blue"

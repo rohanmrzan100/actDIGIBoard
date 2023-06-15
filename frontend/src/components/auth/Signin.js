@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../API/User";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isloading, unsetError } from "../../store/slice/utilsSlice";
 import { errorToast, successToast } from "../utils/Toast";
 import { loginError, loginSuccess } from "../../store/slice/authSlice";
