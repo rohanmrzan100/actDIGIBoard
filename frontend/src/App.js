@@ -43,7 +43,7 @@ const App = () => {
 
                 <Route path="/signup" element={<Signup />}></Route>
 
-                <Route path="*" element={<ErrorPage />}></Route>
+                <Route path="/*" element={<ErrorPage />}></Route>
               </>
             )}
             {isAuth && (
@@ -63,7 +63,7 @@ const App = () => {
                 ></Route>
 
                 <Route
-                  path={`/playlist/${localStorage.getItem("playlist")}/add`}
+                  path={`/playlist/${playlist_id}/add`}
                   element={<AddMedia />}
                 ></Route>
                 <Route
@@ -71,7 +71,7 @@ const App = () => {
                   element={<PlayInteractive />}
                 ></Route>
 
-                <Route path="*" element={<ErrorPage />}></Route>
+                <Route path="/*" element={<ErrorPage />}></Route>
               </>
             )}
           </Routes>
