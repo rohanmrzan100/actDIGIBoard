@@ -78,7 +78,7 @@ const DevicesCard = (props) => {
           />
           <p className="text-lg">Status</p>
         </div> */}
-        <div
+        {/* <div
           onClick={handleSync}
           className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200"
         >
@@ -87,7 +87,7 @@ const DevicesCard = (props) => {
             className="scale-150 text-green-500"
           />
           <p className="text-lg">inSync</p>
-        </div>
+        </div> */}
 
         <button
           onClick={handlePlaylistClick}

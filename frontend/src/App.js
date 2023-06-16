@@ -11,7 +11,6 @@ import { loadUser } from "./store/slice/authSlice";
 import Content from "./components/content/Content";
 import Devices from "./components/devices/Devices";
 import Add from "./components/devices/AddDevicePage";
-import ErrorPage from "./components/utils/ErrorPage";
 import Playlist from "./components/content/playlist/Playlist";
 import Preview from "./components/content/playlist/PlaylistPreview";
 import AddMedia from "./components/content/playlist/AddMedia";
@@ -77,7 +76,7 @@ const App = () => {
           </Routes>
         </div>
       </BrowserRouter>
-      {/* {isloading && <Spinner />} */}
+      {isloading && <Spinner />}
       <ToastContainer />
     </div>
   );

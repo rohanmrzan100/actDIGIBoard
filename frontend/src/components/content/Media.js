@@ -20,8 +20,7 @@ import { baseURL } from "../../Constants";
 import Skeleton from "../utils/SkeletonLoading";
 
 const Media = () => {
-  // const [loading,se]
-  const loading = useSelector((state) => state.utils.isloading);
+  const [loading, setLoading] = useState(true);
   const [userMedia, setUserMedia] = useState([]);
   const [playlist, setPlaylist] = useState([]);
   const [mediaEmpty, setMediaEmpty] = useState(false);
@@ -31,20 +30,19 @@ const Media = () => {
   useEffect(() => {
     dispatch(isloading({ type: "true" }));
     getUserData().then((res) => {
-      setTimeout(() => {
-        if (res.doc) {
-          setUserMedia(res.doc.media_id.reverse());
-          setPlaylist(res.doc.playlist);
-        }
+      setLoading(false);
+      if (res.doc) {
+        setUserMedia(res.doc.media_id.reverse());
+        setPlaylist(res.doc.playlist);
         if (res.doc.playlist.length <= 0) {
           setPlaylistEmpty(true);
         }
         if (res.doc.media_id.length <= 0) {
           setMediaEmpty(true);
         }
+      }
 
-        dispatch(isloading({ type: "false" }));
-      }, 1000);
+      dispatch(isloading({ type: "false" }));
     });
   }, []);
 
