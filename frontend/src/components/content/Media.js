@@ -55,7 +55,7 @@ const Media = () => {
           <Empty text="You have not added any playlist." />
         )}
 
-        <div className="grid  grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
+        <div className="grid  grid-cols-1 lg:grid-cols-6 md:grid-col-5 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
           {playlist &&
             playlist.map((playlist) => (
               <PlaylistCard playlist={playlist} key={playlist._id} />
@@ -65,7 +65,7 @@ const Media = () => {
 
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
 
-      <div className="grid  grid-cols-1 lg:grid-cols-6  md:grid-col-4 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
+      <div className="grid  grid-cols-1 lg:grid-cols-4  md:grid-col-3 m-auto sm:grid-cols-2 xs:grid-col-2  gap-x-4 gap-y-4 ">
         {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
@@ -77,7 +77,7 @@ const Media = () => {
                   <video
                     poster={""}
                     controls
-                    className="w-full h-32 object-cover brightness-90 hover:brightness-100"
+                    className="w-full h-44 object-cover brightness-90 hover:brightness-100"
                   >
                     <source src={baseURL + media.media} type="video/mp4" />
                   </video>
@@ -87,7 +87,7 @@ const Media = () => {
                       <FontAwesomeIcon icon={faVideo} />
                       <Tooltip content={media.name}>
                         <div className="px-2">
-                          {media.name.substring(0, 15)}
+                          {media.name.substring(0, 10)}
                         </div>
                       </Tooltip>
                     </div>
@@ -137,7 +137,7 @@ const Media = () => {
                   <img
                     alt=""
                     src={baseURL + media.media}
-                    className="w-full h-32 object-cover brightness-90 hover:brightness-100"
+                    className="w-full h-44 object-cover brightness-90 hover:brightness-100"
                   />
 
                   <div className="p-4 text-sm flex justify-between items-start">
@@ -145,7 +145,7 @@ const Media = () => {
                       <FontAwesomeIcon icon={faImage} />
                       <Tooltip content={media.name}>
                         <div className="px-2">
-                          {media.name.substring(0, 15)}
+                          {media.name.substring(0, 10)}
                         </div>
                       </Tooltip>
                     </div>

@@ -13,23 +13,24 @@ import { navToggle } from "../../store/slice/toggleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/slice/authSlice";
-
+import logo from "../../assets/Logo.png"
 const Navbar = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+ 
   return (
     <div>
       <nav className="  bg-gradient-to-r  from-blue-700 to-blue-800 ">
-        <div className="w-full   flex flex-wrap items-center justify-between mx-auto  px-8 py-4">
+        <div className="w-full   flex flex-wrap items-center justify-between mx-auto  px-8 py-1">
           <a href="/" className="flex items-center">
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-              ACT DIGI BOARD
+              <img src={logo} alt="logo" className="h-16"/>
             </span>
           </a>
           {isAuth && (
             <>
-              {" "}
+           
               <button
                 onClick={() => dispatch(navToggle())}
                 data-collapse-toggle="navbar-default"
