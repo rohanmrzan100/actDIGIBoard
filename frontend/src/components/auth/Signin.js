@@ -38,7 +38,7 @@ const Signin = () => {
         dispatch(loginError());
         dispatch(isloading({ type: "false" }));
 
-        if (err.response.data) {
+        if (err.response) {
           errorToast(err.response.data.msg);
           setErrorMsg(err.response.data.msg);
         } else {

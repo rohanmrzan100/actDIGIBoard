@@ -38,7 +38,7 @@ const Signup = () => {
       .catch((err) => {
         console.log(err);
         dispatch(isloading({ type: "false" }));
-        if (err.response.data) {
+        if (err.response) {
           dispatch(setError(err.response.data.msg));
           errorToast(err.response.data.msg);
         } else {
