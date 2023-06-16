@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../API/User";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isloading, unsetError } from "../../store/slice/utilsSlice";
 import { errorToast, successToast } from "../utils/Toast";
 import { loginError, loginSuccess } from "../../store/slice/authSlice";
+import Spinner from "../utils/Spinner";
 
 const Signin = () => {
+   const loading = useSelector((state) => state.utils.isloading);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
@@ -46,6 +48,7 @@ const Signin = () => {
   };
   return (
     <>
+      {loading && <Spinner />}
       <div className="w-10/12 p-6 m-auto bg-white border border-gray-600 rounded-md shadow-md md:max-w-md lg:max-w-lg absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2">
         <h1 className="text-3xl font-semibold text-center text-indigo-700 ">
           Sign In

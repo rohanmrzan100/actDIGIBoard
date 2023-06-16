@@ -6,8 +6,10 @@ import { register } from "../../API/User";
 import { useDispatch, useSelector } from "react-redux";
 import { isloading, setError, unsetError } from "../../store/slice/utilsSlice";
 import { errorToast, successToast } from "../utils/Toast";
+import Spinner from "../utils/Spinner";
 
 const Signup = () => {
+   const loading = useSelector((state) => state.utils.isloading);
   const errorMsg = useSelector((state) => state.utils.errorMsg);
   const error = useSelector((state) => state.utils.error);
   const [show, setShow] = useState(false);
@@ -47,6 +49,7 @@ const Signup = () => {
 
   return (
     <>
+      {loading && <Spinner />}
       <div className="w-10/12 p-6 m-auto bg-white border border-gray-600 rounded-md shadow-md md:max-w-md lg:max-w-lg absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2">
         <h1 className="text-3xl font-semibold text-center text-indigo-700 ">
           Sign Up

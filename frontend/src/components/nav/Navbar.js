@@ -24,8 +24,9 @@ const Navbar = () => {
       <nav className="  bg-gradient-to-r  from-blue-700 to-blue-800 ">
         <div className="w-full   flex flex-wrap items-center justify-between mx-auto  px-8 py-1">
           <a href="/" className="flex items-center">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+            <span className="self-center text-2xl font-semibold   whitespace-nowrap text-white">
               <img src={logo} alt="logo" className="h-16"/>
+              {/* <h1>ACT Dsign</h1> */}
             </span>
           </a>
           {isAuth && (

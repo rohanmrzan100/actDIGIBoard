@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { deleteMedia, getUserData } from "../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,7 +6,7 @@ import {
   faImage,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
   Popover,
@@ -18,22 +17,34 @@ import {
 import Empty from "../utils/Empty";
 import PlaylistCard from "./playlist/PlaylistCard";
 import { baseURL } from "../../Constants";
+import Skeleton from "../utils/SkeletonLoading";
 
 const Media = () => {
+  // const [loading,se]
+  const loading = useSelector((state) => state.utils.isloading);
   const [userMedia, setUserMedia] = useState([]);
   const [playlist, setPlaylist] = useState([]);
+  const [mediaEmpty, setMediaEmpty] = useState(false);
+  const [playlistEmpty, setPlaylistEmpty] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(isloading({ type: "true" }));
     getUserData().then((res) => {
-      dispatch(isloading({ type: "false" }));
-      if (res.doc) {
-        setUserMedia(res.doc.media_id.reverse());
+      setTimeout(() => {
+        if (res.doc) {
+          setUserMedia(res.doc.media_id.reverse());
+          setPlaylist(res.doc.playlist);
+        }
+        if (res.doc.playlist.length <= 0) {
+          setPlaylistEmpty(true);
+        }
+        if (res.doc.media_id.length <= 0) {
+          setMediaEmpty(true);
+        }
 
-        console.log(res.doc.media_id);
-        setPlaylist(res.doc.playlist);
-      }
+        dispatch(isloading({ type: "false" }));
+      }, 1000);
     });
   }, []);
 
@@ -51,9 +62,8 @@ const Media = () => {
     <div className="w-full mt-8 ">
       <div className="mb-8">
         <h1 className="text-2xl mb-8 font-semibold"> Your Playlist</h1>
-        {playlist && !playlist.length > 0 && (
-          <Empty text="You have not added any playlist." />
-        )}
+        {loading && <Skeleton />}
+        {playlistEmpty && <Empty text="You have not added any playlist." />}
 
         <div className="grid  grid-cols-1 lg:grid-cols-6 md:grid-col-5 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
           {playlist &&
@@ -64,8 +74,9 @@ const Media = () => {
       </div>
 
       <h1 className="text-2xl mb-8 font-semibold"> Your Media</h1>
-
+      {loading && <Skeleton />}
       <div className="grid  grid-cols-1 lg:grid-cols-4  md:grid-col-3 m-auto sm:grid-cols-2 xs:grid-col-2  gap-x-4 gap-y-4 ">
+        {mediaEmpty && <Empty text="You have not added any media." />}
         {userMedia &&
           userMedia.map((media) => {
             if (media.type === "video") {
@@ -189,9 +200,9 @@ const Media = () => {
             }
           })}
 
-        {userMedia && !userMedia.length > 0 && (
+        {/* {userMedia && !userMedia.length > 0 && (
           <Empty text="You have not added any Media." />
-        )}
+        )} */}
       </div>
     </div>
   );

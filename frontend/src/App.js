@@ -77,7 +77,7 @@ const App = () => {
           </Routes>
         </div>
       </BrowserRouter>
-      {isloading && <Spinner />}
+      {/* {isloading && <Spinner />} */}
       <ToastContainer />
     </div>
   );
