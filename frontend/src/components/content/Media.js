@@ -29,21 +29,25 @@ const Media = () => {
 
   useEffect(() => {
     dispatch(isloading({ type: "true" }));
-    getUserData().then((res) => {
-      setLoading(false);
-      if (res.doc) {
-        setUserMedia(res.doc.media_id.reverse());
-        setPlaylist(res.doc.playlist);
-        if (res.doc.playlist.length <= 0) {
-          setPlaylistEmpty(true);
+    getUserData()
+      .then((res) => {
+        setLoading(false);
+        if (res.doc) {
+          setUserMedia(res.doc.media_id.reverse());
+          setPlaylist(res.doc.playlist);
+          if (res.doc.playlist.length <= 0) {
+            setPlaylistEmpty(true);
+          }
+          if (res.doc.media_id.length <= 0) {
+            setMediaEmpty(true);
+          }
         }
-        if (res.doc.media_id.length <= 0) {
-          setMediaEmpty(true);
-        }
-      }
 
-      dispatch(isloading({ type: "false" }));
-    });
+        dispatch(isloading({ type: "false" }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleDelete = (id) => {

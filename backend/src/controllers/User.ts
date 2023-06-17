@@ -7,8 +7,8 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { User } from "../models/User";
 import mediaModel from "../models/Media";
-import playlistModel from "../models/Playlist";
-import deviceModel from "../models/Device";
+const path = require("path");
+const fs = require("fs");
 
 // @route      /api/user/
 // @desc       test protected route
@@ -209,7 +209,11 @@ export const deleteMedia: RequestHandler = async (req, res, next) => {
         $pull: { media_id: id },
       }
     );
-
+    //deleting media from public/asset folder
+    fs.unlinkSync(
+      path.join(__dirname + "../../../public/assets/" + media.media)
+    );
+  
     await mediaModel.findByIdAndDelete(id);
 
     res.status(200).json({ msg: "Media is deleted", status: "1" });

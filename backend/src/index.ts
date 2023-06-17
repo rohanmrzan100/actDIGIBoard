@@ -9,11 +9,14 @@ import userRouter from "./routes/User";
 import deviceRouter from "./routes/Device";
 import playlistRouter from "./routes/Playlist";
 import router from "./routes/Uploads";
+import compression from "compression";
+
 const app = express();
 app.use(express.static(path.join(__dirname, "../public/assets")));
 app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 app.use(morgan("dev"));
+app.use(compression());
 
 
 // if(env.NODE_ENV === 'production'){
@@ -28,8 +31,6 @@ app.use(morgan("dev"));
 //     res.send("Hello World")
 //   })
 // }
-
-
 
 app.use("/api/user", userRouter);
 app.use("/api/device", deviceRouter);
