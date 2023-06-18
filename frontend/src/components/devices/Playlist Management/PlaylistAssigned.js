@@ -18,6 +18,8 @@ import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
 
 const PlaylistAssign = (props) => {
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const playlist = props.playlist;
   const [pid, setPid] = useState();
   const navigate = useNavigate();
@@ -28,7 +30,8 @@ const PlaylistAssign = (props) => {
     console.log(did, pid);
     dispatch(isloading({ type: "true" }));
     playPlaylist(did, pid)
-      .then((res) => {
+      .then(async(res) => {
+            await delay(5000);
         successToast("Playlist Playing in device Successfully");
         navigate("/devices");
         setInterval(() => {
@@ -52,10 +55,8 @@ const PlaylistAssign = (props) => {
     removePlaylistFromDevice(did, pid)
       .then((res) => {
         successToast("Playlist Removed Successfully");
-        setInterval(() => {
           window.location.reload(false);
           dispatch(isloading({ type: "false" }));
-        }, 2000);
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));

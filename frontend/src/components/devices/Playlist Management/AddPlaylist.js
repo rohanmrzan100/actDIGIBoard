@@ -30,12 +30,10 @@ const AddPlaylist = () => {
   const handleClick = (pid) => {
     dispatch(isloading({ type: "true" }));
     addPlaylistToDevice(did, pid)
-      .then((res) => {
+      .then(async (res) => {
         successToast("Playlist added Successfully");
-        setTimeout(() => {
-          window.location.reload(false);
-          dispatch(isloading({ type: "false" }));
-        }, 5000);
+        window.location.reload(false);
+        dispatch(isloading({ type: "false" }));
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));
