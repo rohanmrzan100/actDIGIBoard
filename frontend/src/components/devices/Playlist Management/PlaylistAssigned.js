@@ -15,7 +15,7 @@ import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
 
 const PlaylistAssign = (props) => {
-
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const playlist = props.playlist;
   const [pid, setPid] = useState();
@@ -28,6 +28,7 @@ const PlaylistAssign = (props) => {
     dispatch(isloading({ type: "true" }));
     playPlaylist(did, pid)
       .then(async (res) => {
+        delay(10000)
         successToast("Playlist Playing in device Successfully");
         navigate("/devices");
 

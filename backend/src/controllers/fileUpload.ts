@@ -38,10 +38,10 @@ class userController {
             // Generate 720P video
             .output(outputFilePath)
             .videoCodec("libx264")
-            // .size("1280x720")
-            // .videoBitrate("1000k")
+         
             .size("640x480") // Adjust the resolution as desired
             .videoBitrate("300k") // Adjust the bitrate as desired
+         
             .outputOptions("-crf 25")
             .on("progress", function (progress) {
               console.log("... frames: " + progress.frames);
