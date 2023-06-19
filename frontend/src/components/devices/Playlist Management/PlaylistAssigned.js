@@ -8,17 +8,14 @@ import {
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { Radio, Tooltip } from "@material-tailwind/react";
-import {
-  playPlaylist,
-  removePlaylistFromDevice,
-} from "../../../API/Device";
+import { playPlaylist, removePlaylistFromDevice } from "../../../API/Device";
 import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
 
 const PlaylistAssign = (props) => {
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 
   const playlist = props.playlist;
   const [pid, setPid] = useState();
@@ -30,13 +27,11 @@ const PlaylistAssign = (props) => {
     console.log(did, pid);
     dispatch(isloading({ type: "true" }));
     playPlaylist(did, pid)
-      .then(async(res) => {
-            await delay(5000);
+      .then(async (res) => {
         successToast("Playlist Playing in device Successfully");
         navigate("/devices");
-        setInterval(() => {
-          dispatch(isloading({ type: "false" }));
-        }, 2000);
+
+        dispatch(isloading({ type: "false" }));
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));
@@ -55,8 +50,8 @@ const PlaylistAssign = (props) => {
     removePlaylistFromDevice(did, pid)
       .then((res) => {
         successToast("Playlist Removed Successfully");
-          window.location.reload(false);
-          dispatch(isloading({ type: "false" }));
+        window.location.reload(false);
+        dispatch(isloading({ type: "false" }));
       })
       .catch((err) => {
         dispatch(isloading({ type: "false" }));

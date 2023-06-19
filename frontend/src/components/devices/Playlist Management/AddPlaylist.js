@@ -15,6 +15,7 @@ const AddPlaylist = () => {
   const [pid, setPid] = useState();
   const dispatch = useDispatch();
   const did = localStorage.getItem("device");
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   useEffect(() => {
     getNotAssignedPlaylist(did)
       .then((res) => {
@@ -31,6 +32,8 @@ const AddPlaylist = () => {
     dispatch(isloading({ type: "true" }));
     addPlaylistToDevice(did, pid)
       .then(async (res) => {
+        delay(5000);
+
         successToast("Playlist added Successfully");
         window.location.reload(false);
         dispatch(isloading({ type: "false" }));
