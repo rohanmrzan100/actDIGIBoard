@@ -8,7 +8,8 @@ const path = require("path");
 import userRouter from "./routes/User";
 import deviceRouter from "./routes/Device";
 import playlistRouter from "./routes/Playlist";
-import router from "./routes/Uploads";
+import UploadRouter from "./routes/Uploads";
+import interactiveRouter from "./routes/Interactive"
 import compression from "compression";
 
 const app = express();
@@ -35,7 +36,8 @@ app.use(compression());
 app.use("/api/user", userRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/playlist", playlistRouter);
-app.use("/api/media", router);
+app.use("/api/media", UploadRouter);
+app.use("/api/interactive", interactiveRouter);
 
 app.use((req: any, res: any, next: NextFunction) => {
   next(Error("Endpoint not found"));

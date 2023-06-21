@@ -485,7 +485,7 @@ export const interactive: RequestHandler = async (req, res, next) => {
     if (!media) {
       return res
         .status(400)
-        .json({ msg: "Playlist not found", interactive, status: "0" });
+        .json({ msg: "Media not found", interactive, status: "0" });
     }
 
     device.interactive = media.media;

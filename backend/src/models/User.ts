@@ -8,6 +8,7 @@ export interface User {
   device_id: [string];
   media_id: [string];
   playlist: [string];
+  interactive: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema(
     device_id: [{ type: mongoose.Types.ObjectId, ref: "device" }],
     media_id: [{ type: mongoose.Types.ObjectId, ref: "media" }],
     playlist: [{ type: mongoose.Types.ObjectId, ref: "playlist" }],
+    interactive: { type: mongoose.Types.ObjectId, ref: "interactive" },
   },
   {
     timestamps: true,

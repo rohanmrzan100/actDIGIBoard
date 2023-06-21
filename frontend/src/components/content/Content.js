@@ -3,6 +3,8 @@ import AddImage from "./AddMedia";
 import Media from "./Media";
 import { Collapse, Button, Card, CardBody } from "@material-tailwind/react";
 import { CloudArrowUpIcon, PlayPauseIcon } from "@heroicons/react/24/outline";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
 
 const Content = () => {
   const [open, setOpen] = useState(false);
@@ -24,6 +26,14 @@ const Content = () => {
         >
           <PlayPauseIcon strokeWidth={2} className="h-5 w-5" />
           Create Playlist
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => (window.location.href = "/create/interactive")}
+          className="flex items-center gap-3"
+        >
+          <FontAwesomeIcon icon={faPhotoFilm} />
+          interactive Media
         </Button>
       </div>
       <Collapse open={open}>

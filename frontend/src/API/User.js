@@ -19,13 +19,8 @@ export const login = async (data) => {
 };
 
 export const getUserData = async () => {
-  try {
-    const response = await axios.get("/api/user/content", { headers: headers });
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    return error;
-  }
+  const response = await axios.get("/api/user/content", { headers: headers });
+  return response.data;
 };
 
 export const deleteMedia = async (id) => {
@@ -40,7 +35,6 @@ export const deleteMedia = async (id) => {
     return error;
   }
 };
-
 
 export const uploadMedia = async (formdata) => {
   await axios.post(baseURL + "api/media/upload", formdata, {

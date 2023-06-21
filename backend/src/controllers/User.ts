@@ -22,6 +22,7 @@ export const getUserData: RequestHandler = async (req, res, next) => {
     device_id: [""],
     media_id: [""],
     playlist: [""],
+    interactive:""
   };
 
   const userID = res.locals.user._id;
@@ -33,7 +34,8 @@ export const getUserData: RequestHandler = async (req, res, next) => {
   const user = await userModel
     .findById(userID)
     .populate("media_id")
-    .populate("playlist");
+    .populate("playlist")
+    .populate("interactive");
   if (!user) {
     return res
       .status(400)
@@ -65,6 +67,7 @@ export const register: RequestHandler<
     device_id: [""],
     media_id: [""],
     playlist: [""],
+    interactive: "",
   };
 
   try {
@@ -90,6 +93,7 @@ export const register: RequestHandler<
       name: name,
       email: email,
       password: Hashpassword,
+      interactive:null
     });
 
     doc = await user.save();
@@ -120,6 +124,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
     device_id: [""],
     media_id: [""],
     playlist: [""],
+    interactive:""
   };
 
   try {

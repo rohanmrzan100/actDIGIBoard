@@ -66,6 +66,16 @@ const SideNav = () => {
             </li>
             <li>
               <button
+                onClick={() => navigate("/interactive")}
+                type="button"
+                className="w-full  nav-btn"
+              >
+                <FontAwesomeIcon icon={faPhotoFilm} />
+                <span className="ml-3">Interactive</span>
+              </button>
+            </li>
+            <li>
+              <button
                 onClick={() => navigate("/devices")}
                 type="button"
                 className="w-full  nav-btn"

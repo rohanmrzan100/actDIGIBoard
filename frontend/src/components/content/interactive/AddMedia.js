@@ -1,40 +1,47 @@
 import React, { useEffect, useState } from "react";
-
+import { getUserData } from "../../../API/User";
+import { errorToast, successToast } from "../../utils/Toast";
+import { baseURL } from "../../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addArray, removeArray } from "../../../store/slice/arraySlice";
+import { addMediaToInteractive } from "../../../API/Interactive";
 import { isloading } from "../../../store/slice/utilsSlice";
-import { errorToast } from "../../utils/Toast";
-import Empty from "../../utils/Empty";
-import { addMediaToPlaylist } from "../../../API/Playlist";
-import { baseURL } from "../../../Constants";
-import { Tooltip } from "@material-tailwind/react";
-const Media = (props) => {
+const AddInteractiveMedia = () => {
+  const [media, setMedia] = useState();
   const dispatch = useDispatch();
-
   const array = useSelector((state) => state.array);
-  const [userMedia, setUserMedia] = useState([]);
-
   useEffect(() => {
-    // console.log(props.media);
-    setUserMedia(props.media);
-  },[]);
-
+    getUserData()
+      .then((res) => {
+        if (res.doc) {
+          setMedia(res.doc.media_id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast("Something went wrong");
+      });
+  }, []);
   const handleClick = () => {
-    if (array.length <= 0) {
-      return errorToast("Please Select Media before Adding");
-    }
-    const id = localStorage.getItem("playlist");
-
-    console.log(array, id);
     dispatch(isloading({ type: "true" }));
-
-    addMediaToPlaylist(id, array).then((res) => {
-      window.location.href = `/playlist/preview/${id}`;
-      dispatch(isloading({ type: "false" }));
-    });
+    addMediaToInteractive(array)
+      .then((res) => {
+        successToast("Media added to interactive successfully !");
+        setTimeout(() => {
+          window.location.href = "/create/interactive";
+          dispatch(isloading({ type: "false" }));
+        }, 2000);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast("Something went wrong !");
+        dispatch(isloading({ type: "true" }));
+      });
   };
+
   const handleChange = (event, media) => {
     const id = media._id;
 
@@ -44,25 +51,22 @@ const Media = (props) => {
       dispatch(removeArray({ id, array }));
     }
   };
-
   return (
-    <div className="w-full mt-8 ">
+    <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold"> Media Not in this Playlist</h1>
+        <h1 className="text-2xl font-semibold">Your Media</h1>
         <button
           onClick={handleClick}
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded active:scale-105 focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Add
+          Add Interactive
         </button>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3  gap-x-4 gap-y-4 ">
-        {!userMedia.length > 0 && (
-          <Empty text="You have not uploaded any media." />
-        )}
-        {userMedia &&
-          userMedia.map((media) => {
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2  gap-x-4 gap-y-4  ">
+        {media &&
+          media.map((media) => {
+            console.log(media.media);
             if (media.type === "video") {
               return (
                 <div
@@ -80,11 +84,7 @@ const Media = (props) => {
                   <div className=" p-6 flex justify-between items-start">
                     <div className="flex  flex-start items-center">
                       <FontAwesomeIcon icon={faVideo} />
-                      <Tooltip content={media.name}>
-                        <div className="px-2">
-                          {media.name.substring(0, 15)}
-                        </div>
-                      </Tooltip>
+                      <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
 
                     <input
@@ -113,11 +113,7 @@ const Media = (props) => {
                   <div className="p-6 flex justify-between items-start">
                     <div className="flex items-center justify-start">
                       <FontAwesomeIcon icon={faImage} />
-                      <Tooltip content={media.name}>
-                        <div className="px-2">
-                          {media.name.substring(0, 15)}
-                        </div>
-                      </Tooltip>
+                      <div className="px-2">{media.name.substring(0, 15)}</div>
                     </div>
 
                     <input
@@ -137,4 +133,4 @@ const Media = (props) => {
   );
 };
 
-export default Media;
+export default AddInteractiveMedia;

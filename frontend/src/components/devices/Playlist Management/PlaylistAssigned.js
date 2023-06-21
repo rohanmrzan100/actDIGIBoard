@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Empty from "../../utils/Empty";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,26 +8,35 @@ import {
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { Radio, Tooltip } from "@material-tailwind/react";
-import { playPlaylist, removePlaylistFromDevice } from "../../../API/Device";
+import {
+  getDeviceByID,
+  playPlaylist,
+  removePlaylistFromDevice,
+} from "../../../API/Device";
 import { useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../../utils/Toast";
 import { isloading } from "../../../store/slice/utilsSlice";
 import { useDispatch } from "react-redux";
 
 const PlaylistAssign = (props) => {
-
   const playlist = props.playlist;
+  const [now, setNow] = useState(false);
   const [pid, setPid] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const did = localStorage.getItem("device");
-
+  useEffect(() => {
+    getDeviceByID(did)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   const handleClick = (pid) => {
     console.log(did, pid);
     dispatch(isloading({ type: "true" }));
     playPlaylist(did, pid)
       .then(async (res) => {
-  
         successToast("Playlist Playing in device Successfully");
         navigate("/devices");
 
@@ -93,6 +102,8 @@ const PlaylistAssign = (props) => {
               key={playlist._id}
               onChange={handleChange}
             >
+              {now && <h1>Now Playing</h1>}
+
               <Tooltip content="Remove Playlist from Device">
                 <button
                   className="hover:text-red-700 hover:scale-110 absolute top-0 right-0 p-2  text-red-600  "

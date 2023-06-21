@@ -16,7 +16,11 @@ import Preview from "./components/content/playlist/PlaylistPreview";
 import AddMedia from "./components/content/playlist/AddMedia";
 import Main from "./components/devices/Playlist Management/Main";
 import PlayInteractive from "./components/devices/PlayInteractive";
+import AddInteractiveMedia from "./components/content/interactive/AddMedia";
+import InteractiveEdit from "./components/content/interactive/Interactive";
+import Interactive from "./components/interactive/Interactive";
 const App = () => {
+
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
   const isloading = useSelector((state) => state.utils.isloading);
@@ -53,8 +57,17 @@ const App = () => {
                 <Route path="/signin" element={<Signin />}></Route>
                 <Route path="/signup" element={<Signup />}></Route>
                 <Route path="/devices" element={<Devices />}></Route>
+                <Route path="/interactive" element={<Interactive />}></Route>
                 <Route path="/add_device" element={<Add />}></Route>
                 <Route path="/create/playlist" element={<Playlist />}></Route>
+                <Route
+                  path="/create/interactive"
+                  element={<InteractiveEdit />}
+                ></Route>
+                <Route
+                  path="/add/interactive"
+                  element={<AddInteractiveMedia />}
+                ></Route>
                 <Route path="/device/playlist/add" element={<Main />}></Route>
                 <Route
                   path={`/playlist/preview/${playlist_id}`}

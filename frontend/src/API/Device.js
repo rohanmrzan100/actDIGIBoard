@@ -161,3 +161,12 @@ export const addInteractive = async (did, mid) => {
 
   return response.data;
 };
+
+export const getDeviceByID = async (did) => {
+  const response = await axios.post(`/api/device/get/${did}`);
+
+  return response.data;
+};
+
+
+

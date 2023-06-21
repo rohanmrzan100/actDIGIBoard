@@ -25,13 +25,12 @@ const Navbar = () => {
         <div className="w-full   flex flex-wrap items-center justify-between mx-auto  px-8 py-1">
           <a href="/" className="flex items-center">
             <span className="self-center text-2xl font-semibold   whitespace-nowrap text-white">
-              <img src={logo} alt="logo" className="h-16"/>
+              <img src={logo} alt="logo" className="h-16" />
               {/* <h1>ACT Dsign</h1> */}
             </span>
           </a>
           {isAuth && (
             <>
-           
               <button
                 onClick={() => dispatch(navToggle())}
                 data-collapse-toggle="navbar-default"
@@ -65,6 +64,16 @@ const Navbar = () => {
                     >
                       <FontAwesomeIcon icon={faTablet} />
                       <span className="ml-3">Devices</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => navigate("/interactive")}
+                      type="button"
+                      className="w-full  nav-btn"
+                    >
+                      <FontAwesomeIcon icon={faPhotoFilm} />
+                      <span className="ml-3">Interactive</span>
                     </button>
                   </li>
                   <li>
