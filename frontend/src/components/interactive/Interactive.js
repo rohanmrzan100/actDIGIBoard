@@ -16,12 +16,13 @@ const Interactive = () => {
   useEffect(() => {
     getInteractive()
       .then((res) => {
-        console.log(res.interactive.media);
-        setMedia(res.interactive.media);
-        if (res.interactive.media.length > 0) {
-          setEmpty(false);
-        } else {
-          setEmpty(true);
+        if (res.interactive.media) {
+          setMedia(res.interactive.media);
+          if (res.interactive.media.length > 0) {
+            setEmpty(false);
+          } else {
+            setEmpty(true);
+          }
         }
       })
       .catch((err) => {
@@ -48,7 +49,6 @@ const Interactive = () => {
         console.log(err);
         errorToast("Something went Wrong !");
       });
-    console.log(media_id);
   };
   return (
     <div>

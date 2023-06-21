@@ -16,6 +16,7 @@ export const getInteractive = async () => {
   console.log(response.data);
   return response.data;
 };
+
 export const addMediaToInteractive = async (array) => {
   const response = await axios.post(
     `api/interactive/add`,
@@ -26,18 +27,21 @@ export const addMediaToInteractive = async (array) => {
   console.log(response.data);
   return response.data;
 };
-export const RemoveMediaFromInteractive = async (id) => {
-  const response = await axios.delete(
-    `api/interactive/remove/${id}`,
+
+export const PlayInteractive = async (id) => {
+  const response = await axios.post(
+    `api/interactive/play/${id}`,
+    {},
 
     { headers: headers }
   );
   console.log(response.data);
   return response.data;
 };
-export const PlayInteractive = async (id) => {
+
+export const RemoveMediaFromInteractive = async (id) => {
   const response = await axios.delete(
-    `1/api/interactive/play/${id}`,
+    `api/interactive/remove/${id}`,
 
     { headers: headers }
   );
