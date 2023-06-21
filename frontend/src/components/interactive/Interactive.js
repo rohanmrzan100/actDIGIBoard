@@ -35,7 +35,6 @@ const Interactive = () => {
   };
   const handlePlay = () => {
     dispatch(isloading({ type: true }));
-    console.log("fsdfsd");
     PlayInteractive(media_id)
       .then((res) => {
         successToast("Media Playing in all devices !");
