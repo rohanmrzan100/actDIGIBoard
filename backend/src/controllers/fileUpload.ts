@@ -8,6 +8,7 @@ const fs = require("fs");
 class userController {
   static fileUpload: RequestHandler = async (req, res, next) => {
     try {
+    
       const owner = await userModel.findById(res.locals.user._id);
       if (!owner)
         return res.status(400).json({ msg: "User is not found", status: "0" });

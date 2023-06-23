@@ -4,9 +4,9 @@ import { navToggle } from "../../store/slice/toggleSlice";
 import { useDispatch } from "react-redux";
 import {
   faCalendarDays,
+  faImage,
   faPhotoFilm,
   faSquarePollVertical,
-  faTableColumns,
   faTablet,
   faUser,
   faXmark,
@@ -76,6 +76,16 @@ const SideNav = () => {
             </li>
             <li>
               <button
+                onClick={() => navigate("/playlist")}
+                type="button"
+                className="w-full  nav-btn"
+              >
+                <FontAwesomeIcon icon={faImage} />
+                <span className="ml-3">Playlist</span>
+              </button>
+            </li>
+            <li>
+              <button
                 onClick={() => navigate("/devices")}
                 type="button"
                 className="w-full  nav-btn"
@@ -84,16 +94,7 @@ const SideNav = () => {
                 <span className="ml-3">Scheduling</span>
               </button>
             </li>
-            <li>
-              <button
-                type="button"
-                className="w-full  nav-btn"
-                onClick={() => (window.location.href = "/dashboard")}
-              >
-                <FontAwesomeIcon icon={faTableColumns} />
-                <span className="ml-3">Dashboard</span>
-              </button>
-            </li>
+
             <li>
               <button
                 type="button"
@@ -114,7 +115,7 @@ const SideNav = () => {
                 className="w-full  nav-btn"
               >
                 <FontAwesomeIcon icon={faUser} />
-                <span className="ml-3">Sign Out</span>
+                <span className="ml-3">{localStorage.getItem('username')}</span>
               </button>
             </li>
           </ul>

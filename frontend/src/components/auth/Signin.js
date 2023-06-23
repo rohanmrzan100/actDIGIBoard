@@ -10,7 +10,7 @@ import { loginError, loginSuccess } from "../../store/slice/authSlice";
 import Spinner from "../utils/Spinner";
 
 const Signin = () => {
-   const loading = useSelector((state) => state.utils.isloading);
+  const loading = useSelector((state) => state.utils.isloading);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
@@ -28,10 +28,16 @@ const Signin = () => {
     dispatch(isloading({ type: "true" }));
     login(data)
       .then((res) => {
+        console.log(res);
         successToast("Login Successful");
-
-        dispatch(loginSuccess(res.token));
+        dispatch(
+          loginSuccess({
+            token: res.token,
+            username: res.doc.name,
+          })
+        );
         setTimeout(() => (window.location.href = "/content"), 2000);
+        // navigate("/content");
       })
       .catch((err) => {
         setError(true);

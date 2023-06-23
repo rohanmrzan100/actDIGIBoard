@@ -347,8 +347,10 @@ export const addPlaylistToDevice: RequestHandler = async (req, res, next) => {
     if (!playlist) {
       return res.status(400).json({ msg: "Playlist not found", status: "0" });
     }
-    if(playlist.media.length<=0){
-       return res.status(400).json({ msg: "Playlist is empty.Choose another.", status: "0" });
+    if (playlist.media.length <= 0) {
+      return res
+        .status(400)
+        .json({ msg: "Playlist is empty.Choose another.", status: "0" });
     }
     playlist.device.push(device_id);
 
@@ -455,6 +457,63 @@ export const playPlaylist: RequestHandler = async (req, res, next) => {
     return res
       .status(200)
       .json({ msg: "Playlist added for playing", foundPlaylist, status: 1 });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @route      /api/device/play_playlist/:pid
+// @desc       resync device from website
+// @auth       private
+
+export const playPlaylistInAllDevices: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const user_id = res.locals.user._id;
+    const playlist_id = req.params.pid;
+
+    if (
+      !mongoose.isValidObjectId(user_id) ||
+      !mongoose.isValidObjectId(playlist_id)
+    ) {
+      return res.status(400).json({ msg: "Invalid  ID", status: "0" });
+    }
+    const user = await userModel.findById(user_id);
+    if (!user) {
+      return res.status(400).json({ msg: "User not found", status: "0" });
+    }
+    const playlist = await playlistModel.findById(playlist_id);
+    if (!playlist) {
+      return res.status(400).json({ msg: "Playlist not found", status: "0" });
+    }
+    if (playlist.media.length <= 0) {
+      return res
+        .status(400)
+        .json({ msg: "Playlist is empty.Choose another.", status: "0" });
+    }
+    for (const device_id of user.device_id) {
+      const device = await deviceModel.findById(device_id);
+      if (!device) {
+        return res.status(400).json({ msg: "Device not found", status: "0" });
+      }
+
+      playlist.device.push(device_id);
+
+      device.SFD_playlist.push(playlist_id);
+
+      device.a_playlist.push(playlist_id);
+
+      device.c_playlist = playlist.name;
+      await device.save();
+      await playlist.save();
+    }
+
+    return res
+      .status(200)
+      .json({ msg: "Playlist added for playing", status: 1 });
   } catch (error) {
     next(error);
   }

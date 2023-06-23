@@ -13,6 +13,7 @@ import {
   playPlaylist,
   interactive,
   checkInteractive,
+  playPlaylistInAllDevices,
 } from "../controllers/Device";
 const router = express.Router();
 
@@ -20,23 +21,22 @@ router.delete("/delete/:id", authMiddleware, deleteDevices);
 router.delete("/remove_playlist/:did/:pid", removePlaylistFromDevice);
 
 router.get("/sync/:uid", syncDevice);
-router.get("/sync/update", authMiddleware ,resyncDevice);
+router.get("/sync/update", authMiddleware, resyncDevice);
 router.get("/get/:id", getDevice);
 router.get("/generate/uid", generateUid);
 router.get("/check_change/:id", checkChange);
 router.get("/check_interactive/:did", checkInteractive);
 
-
-
 router.post("/add", authMiddleware, addDevice);
-router.post("/play_playlist/:did/:pid",playPlaylist)
-router.post("/add_playlist/:did/:pid",addPlaylistToDevice)
+router.post("/play_playlist/:did/:pid", playPlaylist);
+router.post("/add_playlist/:did/:pid", addPlaylistToDevice);
 router.post("/interactive/:did/:mid", interactive);
+router.post(
+  "/play_playlist/:pid",
+  authMiddleware,
+  playPlaylistInAllDevices
+);
 
-
-
-router.get("/sync_update/:id" ,resyncDevice);
-
-
+router.get("/sync_update/:id", resyncDevice);
 
 export default router;

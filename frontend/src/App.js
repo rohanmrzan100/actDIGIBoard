@@ -19,15 +19,20 @@ import PlayInteractive from "./components/devices/PlayInteractive";
 import AddInteractiveMedia from "./components/content/interactive/AddMedia";
 import InteractiveEdit from "./components/content/interactive/Interactive";
 import Interactive from "./components/interactive/Interactive";
+import PlaylistPage from "./components/Playlist/Playlist";
 const App = () => {
-
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
   const isloading = useSelector((state) => state.utils.isloading);
   const isAuth = useSelector((state) => state.auth.isAuth);
   const p_id = useSelector((state) => state.utils.playlist_id);
   if (localStorage.getItem("token")) {
-    dispatch(loadUser(localStorage.getItem("token")));
+    dispatch(
+      loadUser({
+        token: localStorage.getItem("token"),
+        username: localStorage.getItem("username"),
+      })
+    );
   }
 
   const playlist_id = p_id || localStorage.getItem("playlist");
@@ -58,6 +63,7 @@ const App = () => {
                 <Route path="/signup" element={<Signup />}></Route>
                 <Route path="/devices" element={<Devices />}></Route>
                 <Route path="/interactive" element={<Interactive />}></Route>
+                <Route path="/playlist" element={<PlaylistPage />}></Route>
                 <Route path="/add_device" element={<Add />}></Route>
                 <Route path="/create/playlist" element={<Playlist />}></Route>
                 <Route

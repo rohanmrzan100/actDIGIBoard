@@ -6,7 +6,7 @@ import {
   faImage,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isloading } from "../../store/slice/utilsSlice";
 import {
   Popover,

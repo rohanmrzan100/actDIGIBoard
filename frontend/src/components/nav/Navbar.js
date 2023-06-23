@@ -1,24 +1,45 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   faBars,
   faCalendarDays,
+  faImage,
   faPhotoFilm,
+  faPhotoVideo,
+  faSignOut,
   faSquarePollVertical,
   faTableColumns,
   faTablet,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Tooltip,
+  Avatar,
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemPrefix,
+} from "@material-tailwind/react";
+import {
+  BuildingOffice2Icon,
+  PhoneIcon,
+  EnvelopeIcon,
+} from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { navToggle } from "../../store/slice/toggleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/slice/authSlice";
-import logo from "../../assets/Logo.png"
+import logo from "../../assets/Logo.png";
+
 const Navbar = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
+
   return (
     <div>
       <nav className="  bg-gradient-to-r  from-blue-700 to-blue-800 ">
@@ -78,7 +99,17 @@ const Navbar = () => {
                   </li>
                   <li>
                     <button
-                      onClick={() => navigate("/devices")}
+                      onClick={() => navigate("/playlist")}
+                      type="button"
+                      className="w-full  nav-btn"
+                    >
+                      <FontAwesomeIcon icon={faImage} />
+                      <span className="ml-3">Playlist</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      // onClick={() => navigate("/devices")}
                       type="button"
                       className="w-full  nav-btn"
                     >
@@ -86,33 +117,59 @@ const Navbar = () => {
                       <span className="ml-3">Scheduling</span>
                     </button>
                   </li>
-                  <li>
-                    <button type="button" className="w-full  nav-btn">
-                      <FontAwesomeIcon icon={faTableColumns} />
-                      <span className="ml-3">Dashboard</span>
-                    </button>
-                  </li>
+
                   <li>
                     <button type="button" className="w-full  nav-btn">
                       <FontAwesomeIcon icon={faSquarePollVertical} />
                       <span className="ml-3">Report</span>
                     </button>
                   </li>
+
                   <li>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        navigate("/signin");
-                        dispatch(logout());
-                      }}
-                      className="w-full  nav-btn"
-                    >
-                      <FontAwesomeIcon icon={faUser} />
-                      <span className="ml-3">Sign Out</span>
-                    </button>
+                    <Popover placement="bottom">
+                      <PopoverHandler>
+                        <Button className="w-full  nav-btn" variant="text" size="lg" >
+                          <FontAwesomeIcon icon={faUser} />
+                          <span className="ml-3">Profile</span>
+                        </Button>
+                      </PopoverHandler>
+                      <PopoverContent className="w-52 relative">
+                        <ul className="space-y-1">
+                          <li className="hover:border  border-2 rounded-md ">
+                            <button className="w-full text-md  nav-btn">
+                              <FontAwesomeIcon
+                                icon={faUser}
+                                className=" text-gray-900"
+                              />
+                              <span className="ml-3  text-gray-900">
+                                {localStorage.getItem("username")}
+                              </span>
+                            </button>
+                          </li>
+                          <li className="hover:border   border-2 rounded-md">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigate("/signin");
+                                dispatch(logout());
+                              }}
+                              className="w-full text-md  nav-btn"
+                            >
+                              <FontAwesomeIcon
+                                icon={faSignOut}
+                                className=" text-gray-900"
+                              />
+                              <span className="ml-3  text-gray-900">
+                                Log Out
+                              </span>
+                            </button>
+                          </li>
+                        </ul>
+                      </PopoverContent>
+                    </Popover>
                   </li>
                 </ul>
-              </div>{" "}
+              </div>
             </>
           )}
         </div>
