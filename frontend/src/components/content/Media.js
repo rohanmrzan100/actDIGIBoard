@@ -52,12 +52,17 @@ const Media = () => {
 
   const handleDelete = (id) => {
     dispatch(isloading({ type: "true" }));
-    deleteMedia(id).then(() => {
-      setInterval(() => {
-        window.location.reload(true);
+    deleteMedia(id)
+      .then(() => {
+        setInterval(() => {
+          window.location.reload(true);
+          dispatch(isloading({ type: "false" }));
+        }, 2000);
+      })
+      .catch((err) => {
         dispatch(isloading({ type: "false" }));
-      }, 2000);
-    });
+        console.log(err);
+      });
   };
 
   return (

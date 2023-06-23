@@ -4,7 +4,6 @@ import { setError, unsetError } from "../store/slice/utilsSlice";
 import { errorToast, successToast } from "../components/utils/Toast";
 import { baseURL } from "../Constants";
 
-
 axios.defaults.baseURL = baseURL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const headers = {
@@ -13,11 +12,9 @@ const headers = {
 
 export const addDevice = async (data) => {
   try {
-    const response = await axios.post(
-      "api/device/add",
-      data,
-      { headers: headers }
-    );
+    const response = await axios.post("api/device/add", data, {
+      headers: headers,
+    });
     successToast("Device Added Successfully");
     store.dispatch(unsetError());
     window.location.href = "/devices";
@@ -143,7 +140,7 @@ export const removePlaylistFromDevice = async (did, pid) => {
 
     { headers: headers }
   );
- 
+
   console.log(response.data);
   return response.data;
 };
@@ -168,5 +165,12 @@ export const getDeviceByID = async (did) => {
   return response.data;
 };
 
+export const addPlaylistToAllDevices = async (pid) => {
+  const response = await axios.post(
+    `api/device/play_playlist/${pid}`,
+    {},
+    { headers: headers }
+  );
 
-
+  return response.data;
+};

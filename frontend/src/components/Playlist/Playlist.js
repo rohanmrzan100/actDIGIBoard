@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PlaylistCard from "../content/playlist/PlaylistCard";
 import Skeleton from "../utils/SkeletonLoading";
 import Empty from "../utils/Empty";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,8 +7,11 @@ import { getUserData } from "../../API/User";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { Radio, Tooltip } from "@material-tailwind/react";
+import { addPlaylistToAllDevices } from "../../API/Device";
+import { errorToast, successToast } from "../utils/Toast";
 const PlaylistPage = () => {
   const [playlist, setPlaylist] = useState([]);
+  const [playlistId, setPlaylistId] = useState();
   const [playlistEmpty, setPlaylistEmpty] = useState(false);
   const loading = useSelector((state) => state.utils.isloading);
   const dispatch = useDispatch();
@@ -35,18 +37,30 @@ const PlaylistPage = () => {
       });
   }, []);
   const handleChange = (e) => {
-    console.log(e.target.value);
+    setPlaylistId(e.target.value);
   };
   const handlePlay = () => {
-    console.log("here");
+    dispatch(isloading({ type: "true" }));
+    addPlaylistToAllDevices(playlistId)
+      .then((res) => {
+        successToast("Playlist Playing in all devices !");
+        setTimeout(() => {
+          dispatch(isloading({ type: "false" }));
+          window.location.href = "/devices";
+        }, 2000);
+      })
+      .catch((err) => {
+        dispatch(isloading({ type: false }));
+        console.log(err);
+        errorToast("Something went Wrong !");
+      });
   };
   return (
     <div>
       <div className="w-full mt-8 ">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-semibold">
-            {" "}
-            Select One Playlist to Play on All Devices{" "}
+            Select One Playlist to Play on All Devices
           </h1>
 
           <button
@@ -63,7 +77,7 @@ const PlaylistPage = () => {
         {playlistEmpty && <Empty text="You have not added any playlist." />}
 
         <div className="grid  grid-cols-1 lg:grid-cols-6 md:grid-col-5 m-auto sm:grid-cols-3 xs:grid-col-2  gap-x-4 gap-y-4 ">
-          {playlist &&
+          {!loading && playlist &&
             playlist.map((playlist) => (
               <div
                 onChange={(e) => handleChange(e)}
