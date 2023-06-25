@@ -1,5 +1,7 @@
 import {
   faCirclePlay,
+  faImage,
+  faPhotoFilm,
   faRotate,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
@@ -57,7 +59,7 @@ const DevicesCard = (props) => {
 
   const date = moment(props.device.createdAt).format("YYYY MM DD,  h:mm a");
   return (
-    <div className="my-4 px-6 py-8 md:py-12  rounded-xl md:flex-row flex flex-col  bg-gray-300 justify-between items-center  ">
+    <div className="my-4 px-6 py-2  rounded-xl md:flex-row flex flex-col  bg-gray-300 justify-between items-center  ">
       <div className="">
         <h1 className=" text-xl">{props.device.name}</h1>
         <p className="text-md font-semibold text-gray-500">
@@ -70,7 +72,7 @@ const DevicesCard = (props) => {
         )}
       </div>
 
-      <div className="flex justify-between items-center space-x-12  ">
+      <div className="flex justify-between items-center space-x-6  ">
         {/* <div className="flex flex-col items-center space-y-4 p-4 rounded-md hover:bg-gray-200">
           <FontAwesomeIcon
             icon={faSignal}
@@ -104,7 +106,7 @@ const DevicesCard = (props) => {
           className="flex flex-col items-center space-y-4 hover:text-orange-500 p-4 rounded-md hover:bg-gray-200"
         >
           <FontAwesomeIcon
-            icon={faCirclePlay}
+            icon={faPhotoFilm}
             className="scale-150 text-ornage-500"
           />
           <p className="text-lg">Play Interactive</p>

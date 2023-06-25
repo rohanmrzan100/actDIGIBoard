@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DevicesCard from "./DevicesCard";
 import { getDevices } from "../../API/Device";
 import { isloading } from "../../store/slice/utilsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const Devices = () => {
+    const loading = useSelector((state) => state.utils.isloading);
   const [devices, setDevices] = useState([]);
   const dispatch = useDispatch();
   isloading({ type: "true" });
@@ -54,7 +55,7 @@ const Devices = () => {
         <h1 className="text-2xl font-semibold">Devices</h1>
 
         <div>
-          {!devices.length > 0 && (
+          {!loading && !devices.length > 0 && (
             <p className="text-black text-xl my-8">
               You have not added any devices.
             </p>
