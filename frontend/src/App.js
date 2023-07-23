@@ -20,6 +20,7 @@ import AddInteractiveMedia from "./components/content/interactive/AddMedia";
 import InteractiveEdit from "./components/content/interactive/Interactive";
 import Interactive from "./components/interactive/Interactive";
 import PlaylistPage from "./components/Playlist/Playlist";
+import AddGroup from "./components/devices/group/AddGroup";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -89,7 +90,7 @@ const App = () => {
                   element={<PlayInteractive />}
                 ></Route>
 
-                {/* <Route path="/*" element={<ErrorPage />}></Route> */}
+                <Route path="/devices/add_group" element={<AddGroup />}></Route>
               </>
             )}
           </Routes>
