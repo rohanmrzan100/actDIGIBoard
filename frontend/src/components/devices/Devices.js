@@ -41,7 +41,7 @@ const Devices = () => {
           <div>
             <button
               onClick={() => {
-                window.location.href = "/add_device";
+                window.location.href = "/devices/add_group";
               }}
               className=" w-32 hover:bg-gray-400 p-2.5 ml-2 text-sm border  font-medium text-black bg-gray-300 flex rounded-lg cursor-pointer flex items-center justify-between"
             >

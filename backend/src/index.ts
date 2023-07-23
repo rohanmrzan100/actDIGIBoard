@@ -9,7 +9,7 @@ import userRouter from "./routes/User";
 import deviceRouter from "./routes/Device";
 import playlistRouter from "./routes/Playlist";
 import UploadRouter from "./routes/Uploads";
-import interactiveRouter from "./routes/Interactive"
+import interactiveRouter from "./routes/Interactive";
 import compression from "compression";
 
 const app = express();
@@ -18,20 +18,6 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(compression());
-
-
-// if(env.NODE_ENV === 'production'){
-//   app.use(express.static(path.join(__dirname, "../../frontend/build")));
-//   app.get("*", function (req, res) {
-//     res.sendFile(
-//       path.resolve(__dirname, "../../", "frontend", "build", "index.html")
-//     );
-//   });
-// }else{
-//   app.get("/",(req,res)=>{
-//     res.send("Hello World")
-//   })
-// }
 
 app.use("/api/user", userRouter);
 app.use("/api/device", deviceRouter);
@@ -49,9 +35,7 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   console.log(error);
   res.status(500).json({ msg: errorMessage, status: "0" });
 });
-// env.MONGO_URI;
 mongoose
-  // .connect("mongodb://0.0.0.0:27017/act")
   .connect(env.MONGO_URI)
   .then(() => {
     const port = env.PORT;
