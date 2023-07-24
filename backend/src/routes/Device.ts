@@ -15,6 +15,7 @@ import {
   checkInteractive,
   playPlaylistInAllDevices,
 } from "../controllers/Device";
+import { createGroup } from "../controllers/Group";
 const router = express.Router();
 
 router.delete("/delete/:id", authMiddleware, deleteDevices);
@@ -38,5 +39,9 @@ router.post(
 );
 
 router.get("/sync_update/:id", resyncDevice);
+
+//group
+router.post("/group/add", authMiddleware, createGroup);
+
 
 export default router;
