@@ -22,6 +22,7 @@ export const getUserData: RequestHandler = async (req, res, next) => {
     device_id: [""],
     media_id: [""],
     playlist: [""],
+    group: [""],
     interactive:""
   };
 
@@ -65,6 +66,7 @@ export const register: RequestHandler<
     name: "",
     password: "",
     device_id: [""],
+    group:[""],
     media_id: [""],
     playlist: [""],
     interactive: "",
@@ -124,7 +126,8 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
     device_id: [""],
     media_id: [""],
     playlist: [""],
-    interactive:""
+    group: [""],
+    interactive: "",
   };
 
   try {

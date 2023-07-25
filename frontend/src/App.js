@@ -21,6 +21,7 @@ import InteractiveEdit from "./components/content/interactive/Interactive";
 import Interactive from "./components/interactive/Interactive";
 import PlaylistPage from "./components/Playlist/Playlist";
 import AddGroup from "./components/devices/group/AddGroup";
+import TabsDefault from "./components/devices";
 const App = () => {
   const dispatch = useDispatch();
   const navToggle = useSelector((state) => state.toggle.navToggle);
@@ -62,7 +63,7 @@ const App = () => {
                 ))}
                 <Route path="/signin" element={<Signin />}></Route>
                 <Route path="/signup" element={<Signup />}></Route>
-                <Route path="/devices" element={<Devices />}></Route>
+                <Route path="/devices" element={<TabsDefault />}></Route>
                 <Route path="/interactive" element={<Interactive />}></Route>
                 <Route path="/playlist" element={<PlaylistPage />}></Route>
                 <Route path="/add_device" element={<Add />}></Route>
