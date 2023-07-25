@@ -24,7 +24,9 @@ app.use("/api/device", deviceRouter);
 app.use("/api/playlist", playlistRouter);
 app.use("/api/media", UploadRouter);
 app.use("/api/interactive", interactiveRouter);
-
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 app.use((req: any, res: any, next: NextFunction) => {
   next(Error("Endpoint not found"));
 });

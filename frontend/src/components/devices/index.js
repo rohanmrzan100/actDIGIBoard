@@ -61,11 +61,11 @@ export default function TabsDefault() {
       </div>
       <Tabs value="Device">
         <TabsHeader>
-          <Tab key="Device" value="Device">
+          <Tab key="Device" value="Device" >
             Device
           </Tab>
           <Tab key="Group" value="Group">
-            Group
+            Groupcd
           </Tab>
         </TabsHeader>
 
