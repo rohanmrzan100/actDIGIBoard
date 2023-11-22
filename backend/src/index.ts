@@ -41,7 +41,7 @@ mongoose
   .connect(env.MONGO_URI)
   .then(() => {
     const port = env.PORT;
-    app.listen(3001, () => {
+    app.listen(port, () => {
       console.log(`APP is running on port ${env.PORT}`);
     });
     console.log("connected to DB");
