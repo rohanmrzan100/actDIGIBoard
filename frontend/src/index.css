@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
-:root{
-@apply text-sm
+:root {
+  @apply text-sm;
+}
+body {
+  font-family: "Inter", sans-serif;
 }
 
 .nav-btn {
