@@ -1,14 +1,15 @@
 import { RequestHandler } from "express";
 import mediaModel from "../models/Media";
 import userModel from "../models/User";
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 import Ffmpeg from "fluent-ffmpeg";
+Ffmpeg.setFfmpegPath(ffmpegPath);
 const path = require("path");
 const fs = require("fs");
 
 class userController {
   static fileUpload: RequestHandler = async (req, res, next) => {
     try {
-    
       const owner = await userModel.findById(res.locals.user._id);
       if (!owner)
         return res.status(400).json({ msg: "User is not found", status: "0" });
@@ -26,10 +27,10 @@ class userController {
       owner.media_id.push(media._id);
 
       const inputFilePath = path.join(
-        __dirname + "../../../public/assets/" + req.file.filename
+        __dirname , "../../public/assets/" + req.file.filename
       );
       const outputFilePath = path.join(
-        __dirname + "../../../public/assets/compressed" + req.file.filename
+        __dirname , "../../public/assets/compressed" + req.file.filename
       );
 
       if (media.type == "video") {
@@ -39,10 +40,10 @@ class userController {
             // Generate 720P video
             .output(outputFilePath)
             .videoCodec("libx264")
-         
+
             .size("640x480") // Adjust the resolution as desired
             .videoBitrate("300k") // Adjust the bitrate as desired
-         
+
             .outputOptions("-crf 25")
             .on("progress", function (progress) {
               console.log("... frames: " + progress.frames);
@@ -54,20 +55,16 @@ class userController {
         }).then(() => {
           fs.unlinkSync(
             path.join(
-              __dirname + "../../../public/assets/" + media.media.slice(10)
+              __dirname ,"../../public/assets/" + media.media.slice(10)
             )
           );
         });
       } else {
         // Rename the file
         fs.rename(
+          path.join(__dirname , "../../public/assets/" + media.media.slice(10)),
           path.join(
-            __dirname + "../../../public/assets/" + media.media.slice(10)
-          ),
-          path.join(
-            __dirname +
-              "../../../public/assets/compressed" +
-              media.media.slice(10)
+            __dirname , "../../public/assets/compressed" + media.media.slice(10)
           ),
           () => {
             console.log("\nFile Renamed!\n");

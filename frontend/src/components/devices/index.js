@@ -65,7 +65,7 @@ export default function TabsDefault() {
             Device
           </Tab>
           <Tab key="Group" value="Group">
-            Groupcd
+            Group
           </Tab>
         </TabsHeader>
 
